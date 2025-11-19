@@ -7,7 +7,7 @@ function Footer() {
 
   return (
     <>
-     <h5>Megustanlosarbole</h5>
+     <h5>FOOTER</h5>
     </>
   )
 }

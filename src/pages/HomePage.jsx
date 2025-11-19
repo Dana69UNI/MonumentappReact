@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+import Header from '../components/header'
+
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom)&order=id.asc';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q'
 
@@ -45,8 +47,30 @@ useEffect(() => {
   }
 
 
+  const items = [
+    { id: 1, text: "Texto 1", img: "https://picsum.photos/100/100?1" },
+    { id: 2, text: "Texto 2", img: "https://picsum.photos/100/100?2" },
+    { id: 3, text: "Texto 3", img: "https://picsum.photos/100/100?3" },
+  ];
+
+
   return (
     <>
+    <Header />
+
+  <div>
+      <h3>Arbres recomenats</h3>
+      <div className="carousel-scroll">
+        {items.map((item) => (
+          <div className="card" key={item.id}>
+            <img src={item.img} alt="" />
+            <p>{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+
      {posts.map((post) => (
           <article key={post.id}>
             <h3>{post.arbres?.nom}</h3>
