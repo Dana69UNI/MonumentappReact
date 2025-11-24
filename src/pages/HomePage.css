@@ -1,29 +1,272 @@
+
+.loading-message,
+.error-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+}
+
+.error-message {
+  color: #d32f2f;
+}
+
+
+.carousel-section {
+  margin: 40px 0;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
 .carousel-scroll {
   display: flex;
+  gap: 20px;
   overflow-x: auto;
-  gap: 14px;
-  padding: 10px;
-  scroll-snap-type: x mandatory;
+  padding: 10px 0;
+  scroll-behavior: smooth;
 }
 
 .carousel-scroll::-webkit-scrollbar {
-  display: none; /* Oculta scrollbar */
+  height: 8px;
+}
+
+.carousel-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.carousel-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
 }
 
 .card {
-  min-width: 120px;
-  max-width: 120px;
-  height: 150px;
-  background: #f7f3f3;
-  border-radius: 10px;
-  padding: 10px;
-  text-align: center;
-  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 200px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 15px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.card img {
+.card-image-placeholder {
+  width: 150px;
+  height: 150px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.placeholder-icon {
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.placeholder-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 6px;
+  height: 70%;
+  border-left: 3px solid #999;
+  border-bottom: 3px solid #999;
+  transform: skewY(-20deg);
+}
+
+.placeholder-icon::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 0;
+  width: 15px;
+  height: 15px;
+  background: #666;
+  border-radius: 50%;
+}
+
+.card-text {
+  margin: 0;
+  font-weight: 500;
+  text-align: center;
+  color: #333;
+}
+
+/* Featured Section - REPTE DEL MES */
+.featured-section {
+  margin: 40px 0;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: white;
+}
+
+.featured-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.featured-subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.4;
+}
+
+.featured-content {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.featured-image {
+  flex: 0 0 auto;
+  width: 300px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 300px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.placeholder-icon-large {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.placeholder-icon-large::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  border-left: 4px solid #999;
+  border-bottom: 4px solid #999;
+  transform: skewY(-20deg);
+}
+
+.placeholder-icon-large::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  background: #666;
+  border-radius: 50%;
+}
+
+.featured-details {
+  flex: 1 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.featured-tree-name {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.detail-icon {
+  font-size: 1.2rem;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.detail-text {
+  color: #555;
+}
+
+/* Posts Section */
+.posts-section {
+  margin: 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-article {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+}
+
+.post-article h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.post-article p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .featured-content {
+    flex-direction: column;
+  }
+
+  .featured-image {
+    width: 100%;
+  }
+
+  .monument-title {
+    font-size: 2rem;
+  }
+
+  .card {
+    width: 160px;
+  }
+
+  .card-image-placeholder {
+    width: 120px;
+    height: 120px;
+  }
 }
