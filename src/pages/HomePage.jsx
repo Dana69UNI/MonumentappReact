@@ -79,9 +79,9 @@ useEffect(() => {
             <h3>{post.arbres?.nom}</h3>
             <p>{post.descripcio}</p>
             <ul>
-              <li>Alçada: {post.arbres?.alcada} m</li>
-              <li>Gruix: {post.arbres?.gruix} cm</li>
-              <li>Capçal: {post.arbres?.capcal} cm</li>
+              <li>Alçada: {post.arbres?.alcada}m</li>
+              <li>Gruix: {post.arbres?.gruix}m</li>
+              <li>Capçal: {post.arbres?.capcal}m</li>
             </ul>
           </article>
         ))}
