@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Header from '../components/header'
+import './HomePage.css'
 
-const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom)&order=id.asc';
+
+const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom, alcada, gruix, capcal)&order=id.asc';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q'
 
 function HomePage() {
@@ -71,11 +73,16 @@ useEffect(() => {
   </div>
     
   {/* Div on es mostren tots els arbres */}
-  <div>
+  <div className='arbresRecomenats'>
         {posts.map((post) => (
           <article className='arbresArticles' key={post.id}>
             <h3>{post.arbres?.nom}</h3>
             <p>{post.descripcio}</p>
+            <ul>
+              <li>Alçada: {post.arbres?.alcada} m</li>
+              <li>Gruix: {post.arbres?.gruix} cm</li>
+              <li>Capçal: {post.arbres?.capcal} cm</li>
+            </ul>
           </article>
         ))}
   </div>
