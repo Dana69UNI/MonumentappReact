@@ -68,15 +68,18 @@ useEffect(() => {
           </div>
         ))}
       </div>
-    </div>
+  </div>
     
-
-     {posts.map((post) => (
-          <article key={post.id}>
+  {/* Div on es mostren tots els arbres */}
+  <div>
+        {posts.map((post) => (
+          <article className='arbresArticles' key={post.id}>
             <h3>{post.arbres?.nom}</h3>
             <p>{post.descripcio}</p>
           </article>
         ))}
+  </div>
+     
     </>
   )
 }

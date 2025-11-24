@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+import './Footer.css'
 
 
 function Footer() {
@@ -7,7 +8,7 @@ function Footer() {
 
   return (
     <>
-     <h5>FOOTER</h5>
+     <h5 className='footer'>FOOTER</h5>
     </>
   )
 }
