@@ -50,9 +50,9 @@ useEffect(() => {
 
 
   const items = [
-    { id: 1, text: "Texto 1", img: "https://picsum.photos/100/100?1" },
-    { id: 2, text: "Texto 2", img: "https://picsum.photos/100/100?2" },
-    { id: 3, text: "Texto 3", img: "https://picsum.photos/100/100?3" },
+    { id: 1, text: "Texto 1", img: "#" },
+    { id: 2, text: "Texto 2", img: "#" },
+    { id: 3, text: "Texto 3", img: "#" },
   ];
 
 
