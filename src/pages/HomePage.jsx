@@ -61,7 +61,7 @@ useEffect(() => {
     <Header />
 
   <div>
-      <h3>Arbres recomenats</h3>
+      <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
       <div className="carousel-scroll">
         {items.map((item) => (
           <div className="card" key={item.id}>
