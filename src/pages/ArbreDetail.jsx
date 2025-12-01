@@ -16,7 +16,7 @@ function ArbreDetail() {
     const fetchDetail = async () => {
       try {
         // pedimos el objeto recomendado que tenga ese arbre_id y expandimos la relación 'arbres'
-        const url = `${API_BASE}/arbres_recomenats?arbre_id=eq.${id}&select=descripcio,arbre_id,arbres(nom,alcada,gruix,capcal,imatge)`
+        const url = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom, alcada, gruix, capcal)&order=id.asc`
         const res = await fetch(url, {
           headers: {
             "apikey": API_KEY,
