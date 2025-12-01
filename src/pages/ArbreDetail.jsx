@@ -1,14 +1,63 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&id=eq.'
-const API_KEY = 'TU_API_KEY'
+const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom, alcada, gruix, capcal)&order=id.asc';
+const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q'
 
 function ArbreDetail() {
- 
+  const { id } = useParams() // id = arbre_id desde HomePage
+  const navigate = useNavigate()
+  const [item, setItem] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (!id) return
+    const fetchDetail = async () => {
+      try {
+        // pedimos el objeto recomendado que tenga ese arbre_id y expandimos la relación 'arbres'
+        const url = `${API_BASE}/arbres_recomenats?arbre_id=eq.${id}&select=descripcio,arbre_id,arbres(nom,alcada,gruix,capcal,imatge)`
+        const res = await fetch(url, {
+          headers: {
+            "apikey": API_KEY,
+            "Authorization": `Bearer ${API_KEY}`
+          }
+        })
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+        const data = await res.json()
+        setItem(data[0] ?? null)
+      } catch (e) {
+        setError(e.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDetail()
+  }, [id])
+
+  if (loading) return <p>Carregant...</p>
+  if (error) return <div className="error-message">Error: {error}</div>
+  if (!item) return <div>No s'ha trobat l'arbre</div>
+
+  const arbre = item.arbres ?? {}
+  // intenta varios nombres de campo comunes para la imagen (ajusta si tu campo tiene otro nombre)
+  const image = arbre?.imatge || arbre?.imagen || arbre?.image || arbre?.foto || arbre?.url || ''
 
   return (
-	<h1>DIOMIO</h1>
+    <div className="arbre-detail">
+      <button onClick={() => navigate(-1)} className="back-button">Go back</button>
+
+      {image ? <img src={image} alt={arbre.nom ?? 'Arbre'} /> : null}
+      <h1>{arbre.nom}</h1>
+      <p>{item.descripcio || arbre.descripcio}</p>
+
+      {/* Aquí mostramos exactament les mateixes parts del <ul> que tens en HomePage */}
+      <ul>
+        <li>Alçada: {arbre?.alcada}m</li>
+        <li>Gruix: {arbre?.gruix}m</li>
+        <li>Capçal: {arbre?.capcal}m</li>
+      </ul>
+    </div>
   )
 }
 
