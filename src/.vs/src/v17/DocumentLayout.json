@@ -1,0 +1,156 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\ArbreDetail.jsx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\ArbreDetail.jsx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\App.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:App.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\HomePage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\HomePage.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\Footer.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Search.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\Search.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Diario.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pages\\Diario.jsx||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\Footer.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Header.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\Header.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ArbreDetail.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\ArbreDetail.jsx",
+              "RelativeDocumentMoniker": "pages\\ArbreDetail.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\ArbreDetail.jsx",
+              "RelativeToolTip": "pages\\ArbreDetail.jsx",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAswA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T10:30:32.325Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Search.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Search.jsx",
+              "RelativeDocumentMoniker": "pages\\Search.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Search.jsx",
+              "RelativeToolTip": "pages\\Search.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T10:07:14.881Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HomePage.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\HomePage.jsx",
+              "RelativeDocumentMoniker": "pages\\HomePage.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\HomePage.jsx",
+              "RelativeToolTip": "pages\\HomePage.jsx",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAFEAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T09:56:46.065Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Diario.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Diario.jsx",
+              "RelativeDocumentMoniker": "pages\\Diario.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\pages\\Diario.jsx",
+              "RelativeToolTip": "pages\\Diario.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T09:56:43.109Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Header.css",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Header.css",
+              "RelativeDocumentMoniker": "components\\Header.css",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Header.css",
+              "RelativeToolTip": "components\\Header.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-26T09:56:38.471Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Footer.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.jsx",
+              "RelativeDocumentMoniker": "components\\Footer.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.jsx",
+              "RelativeToolTip": "components\\Footer.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T09:56:28.025Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Footer.css",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.css",
+              "RelativeDocumentMoniker": "components\\Footer.css",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\components\\Footer.css",
+              "RelativeToolTip": "components\\Footer.css",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-26T09:56:22.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.jsx",
+              "DocumentMoniker": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\App.jsx",
+              "RelativeDocumentMoniker": "App.jsx",
+              "ToolTip": "C:\\Users\\pabloac2\\Documents\\GitHub\\MonumentappReact\\src\\App.jsx",
+              "RelativeToolTip": "App.jsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003663|",
+              "WhenOpened": "2025-11-26T09:56:09.474Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

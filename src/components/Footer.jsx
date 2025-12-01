@@ -12,8 +12,8 @@ function Footer() {
 
   return (
     <footer className="footer-container">
-      <a href="#" className="footer-btn"><img src={Home} alt="Home" className="footer-icon" /> </a>
-      <a href="#" className="footer-btn"><img src={Search} alt="Search" className="footer-icon" /> </a>
+      <a href="../pages/HomePage" className="footer-btn"><img src={Home} alt="Home" className="footer-icon" /> </a>
+      <a href="../pages/Search" className="footer-btn"><img src={Search} alt="Search" className="footer-icon" /> </a>
       <a href="#" className="footer-btn"><img src={mas} alt="mas" className="footer-icon" /> </a>
       <a href="#" className="footer-btn"><img src={Diario} alt="Diario" className="footer-icon" /> </a>
       <a href="#" className="footer-btn"><img src={User} alt="User" className="footer-icon" /> </a>
