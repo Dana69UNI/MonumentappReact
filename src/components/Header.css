@@ -1,5 +1,11 @@
-.Titulo{
-    text-align: center;
-    font-size: 30px;    
-    color: rgb(7, 161, 7);
+.Titulo {
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+
+  font-family: 'Merriweather', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #605A48;
+  letter-spacing: 1px;
 }
