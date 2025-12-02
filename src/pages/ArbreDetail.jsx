@@ -12,28 +12,28 @@ function ArbreDetail() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    if (!id) return
-    const fetchDetail = async () => {
-      try {
-        // pedimos el objeto recomendado que tenga ese arbre_id y expandimos la relación 'arbres'
-        const url = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom, alcada, gruix, capcal)&order=id.asc`
-        const res = await fetch(url, {
-          headers: {
-            "apikey": API_KEY,
-            "Authorization": `Bearer ${API_KEY}`
-          }
-        })
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
-        const data = await res.json()
-        setItem(data[0] ?? null)
-      } catch (e) {
-        setError(e.message)
-      } finally {
-        setLoading(false)
-      }
+  if (!id) return
+  const fetchDetail = async () => {
+    try {
+      const url = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&arbre_id=eq.${id}&select=id,descripcio,arbre_id,arbres(nom, alcada, gruix, capcal)&order=id.asc`;
+      const res = await fetch(url, {
+        headers: {
+          "apikey": API_KEY,
+          "Authorization": `Bearer ${API_KEY}`
+        }
+      })
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+      const data = await res.json()
+      setItem(data[0] ?? null)
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setLoading(false)
     }
-    fetchDetail()
-  }, [id])
+  }
+  fetchDetail()
+}, [id])
+
 
   if (loading) return <p>Carregant...</p>
   if (error) return <div className="error-message">Error: {error}</div>
@@ -46,7 +46,6 @@ function ArbreDetail() {
   return (
     <div className="arbre-detail">
       <button onClick={() => navigate(-1)} className="back-button">Go back</button>
-
       {image ? <img src={image} alt={arbre.nom ?? 'Arbre'} /> : null}
       <h1>{arbre.nom}</h1>
       <p>{item.descripcio || arbre.descripcio}</p>
