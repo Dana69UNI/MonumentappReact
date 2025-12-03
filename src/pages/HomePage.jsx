@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 const API_RECOMENATS = "https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&order=id.asc";
 const API_RECOMENATS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q";
 
-const API_REPTE = "URL_REPTE";
-const API_REPTE_KEY = "API_KEY_REPTE";
+const API_REPTE = "https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca))";
+const API_REPTE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q";
 
 const API_ULTIM = "URL_ULTIM";
 const API_ULTIM_KEY = "API_KEY_ULTIM";
@@ -48,32 +48,27 @@ function HomePage() {
 
     const load = async () => {
 
-      // ================
-      // 1) Árboles recomendados (lista)
-      // ================
+      // 1) Cargar recomenats
       const recom = await fetchAPI(API_RECOMENATS, API_RECOMENATS_KEY);
       if (recom) setPosts(recom);
 
-      // ======================
-      // 2) Carrusel (MISMA API)
-      // ======================
+      // Preparar carrusel con los mismos datos
       if (recom) {
         const carouselData = recom.map((item) => ({
           id: item.id,
           text: item.arbres?.nom,          // texto del carrusel
-          img: item.arbres?.capcal || "#", // imagen del carrusel
+          img: item.arbres?.capcal || "#", 
         }));
         setItems(carouselData);
       }
 
-      // 3) Repte
+      // 2) Repte del mes
       const repteRes = await fetchAPI(API_REPTE, API_REPTE_KEY);
       if (repteRes) setRepte(repteRes[0]);
 
-      // 4) Últim arbre
+      // 3) Últim arbre
       const ultimRes = await fetchAPI(API_ULTIM, API_ULTIM_KEY);
       if (ultimRes) setUltim(ultimRes[0]);
-
 
       setLoading(false);
     };
@@ -96,12 +91,21 @@ function HomePage() {
         <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
 
         <div className="carousel-scroll">
-          {items.map((item) => (
-            <div className="card" key={item.id}>
-              <img src={item.img} alt="" />
-              <p>{item.text}</p>
-            </div>
-          ))}
+          {items.map((item) => {
+            // Buscar el arbre_id correspondiente en posts
+            const arbre = posts.find(p => p.arbres?.nom === item.text);
+            return (
+              <Link
+                key={item.id}
+                to={`/arbre/${arbre?.arbre_id}`}
+                className="card"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <img src={item.img} alt={item.text} />
+                <p>{item.text}</p>
+              </Link>
+            )
+          })}
         </div>
       </div>
 
@@ -128,7 +132,6 @@ function HomePage() {
         ))}
       </div>
 
-
       {/* =========================
           REPTE DEL MES
       ========================== */}
@@ -151,7 +154,6 @@ function HomePage() {
         )}
       </section>
 
-
       {/* =========================
           DIARI (sin API)
       ========================== */}
@@ -164,7 +166,6 @@ function HomePage() {
           ))}
         </div>
       </section>
-
 
       {/* =========================
           ÚLTIM ARBRE VISITAT
@@ -198,10 +199,3 @@ function HomePage() {
 }
 
 export default HomePage;
-
-
-
-
-
-
-
