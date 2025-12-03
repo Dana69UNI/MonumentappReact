@@ -13,7 +13,6 @@ const API_REPTE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const API_ULTIM = "URL_ULTIM";
 const API_ULTIM_KEY = "API_KEY_ULTIM";
 
-
 function HomePage() {
 
   // ⭐ carrusel (igual que antes)
@@ -56,8 +55,9 @@ function HomePage() {
       if (recom) {
         const carouselData = recom.map((item) => ({
           id: item.id,
+          arbre_id: item.arbre_id,
           text: item.arbres?.nom,          // texto del carrusel
-          img: item.arbres?.capcal || "#", 
+          img: item.arbres?.capcal || "#",  // imagen del carrusel
         }));
         setItems(carouselData);
       }
@@ -84,34 +84,28 @@ function HomePage() {
     <>
       <Header />
 
-      {/* =========================
-          CARRUSEL (igual que TU CÓDIGO)
-      ========================== */}
+     
       <div>
         <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
 
         <div className="carousel-scroll">
-          {items.map((item) => {
-            // Buscar el arbre_id correspondiente en posts
-            const arbre = posts.find(p => p.arbres?.nom === item.text);
-            return (
-              <Link
-                key={item.id}
-                to={`/arbre/${arbre?.arbre_id}`}
-                className="card"
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <img src={item.img} alt={item.text} />
-                <p>{item.text}</p>
-              </Link>
-            )
-          })}
+          {items.map((item) => (
+            <Link
+              key={item.id}
+              to={`/arbre/${item.arbre_id}`}
+              className="card"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <img src={item.img} alt={item.text} />
+              <p>{item.text}</p>
+            </Link>
+          ))}
         </div>
+
+
       </div>
 
-      {/* =========================
-          LISTA DE ARBRES
-      ========================== */}
+   
       <div className='arbresRecomenats'>
         {posts.map((post) => (
           <Link
@@ -132,9 +126,7 @@ function HomePage() {
         ))}
       </div>
 
-      {/* =========================
-          REPTE DEL MES
-      ========================== */}
+     
       <section className="Grup_RepteDelMes">
         <h3 className="Titol_Repte">Repte del mes</h3>
 
@@ -154,9 +146,6 @@ function HomePage() {
         )}
       </section>
 
-      {/* =========================
-          DIARI (sin API)
-      ========================== */}
       <section className="Grup_Diari">
         <h3 className="Titol_Diari">Diari</h3>
 
@@ -167,9 +156,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* =========================
-          ÚLTIM ARBRE VISITAT
-      ========================== */}
+     
       <section className="Grup_UltimArbreVisitat">
         <h3 className="Titol_UltimArbre">Últim arbre visitat</h3>
 
