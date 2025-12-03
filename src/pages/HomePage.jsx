@@ -3,12 +3,9 @@ import Header from '../components/header';
 import './HomePage.css';
 import { Link } from 'react-router-dom';
 
-
-// =============================
-//   TUS APIs
-// =============================
-const API_RECOMENATS = "URL_RECOMENATS";
-const API_RECOMENATS_KEY = "API_KEY_RECOMENATS";
+// ========== APIs ==========
+const API_RECOMENATS = "https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&order=id.asc";
+const API_RECOMENATS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q";
 
 const API_REPTE = "URL_REPTE";
 const API_REPTE_KEY = "API_KEY_REPTE";
@@ -19,15 +16,18 @@ const API_ULTIM_KEY = "API_KEY_ULTIM";
 
 function HomePage() {
 
+  // ⭐ carrusel (igual que antes)
+  const [items, setItems] = useState([]);
+
+  // ⭐ lista de arbres recomenats
   const [posts, setPosts] = useState([]);
+
   const [repte, setRepte] = useState(null);
   const [ultim, setUltim] = useState(null);
 
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(null);
 
 
-  // 🔥 TU FETCH ORIGINAL — SIN CAMBIAR
   const fetchAPI = async (url, key) => {
     try {
       const res = await fetch(url, {
@@ -36,41 +36,46 @@ function HomePage() {
           Authorization: `Bearer ${key}`
         }
       });
-
-      if (!res.ok) {
-        console.error("Error API:", url, await res.text());
-        return null;
-      }
-
       return await res.json();
-
-    } catch (err) {
-      console.error("Fallo fetch:", err);
+    } catch (e) {
+      console.error("Error:", e);
       return null;
     }
   };
 
 
   useEffect(() => {
+
     const load = async () => {
-      try {
-        // 🔥 1) Árboles recomendados (lista + carrusel)
-        const recom = await fetchAPI(API_RECOMENATS, API_RECOMENATS_KEY);
-        if (recom) setPosts(recom);
 
-        // 🔥 2) Repte del mes
-        const repteM = await fetchAPI(API_REPTE, API_REPTE_KEY);
-        if (repteM) setRepte(repteM[0]);
+      // ================
+      // 1) Árboles recomendados (lista)
+      // ================
+      const recom = await fetchAPI(API_RECOMENATS, API_RECOMENATS_KEY);
+      if (recom) setPosts(recom);
 
-        // 🔥 3) Últim arbre visitat
-        const ultimA = await fetchAPI(API_ULTIM, API_ULTIM_KEY);
-        if (ultimA) setUltim(ultimA[0]);
-
-      } catch {
-        setErrorMsg("No s'han pogut carregar les dades.");
-      } finally {
-        setLoading(false);
+      // ======================
+      // 2) Carrusel (MISMA API)
+      // ======================
+      if (recom) {
+        const carouselData = recom.map((item) => ({
+          id: item.id,
+          text: item.arbres?.nom,          // texto del carrusel
+          img: item.arbres?.capcal || "#", // imagen del carrusel
+        }));
+        setItems(carouselData);
       }
+
+      // 3) Repte
+      const repteRes = await fetchAPI(API_REPTE, API_REPTE_KEY);
+      if (repteRes) setRepte(repteRes[0]);
+
+      // 4) Últim arbre
+      const ultimRes = await fetchAPI(API_ULTIM, API_ULTIM_KEY);
+      if (ultimRes) setUltim(ultimRes[0]);
+
+
+      setLoading(false);
     };
 
     load();
@@ -78,7 +83,6 @@ function HomePage() {
 
 
   if (loading) return <p>Carregant...</p>;
-  if (errorMsg) return <p style={{ color: "red" }}>{errorMsg}</p>;
 
 
   return (
@@ -86,29 +90,24 @@ function HomePage() {
       <Header />
 
       {/* =========================
-          ARBRES RECOMENATS
+          CARRUSEL (igual que TU CÓDIGO)
       ========================== */}
       <div>
         <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
 
-        {/* ⭐ CARRUSEL: usa la MISMA API DE posts */}
         <div className="carousel-scroll">
-          {posts.map((item) => (
+          {items.map((item) => (
             <div className="card" key={item.id}>
-
-              {/* Cambia item.arbres.capcal por el CAMPO QUE QUIERAS PARA IMAGEN */}
-              <img src={item.arbres?.capcal} alt={item.arbres?.nom} />
-
-              {/* TÍTULO DEL CARRUSEL */}
-              <p>{item.arbres?.nom}</p>
-
+              <img src={item.img} alt="" />
+              <p>{item.text}</p>
             </div>
           ))}
         </div>
       </div>
 
-
-      {/* ⭐ LISTA ÁRBOLES RECOMENDADOS */}
+      {/* =========================
+          LISTA DE ARBRES
+      ========================== */}
       <div className='arbresRecomenats'>
         {posts.map((post) => (
           <Link
@@ -128,7 +127,6 @@ function HomePage() {
           </Link>
         ))}
       </div>
-
 
 
       {/* =========================
@@ -154,9 +152,8 @@ function HomePage() {
       </section>
 
 
-
       {/* =========================
-          DIARI (SIN API)
+          DIARI (sin API)
       ========================== */}
       <section className="Grup_Diari">
         <h3 className="Titol_Diari">Diari</h3>
@@ -167,7 +164,6 @@ function HomePage() {
           ))}
         </div>
       </section>
-
 
 
       {/* =========================
@@ -196,8 +192,16 @@ function HomePage() {
           </>
         )}
       </section>
+
     </>
   );
 }
 
 export default HomePage;
+
+
+
+
+
+
+
