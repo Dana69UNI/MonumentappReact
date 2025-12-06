@@ -1,17 +1,13 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-
-
-function Search() {
-
-
+const Search = () => {
   return (
-    <>
-        <h1>hola</h1>
-     
-    </>
+    <div>
+      <h1>Search</h1>
+      <p>Contingut de la lupa</p>
+    </div>
   )
 }
 
-export default Search
+export default Search;
