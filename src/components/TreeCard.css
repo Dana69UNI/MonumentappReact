@@ -1,0 +1,86 @@
+/* src/components/TreeCard.css */
+
+/* GRAN CONTENIDOR */
+.tree-card {
+  display: flex;
+  flex-direction: row; /* Un al costat de l'altre */
+  align-items: stretch; /* CLAU: La imatge s'estirarà tant com el text necessiti */
+  justify-content: flex-start;
+  
+  width: 100%; /* Ocupa tot l'ample disponible del mòbil */
+  
+  /* Separació entre Imatge i Text segons Figma */
+  gap: 4px;
+  
+  /* Sense decoracions extra */
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+/* 1. CONTENIDOR IMATGE (ESQUERRA) */
+.card-image-container {
+  /* Ocupa exactament el 50% de l'ample */
+  width: 50%;
+  flex: 0 0 50%; /* Assegura que no s'encongeixi ni creixi */
+  
+  position: relative;
+  overflow: hidden; /* Perquè la imatge no surti si retallem les vores */
+  border-radius: 20px; /* Arrodoniment Figma */
+  
+  background-color: var(--blanc-fort); /* Color de fons per si la imatge triga a carregar */
+}
+
+/* La imatge dins del contenidor */
+.card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* CLAU: Retalla la foto perquè ompli l'espai sense deformar-se */
+  display: block; /* Elimina espais blancs fantasma */
+}
+
+/* 2. CONTENIDOR DADES (DRETA) */
+.card-data-container {
+  /* L'altre 50% */
+  width: 50%;
+  flex: 0 0 50%;
+  
+  display: flex;
+  flex-direction: column; /* Llista vertical */
+  justify-content: flex-start; /* Comença a dalt */
+  
+  /* Gap vertical entre files de 7px */
+  gap: 7px;
+}
+
+/* 3. ITEM INDIVIDUAL (FILA PETITA) */
+.data-row {
+  display: flex;
+  flex-direction: row; /* Icona al costat del text */
+  align-items: center; /* Centrats verticalment entre ells */
+  justify-content: flex-start;
+  gap: 5px; /* Separació icona-text */
+  
+  width: 100%;
+}
+
+/* La icona petita (SVG) */
+.data-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  flex-shrink: 0; /* Prohibim que la icona s'axafi si falta espai */
+}
+
+/* El text */
+.data-text {
+  font-family: var(--font-principal); /* La teva font global */
+  font-size: 15px;
+  font-weight: 400; /* Regular */
+  color: var(--negre); /* El teu color */
+  
+  /* Gestió de text llarg */
+  line-height: 1.2;
+  word-break: break-word; /* Si és molt llarg, baixa de línia */
+}

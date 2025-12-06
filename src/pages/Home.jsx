@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import Header from '../components/header'
 import Divider from '../components/Divider'
+import TreeCard from '../components/TreeCard'
+
 import './Home.css'
 
 import { Link } from 'react-router-dom' //para convertir la caja "article" en un link clickable
@@ -11,7 +13,11 @@ import { Link } from 'react-router-dom' //para convertir la caja "article" en un
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&order=id.asc';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q'
 
+
+
+
 function HomePage() {
+  
   
  
 const [posts, setPosts] = useState(null);
@@ -75,8 +81,8 @@ useEffect(() => {
         ))}
       </div>
   </div>
-  <hr />
-  <Divider />
+  
+  {/* TEST DE LINIES */}
   <Divider />
   <Divider />
     

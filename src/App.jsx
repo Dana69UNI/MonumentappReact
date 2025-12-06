@@ -9,6 +9,9 @@ import New from './pages/New'
 import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
 
+// Com a prova pàgina de TEST
+import Test from './pages/Test';
+
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
           <Route path="/nou" element={<New />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
+
+          {/* Ruta de prova per a la pàgina Test */}
+          <Route path="/test" element={<Test />} />
         </Routes>
       </div>
 
