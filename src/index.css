@@ -1,0 +1,25 @@
+/* VARIABLES GLOBALS */
+:root {
+  /* DE COLOR */
+  --negre: #373735; 
+  --blanc: #E9EAE2;
+  --blau: #23098F;
+
+  --negre-fluix: #6F6559;
+  --blanc-fort: #CEC0AE;
+
+  /* DE TEXT */
+  --font-cos: "Fuzzy Bubbles", sans-serif; 
+  --font-titols: "Cabin Sketch", sans-serif;
+}
+
+body {
+  /* Apliquem la font base a tota l'aplicació per defecte */
+  font-family: var(--font-cos);
+  color: var(--negre);
+}
+
+/* Opcional: Si vols que tots els H1, H2, H3 tinguin l'altra font */
+h1, h2, h3 h4, h5, h6 {
+  font-family: var(--font-titols);
+}
