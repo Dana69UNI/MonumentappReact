@@ -9,25 +9,6 @@ import New from './pages/New'
 import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
 
-// import './App.css'
-
-
-// function App() {
-  
-
-//   return (
-//     <> 
-//      <Routes>
-//               <Route path="/" element={<HomePage />} />
-//               <Route path="/search" element={<Search />} />
-//               <Route path="/arbre/:id" element={<ArbreDetail />} />
-//       </Routes>
-   
-//     <Footer />
-     
-//     </>
-//   )
-// }
 
 function App() {
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import './Footer.css'
+
 //IMPORTAR IMATGES
 import IconHome from '../assets/icons/Home.svg';
 import IconSearch from '../assets/icons/Search.svg';
@@ -47,12 +49,12 @@ const Footer = () => {
           let isActive = false;
 
           if (item.path === '/') {
-            // 1. CAS HOME: Ha de ser idèntic, si no s'activaria amb tot
+            //CAS HOME: Ha de ser idèntic (===), si no s'activaria amb tot
             isActive = location.pathname === '/';
           } 
           
           else {
-            // 2. RESTA DE CASOS: Si estem a /biblioteca/roure, volem que /biblioteca s'activi
+            //RESTA DE CASOS: Si estem a /biblioteca/roure, volem que /biblioteca s'activi
             isActive = location.pathname.startsWith(item.path);
           }
 
@@ -60,16 +62,17 @@ const Footer = () => {
             <li key={item.name} className={`footer-item ${isActive ? 'active' : ''}`}>
               <Link to={item.path} className="footer-link">
                 
-                {/*Imatges footer en format <img>*/}
-                <div className="icon-container">
-                    <img 
-                        src={item.icon} 
-                        alt={item.name} 
-                        className="footer-icon-img" 
-                    />
-                </div>
+                {/*Imatges footer en format svg*/}
+               <div 
+                className="footer-icon-mask"
+                style={{
+                  // Passem la ruta de l'SVG a la propietat mask-image
+                  WebkitMaskImage: `url(${item.icon})`,
+                  maskImage: `url(${item.icon})`
+                }}
+              />
 
-                {/*Això serveix per text*/}
+                {/*Això serveix per si hi volguessim textos*/}
                 {/* <span className="label">{item.name}</span> */}
               </Link>
             </li>

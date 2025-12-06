@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Header from '../components/header'
+import Divider from '../components/Divider'
 import './Home.css'
 
 import { Link } from 'react-router-dom' //para convertir la caja "article" en un link clickable
@@ -74,6 +75,10 @@ useEffect(() => {
         ))}
       </div>
   </div>
+  <hr />
+  <Divider />
+  <Divider />
+  <Divider />
     
   {/* Div on es mostren tots els arbres */}
           <div className='arbresRecomenats'>

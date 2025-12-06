@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import { useEffect } from 'react'
 import './Header.css'
 
 function Header() {
@@ -7,7 +5,7 @@ function Header() {
 
   return (
     <>
-     <h1 className='Titulo'>MONUMENTAPP</h1>
+     <p className='Titulo'>MonumentApp</p>
     </>
   )
 }
