@@ -4,7 +4,7 @@ import Divider from '../components/Divider.jsx';
 import Space from '../components/Space.jsx';
 
 // BORRAR quan tinguem fotos a la BdD
-import imatge_mostra from '../assets/Avet de Canejan_2.png';
+import imatge_mostra from '../assets/FotosArbres/Avet de Canejan_2.png';
 
 // URL i KEY correctes
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id%2Cnom%2Cmunicipi%2Calcada%2Cgruix%2Ccapcal%2Ccomarques%28comarca%29&order=id.asc';

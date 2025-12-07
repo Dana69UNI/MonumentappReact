@@ -1,5 +1,5 @@
 import TreeCard from '../components/TreeCard';
-import imatge from '../assets/Avet de Canejan_2.png';
+import imatge from '../assets/FotosArbres/Avet de Canejan_2.png';
 
 
 const Test = () => {

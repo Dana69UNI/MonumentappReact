@@ -1,117 +1,126 @@
-import { useState } from 'react'
-import { useEffect } from 'react'
-import Header from '../components/header'
-import Divider from '../components/Divider'
-import TreeCard from '../components/TreeCard'
-import Space from '../components/Space'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header'; 
+import Divider from '../components/Divider';
+import './Home.css';
 
-import './Home.css'
+// Importem la imatge per defecte (ja que l'API no ens en dona cap de moment)
+import DefaultImage from '../assets/icons/Imatge.svg';
 
-import { Link } from 'react-router-dom' //para convertir la caja "article" en un link clickable
+//Imatges que haurem de borrar quan tinguem les reals
+import Aulina from '../assets/FotosArbres/Aulina Reclamadora de Puigsaguàrdia.png';
+import Avet from '../assets/FotosArbres/Avet de Canejan_2.png';
+import Castanyer from '../assets/FotosArbres/Castanyer_de_can_Cuc.png';
+import Cedre from '../assets/FotosArbres/Cedre de Masjoan.png';
+import Platan from '../assets/FotosArbres/Plàtan de la Plaça de Colera.png';
+import Sequioia from '../assets/FotosArbres/Sequoia-de-Tortades.png';
+//ARRAY ORDENAT (Arbres recomanats)
+const IMATGES_LOCAL_PROVISIONALS = [
+  Sequioia,
+  Castanyer,
+  Cedre,
+  Aulina,
+  Platan
+];
+
+//API
+const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
+
+const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
 
 
-
-const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&order=id.asc';
-const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q'
-
-
-
-
-function HomePage() {
+const Home = () => {
+  const navigate = useNavigate();
   
+  // --- 2. ESTATS SEPARATS PER A CADA SECCIÓ ---
+  const [recomanats, setRecomenats] = useState([]);
+  // const [novetats, setNovetats] = useState([]); // <--- Preparat pel futur
   
- 
-const [posts, setPosts] = useState(null);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
+  useEffect(() => {
     
-    const fetchPosts = async () => {
+    // Funció específica per carregar recomanats
+    const fetchRecomanats = async () => {
       try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(URL_RECOMANATS, {
           method: "GET",
-          headers: {
-            "apikey": API_KEY,
-            "Authorization": `Bearer ${API_KEY}`
-          }
+          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
         });
         const data = await response.json();
-        setPosts(data); 
-      } catch (err) {
-        setError(err.message); 
-      } finally {
-        setLoading(false);
+        setRecomenats(data);
+      } catch (error) {
+        console.error("Error carregant recomanats:", error);
       }
     };
 
-    fetchPosts(); 
-    
-  }, []); 
+    // Funció específica per carregar novetats (Exemple futur)
+    /*
+    const fetchNovetats = async () => {
+       ... fetch(URL_NOVETATS)...
+       setNovetats(data);
+    };
+    */
 
-  
+    // --- 3. EXECUTEM TOTES LES CRIDES ---
+    // Fem servir una funció async mestra per esperar que tot es carregui (opcional)
+    const carregarTot = async () => {
+      setLoading(true);
+      
+      // Aquí cridem a totes les funcions
+      await fetchRecomanats();
+      // await fetchNovetats(); 
+      
+      setLoading(false);
+    };
 
-  if (loading) {
-    return <p>Carregant Arbres...</p>;
-  }
+    carregarTot();
 
-  if (error) {
-    return <div className="error-message">Error: {error}</div>;
-  }
+  }, []); // S'executa només al principi
 
 
-  const items = [
-    { id: 1, text: "Texto 1", img: "#" },
-    { id: 2, text: "Texto 2", img: "#" },
-    { id: 3, text: "Texto 3", img: "#" },
-  ];
-
+  if (loading) return <div style={{padding:'0px'}}>Carregant Home...</div>;
 
   return (
-    <>
-    <Header />
+    <div className="home-container">
+      <Header />
+      <Divider />
 
-  <div>
-      <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
-      <div className="carousel-scroll">
-        {items.map((item) => (
-          <div className="card" key={item.id}>
-            <img src={item.img} alt="" />
-            <p>{item.text}</p>
-          </div>
-        ))}
-      </div>
-  </div>
-  
-  {/* TEST DE LINIES */}
-  <Divider />
-  <Divider />
-    
-  {/* Div on es mostren tots els arbres */}
-          <div className='arbresRecomenats'>
-              {posts.map((post) => (
-                  <Link
-                      to={`/arbre/${post.arbre_id}`}
-                      key={post.id}
-                      style={{ textDecoration: "none", color: "inherit", display: "block" }}
-                  >
-                      <article className='arbresArticles'>
-                          <h3>{post.arbres?.nom}</h3>
-                          <p>{post.descripcio}</p>
-                          <ul>
-                              <li>Alçada: {post.arbres?.alcada}m</li>
-                              <li>Gruix: {post.arbres?.gruix}m</li>
-                              <li>Capçal: {post.arbres?.capcal}m</li>
-                          </ul>
-                      </article>
-                  </Link>
-              ))}
-          </div>
+      {/* --- SECCIÓ 1: RECOMANATS --- */}
+      <section className="home-section">
+        <h2 className="section-title">ARBRES RECOMANATS</h2>
+        
+        <div className="horizontal-scroll-container">
+          {/* Afegim 'index' al map per saber si és el 0, el 1, el 2... */}
+          {recomanats.map((item, index) => {
+            
+            // TRUC PROVISIONAL:
+            // Si tenim una foto a l'array local per a aquesta posició (index), la fem servir.
+            // Si no, mirem si l'API en porta (item.arbres.imatge).
+            // Si tampoc, posem la DefaultImage.
+            const imatgeFinal = IMATGES_LOCAL_PROVISIONALS[index] || item.arbres?.imatge || DefaultImage;
 
-  <Space />
-    </>
-    
-  )
-}
+            return (
+              <div 
+                key={item.id} 
+                className="recommended-item"
+                onClick={() => navigate(`/biblioteca/${item.arbre_id}`)} 
+              >
+                <img 
+                  src={imatgeFinal} 
+                  //per després src={item.arbres?.imatge || DefaultImage}
+                  alt={item.arbres?.nom} 
+                  className="rec-image" 
+                />
+                <span className="rec-name">{item.arbres?.nom}</span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
-export default HomePage
+    </div>
+  );
+};
+
+export default Home;
