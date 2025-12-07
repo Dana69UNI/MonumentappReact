@@ -191,7 +191,10 @@ const Home = () => {
       <Divider />
 
       {/* --- SECCIÓ 3: DIARI --- */}
-
+      <section className="home-section">
+        <h2 className="section-title">DIARI</h2>
+        
+      </section>
 
       <Divider />
 
