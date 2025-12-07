@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import './Home.css';
 import { Link } from 'react-router-dom';
+import './TreeCard.css';
+
 
 // === APIs ===
 const API_RECOMENATS = "https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,descripcio,arbre_id,arbres(nom,alcada,gruix,capcal)&order=id.asc";
