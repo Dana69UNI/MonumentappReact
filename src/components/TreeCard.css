@@ -10,41 +10,48 @@
   width: 100%; /* Ocupa tot l'ample disponible del mòbil */
   
   /* Separació entre Imatge i Text segons Figma */
-  gap: 4px;
+  gap: 5px;
   
   /* Sense decoracions extra */
   margin: 0;
   padding: 0;
   border: none;
   background-color: transparent;
+
+  /* border: 1px solid rgb(30, 0, 255); */
 }
 
 /* 1. CONTENIDOR IMATGE (ESQUERRA) */
 .card-image-container {
   /* Ocupa exactament el 50% de l'ample */
-  width: 50%;
-  flex: 0 0 50%; /* Assegura que no s'encongeixi ni creixi */
+  width: 45%;
+  position: relative; /* Necessari per atrapar la imatge absoluta */
+  overflow: hidden; 
+  border-radius: 20px;
+
+  /* border: 1px solid rgb(115, 255, 0); */
   
-  position: relative;
-  overflow: hidden; /* Perquè la imatge no surti si retallem les vores */
-  border-radius: 20px; /* Arrodoniment Figma */
-  
-  background-color: var(--blanc-fort); /* Color de fons per si la imatge triga a carregar */
 }
 
 /* La imatge dins del contenidor */
 .card-image {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  
   width: 100%;
   height: 100%;
-  object-fit: cover; /* CLAU: Retalla la foto perquè ompli l'espai sense deformar-se */
-  display: block; /* Elimina espais blancs fantasma */
+  
+  object-fit: cover; 
+  display: block;
+
+  /* border: 1px solid rgb(11, 0, 213); */
 }
 
 /* 2. CONTENIDOR DADES (DRETA) */
 .card-data-container {
   /* L'altre 50% */
-  width: 50%;
-  flex: 0 0 50%;
+  width: 55%;
   
   display: flex;
   flex-direction: column; /* Llista vertical */
@@ -52,6 +59,29 @@
   
   /* Gap vertical entre files de 7px */
   gap: 7px;
+
+  /* border: 1px solid rgb(255, 0, 242); */
+}
+
+/* ESTILS DEL TÍTOL */
+.card-title {
+  font-family: var(--font-titols);
+  font-weight: 700; /* Negreta */
+  font-size: 24px;  /* Una mica més gran que el text de 15px */
+  margin: 0;        /* Els marges els controla el gap del pare */
+  line-height: 1;
+
+  /* border: 1px solid rgb(0, 0, 0); */
+
+}
+
+/* VARIANTS DE COLOR */
+.title-style-negre {
+  color: var(--negre);
+}
+
+.title-style-blau {
+  color: var(--blau);
 }
 
 /* 3. ITEM INDIVIDUAL (FILA PETITA) */
@@ -63,6 +93,8 @@
   gap: 5px; /* Separació icona-text */
   
   width: 100%;
+
+  /* border: 1px solid rgb(0, 255, 195); */
 }
 
 /* La icona petita (SVG) */
@@ -71,6 +103,8 @@
   height: 24px;
   object-fit: contain;
   flex-shrink: 0; /* Prohibim que la icona s'axafi si falta espai */
+
+  /* border: 1px solid rgb(255, 242, 0); */
 }
 
 /* El text */
@@ -83,4 +117,6 @@
   /* Gestió de text llarg */
   line-height: 1.2;
   word-break: break-word; /* Si és molt llarg, baixa de línia */
+
+  /* border: 1px solid rgb(255, 140, 0); */
 }

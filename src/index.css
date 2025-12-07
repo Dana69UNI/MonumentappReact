@@ -15,10 +15,14 @@
 
 body {
   /* Apliquem la font base a tota l'aplicació per defecte */
+  
   font-family: var(--font-cos);
   color: var(--negre);
 
   background-color: var(--blanc);
+
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 /* Opcional: Si vols que tots els H1, H2, H3 tinguin l'altra font */

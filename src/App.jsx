@@ -25,6 +25,9 @@ function App() {
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
 
+          {/* Per acabar de fer */}
+          {/* <Route path="/biblioteca/:id" ... /> */}
+
           {/* Ruta de prova per a la pàgina Test */}
           <Route path="/test" element={<Test />} />
         </Routes>

@@ -4,13 +4,16 @@ const Divider = () => {
   return (
     <div className="divider-container" style={{ 
       width: '100%', 
-      margin: '10px 0', /* Espai vertical (10 com a figma) */
+      padding: '10px 0', /* Espai vertical (10 com a figma) */
       lineHeight: 0,    /* Evita espais fantasma sota l'SVG */
-      overflow: 'hidden' 
+      overflow: 'hidden',
+      
+      // border: '1px solid rgba(255, 166, 0, 1)'
+
     }}>
       <svg 
         width="100%" 
-        height="3" /* Em permet fer-ho mes gruixut o menys */
+        height="3" /* Em permet fer la linia mes gruixuda o menys */
         viewBox="0 0 397 2" 
         fill="none" 
         xmlns="http://www.w3.org/2000/svg"
