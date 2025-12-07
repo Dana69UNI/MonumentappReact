@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Header from '../components/header';
-import './Home.css';
+import './HomePage.css';
 import { Link } from 'react-router-dom';
 
 // === APIs ===
