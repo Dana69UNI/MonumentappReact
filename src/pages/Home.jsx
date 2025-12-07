@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Header from '../components/header'
 import Divider from '../components/Divider'
 import TreeCard from '../components/TreeCard'
+import Space from '../components/Space'
 
 import './Home.css'
 
@@ -107,8 +108,9 @@ useEffect(() => {
               ))}
           </div>
 
-     
+  <Space />
     </>
+    
   )
 }
 

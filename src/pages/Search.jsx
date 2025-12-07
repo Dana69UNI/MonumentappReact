@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TreeCard from '../components/TreeCard.jsx';
 import Divider from '../components/Divider.jsx';
+import Space from '../components/Space.jsx';
 
 // BORRAR quan tinguem fotos a la BdD
 import imatge_mostra from '../assets/Avet de Canejan_2.png';
@@ -83,8 +84,11 @@ const Search = () => {
             
           </React.Fragment>
         ))}
+      <Space />
     </div>
+
   );
+  
 }
 
 export default Search;
