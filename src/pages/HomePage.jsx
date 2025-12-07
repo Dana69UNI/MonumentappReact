@@ -10,8 +10,8 @@ const API_RECOMENATS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXB
 const API_REPTE = "https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca))";
 const API_REPTE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q";
 
-const API_ULTIM = "URL_ULTIM";       // Pon aquí la URL real de tu API
-const API_ULTIM_KEY = "API_KEY_ULTIM"; // Pon aquí la key real
+const API_ULTIM = "URL_ULTIM";       // Chicos esto del último árbol visitado va con API??
+const API_ULTIM_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q"; 
 
 function HomePage() {
   // Carrusel
@@ -73,7 +73,7 @@ function HomePage() {
     <>
       <Header />
 
-      {/* === Carrusel Arbres recomenats === */}
+      {/* Carrusel */}
       <div>
         <h3 className='TituloArbresRecomentas'>Arbres recomenats</h3>
         <div className="carousel-scroll">
@@ -91,7 +91,7 @@ function HomePage() {
         </div>
       </div>
 
-      {/* === Repte del mes === */}
+      {/* Reto del mes*/}
       <section className="Grup_RepteDelMes">
         <h3 className="Titol_Repte">Repte del mes</h3>
 
@@ -119,7 +119,7 @@ function HomePage() {
         )}
       </section>
 
-      {/* === Diari (sin API) === */}
+      {/* Diario */}
       <section className="Grup_Diari">
         <h3 className="Titol_Diari">Diari</h3>
         <div className="PuntsDiari">
@@ -129,7 +129,7 @@ function HomePage() {
         </div>
       </section>
 
-      {/* === Últim arbre visitat === */}
+      {/* Último arbol visitado, esta puesto como si cogiese de una API (gracias al chatGPT) */}
       <section className="Grup_UltimArbreVisitat">
         <h3 className="Titol_UltimArbre">Últim arbre visitat</h3>
         {ultim ? (
