@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import './Home.css';
 import { Link } from 'react-router-dom';
-import './TreeCard.css';
 
 
 // === APIs ===
