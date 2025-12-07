@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header'; 
 import Divider from '../components/Divider';
+import TreeCard from '../components/TreeCard';
+import Space from '../components/Space';
+
 import './Home.css';
 
 // Importem la imatge per defecte (ja que l'API no ens en dona cap de moment)
@@ -27,20 +30,20 @@ const IMATGES_LOCAL_PROVISIONALS = [
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 
 const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
-
+const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)';
 
 const Home = () => {
   const navigate = useNavigate();
   
-  // --- 2. ESTATS SEPARATS PER A CADA SECCIÓ ---
+  //ESTATS
   const [recomanats, setRecomenats] = useState([]);
-  // const [novetats, setNovetats] = useState([]); // <--- Preparat pel futur
+  const [repte, setRepte] = useState([]);
   
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     
-    // Funció específica per carregar recomanats
+    // RECOMANATS
     const fetchRecomanats = async () => {
       try {
         const response = await fetch(URL_RECOMANATS, {
@@ -54,39 +57,45 @@ const Home = () => {
       }
     };
 
-    // Funció específica per carregar novetats (Exemple futur)
-    /*
-    const fetchNovetats = async () => {
-       ... fetch(URL_NOVETATS)...
-       setNovetats(data);
+    //REPTE DEL MES
+    const fetchRepte = async () => {
+      try {
+        const response = await fetch(URL_REPTE, {
+          method: "GET",
+          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
+        });
+        const data = await response.json();
+        setRepte(data); // Guardem l'array (que segurament tindrà 1 sol element)
+      } catch (error) {
+        console.error("Error repte:", error);
+      }
     };
-    */
 
-    // --- 3. EXECUTEM TOTES LES CRIDES ---
-    // Fem servir una funció async mestra per esperar que tot es carregui (opcional)
+    //---------------
+    //EXECUCIÓ GLOBAL
+    //---------------
     const carregarTot = async () => {
       setLoading(true);
       
       // Aquí cridem a totes les funcions
       await fetchRecomanats();
-      // await fetchNovetats(); 
-      
+      await fetchRepte();      
       setLoading(false);
     };
 
     carregarTot();
 
-  }, []); // S'executa només al principi
+  }, []);
 
 
-  if (loading) return <div style={{padding:'0px'}}>Carregant Home...</div>;
+  if (loading) return <div>Carregant Home...</div>;
 
   return (
     <div className="home-container">
       <Header />
       <Divider />
 
-      {/* --- SECCIÓ 1: RECOMANATS --- */}
+      {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
       <section className="home-section">
         <h2 className="section-title">ARBRES RECOMANATS</h2>
         
@@ -119,6 +128,48 @@ const Home = () => {
         </div>
       </section>
 
+      <Divider />
+      
+      {/* --- SECCIÓ 2: REPTE DEL MES --- */}
+
+      <section className="home-section">
+        <h2 className="section-title">REPTE DEL MES</h2>
+        
+        {/* Map del Repte (encara que només n'hi hagi 1, és un array) */}
+        {repte.map((item) => (
+          <div key={item.id} style={{ width: '100%' }}>
+            
+            {/* Descripció sota el títol */}
+            <p style={{ margin: '0px 0 5px 0', fontSize: '15px' }}>
+              {item.descripcio}
+            </p>
+
+            {/* Cridem al TreeCard reutilitzable */}
+            <TreeCard 
+              id={item.arbre_id} // Important per la navegació
+              
+              name={item.arbres?.nom}
+              titleColor="negre" // <--- Negre com has demanat
+              
+              municipality={item.arbres?.municipi}
+              comarca={item.arbres?.comarques?.comarca} // Accedim a l'objecte imbricat
+              
+              height={item.arbres?.alcada}
+              trunkWidth={item.arbres?.gruix}
+              crownWidth={item.arbres?.capcal}
+              
+              imageSrc={Avet} //borrar després  ----  imageSrc={item.arbres?.imatge || DefaultImage}
+            />
+          </div>
+        ))}
+      </section>
+      
+      <Divider />
+
+      {/* --- SECCIÓ 2: REPTE DEL MES --- */}
+
+
+      <Space />
     </div>
   );
 };

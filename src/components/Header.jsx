@@ -5,7 +5,9 @@ function Header() {
 
   return (
     <>
-     <p className='Titulo'>MonumentApp</p>
+    <div className='header-container'>
+      <p className='Titulo'>MonumentApp</p>
+    </div>
     </>
   )
 }
