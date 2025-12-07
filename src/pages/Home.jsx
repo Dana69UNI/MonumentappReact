@@ -32,18 +32,22 @@ const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
 const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)';
 
+const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?estat_llista=eq.visitat&select=arbre_id,visita_data,visita_text,arbres(id,nom,municipi,alcada,gruix,capcal,comarca_id,comarques(comarca))&order=visita_data.desc&limit=1';
+
 const Home = () => {
   const navigate = useNavigate();
   
   //ESTATS
   const [recomanats, setRecomenats] = useState([]);
   const [repte, setRepte] = useState([]);
-  
+
+  const [ultimVisitat, setUltimVisitat] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     
-    // RECOMANATS
+    // Fetch RECOMANATS
     const fetchRecomanats = async () => {
       try {
         const response = await fetch(URL_RECOMANATS, {
@@ -57,7 +61,7 @@ const Home = () => {
       }
     };
 
-    //REPTE DEL MES
+    //Fetch REPTE DEL MES
     const fetchRepte = async () => {
       try {
         const response = await fetch(URL_REPTE, {
@@ -71,6 +75,23 @@ const Home = () => {
       }
     };
 
+    //Fetch DIARI
+
+    //Fetch ULTIM ARBRE VISITAT
+    const fetchUltimVisitat = async () => {
+      try {
+        const response = await fetch(URL_ULTIM_VISITAT, {
+          method: "GET",
+          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
+        });
+        const data = await response.json();
+        setUltimVisitat(data); 
+      } catch (error) {
+        console.error("Error ultim visitat:", error);
+      }
+    };
+
+
     //---------------
     //EXECUCIÓ GLOBAL
     //---------------
@@ -79,7 +100,9 @@ const Home = () => {
       
       // Aquí cridem a totes les funcions
       await fetchRecomanats();
-      await fetchRepte();      
+      await fetchRepte();
+      //DIARI
+      await fetchUltimVisitat();     
       setLoading(false);
     };
 
@@ -135,10 +158,11 @@ const Home = () => {
       <section className="home-section">
         <h2 className="section-title">REPTE DEL MES</h2>
         
-        {/* Map del Repte (encara que només n'hi hagi 1, és un array) */}
         {repte.map((item) => (
           <div key={item.id} style={{ width: '100%' }}>
             
+            {/* AQUI HA D'ANAR LA DATA AMB BOLD */}
+
             {/* Descripció sota el títol */}
             <p style={{ margin: '0px 0 5px 0', fontSize: '15px' }}>
               {item.descripcio}
@@ -146,13 +170,13 @@ const Home = () => {
 
             {/* Cridem al TreeCard reutilitzable */}
             <TreeCard 
-              id={item.arbre_id} // Important per la navegació
+              id={item.arbre_id}
               
               name={item.arbres?.nom}
-              titleColor="negre" // <--- Negre com has demanat
+              titleColor="negre"
               
               municipality={item.arbres?.municipi}
-              comarca={item.arbres?.comarques?.comarca} // Accedim a l'objecte imbricat
+              comarca={item.arbres?.comarques?.comarca}
               
               height={item.arbres?.alcada}
               trunkWidth={item.arbres?.gruix}
@@ -166,8 +190,54 @@ const Home = () => {
       
       <Divider />
 
-      {/* --- SECCIÓ 2: REPTE DEL MES --- */}
+      {/* --- SECCIÓ 3: DIARI --- */}
 
+
+      <Divider />
+
+      {/* --- SECCIÓ 4: ÚLTIM ARBRE VISITAT --- */}
+
+      <section className="home-section">
+        <h2 className="section-title">ÚLTIM ARBRE VISITAT</h2>
+        
+        {ultimVisitat.length > 0 ? (
+          ultimVisitat.map((item) => (
+            <div key={item.arbre_id} style={{ width: '100%', marginBottom: '10px' }}>
+              
+              {/* Data en BOLD */}
+              <p style={{ margin: '0px 0 0px 0', fontSize: '15px', fontWeight: 'bold' }}>
+                {item.visita_data}
+              </p>
+
+              {/* Text de la visita (si n'hi ha) */}
+              {item.visita_text && (
+                <p style={{ margin: '0 0 5px 0', fontSize: '15px' }}>
+                  {item.visita_text}
+                </p>
+              )}
+
+              <TreeCard 
+                id={item.arbre_id} 
+                
+                name={item.arbres?.nom}
+                titleColor="negre" 
+                
+                municipality={item.arbres?.municipi}
+                comarca={item.arbres?.comarques?.comarca} 
+                
+                height={item.arbres?.alcada}
+                trunkWidth={item.arbres?.gruix}
+                crownWidth={item.arbres?.capcal}
+                
+                imageSrc={Avet} //borrar després  ----  imageSrc={item.arbres?.imatge || DefaultImage}
+              />
+            </div>
+          ))
+        ) 
+        : (
+          <p>Encara no has visitat cap arbre.</p>
+        )}
+      </section>
 
       <Space />
     </div>
