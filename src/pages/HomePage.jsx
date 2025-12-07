@@ -106,6 +106,8 @@ function HomePage() {
             )}
             <div className="Dades_Repte">
               <h4>{repte.arbres.nom}</h4>
+              {repte.descripcio && <p>{repte.descripcio}</p>}
+
               {repte.arbres.municipi && <p>{repte.arbres.municipi}</p>}
               {repte.arbres.comarques?.comarca && <p>{repte.arbres.comarques.comarca}</p>}
               <ul>
@@ -113,7 +115,6 @@ function HomePage() {
                 <li>Gruix: {repte.arbres.gruix} m</li>
                 <li>Capçal: {repte.arbres.capcal} m</li>
               </ul>
-              {repte.descripcio && <p>{repte.descripcio}</p>}
             </div>
           </div>
         )}
