@@ -4,7 +4,6 @@ import './TreeCard.css';
 
 // Importem la imatge de seguretat (Fallback)
 import DefaultImage from '../assets/icons/Imatge.svg'; 
-
 import iconLocation from '../assets/icons/Ubication.svg';
 import iconHeight from '../assets/icons/Alcada.svg';
 import iconTrunk from '../assets/icons/Amplada.svg';
