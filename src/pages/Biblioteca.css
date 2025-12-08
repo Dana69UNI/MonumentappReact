@@ -1,0 +1,79 @@
+.biblioteca-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 5px; /* Un petit marge superior */
+}
+
+
+
+/* --- BARRA DE NAVEGACIÓ (TABS) --- */
+.tabs-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly; /* Reparteix l'espai equitativament */
+  align-items: center;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+
+/* ESTIL DEL BOTÓ (PESTANYA) */
+.tab-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 2px 2px;
+  
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  
+  /* Per defecte (Inactiu) */
+  color: var(--negre);
+}
+
+.tab-text {
+  font-family: var(--font-titols);
+  font-size: 20px;
+  font-weight: 700; 
+}
+
+/* ESTAT ACTIU (Blau) */
+.tab-item.actiu .tab-text {
+  color: var(--blau);
+}
+
+/* SEPARADOR VERTICAL ENTRE BOTONS */
+.vertical-divider {
+  width: 1px;
+  height: 24px; /* Alçada */
+  background-color: var(--negre);
+  opacity: 0.3; /* Perquè no sigui tan dur visualment */
+}
+
+
+
+
+/* --- LLISTA DE TARGETES --- */
+.llista-arbres {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px; /* Separació entre targetes i divider */
+  padding: 0 0px; /* Marges laterals */
+  box-sizing: border-box;
+}
+
+/* MISSATGE DE LLISTA BUIDA */
+.empty-state {
+  text-align: center;
+  color: var(--negre-fluix);
+  font-family: var(--font-principal);
+  margin-top: 40px;
+  font-size: 16px;
+}

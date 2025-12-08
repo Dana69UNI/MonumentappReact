@@ -36,7 +36,9 @@ const ArbreDetall = () => {
   const [interaccio, setInteraccio] = useState({
     es_preferit: false,
     es_pendent: false,
-    es_visitat: false
+    es_visitat: false,
+    visita_data: null,
+    visita_text: null
   });
 
   //PER GESTIÓ RECOMANATS I REPTE
@@ -52,8 +54,7 @@ const ArbreDetall = () => {
     
     //IMPORTANT TENIR-HO AQUÍ PQ SI HO TINC FORA DEL useEffect, ENCARA NO SAP L'ID
     const URL_ARBRE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?id=eq.${id}&select=nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)`;
-    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat`;
-    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
+    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat,visita_data,visita_text`;    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
     const URL_CHECK_RECOMANAT = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?arbre_id=eq.${id}&recomenacio_estat=eq.true&select=descripcio`;
 
     const fetchData = async () => {
@@ -81,7 +82,9 @@ const ArbreDetall = () => {
           setInteraccio({
             es_preferit: dataInteraccio[0].es_preferit,
             es_pendent: dataInteraccio[0].es_pendent,
-            es_visitat: dataInteraccio[0].es_visitat
+            es_visitat: dataInteraccio[0].es_visitat,
+            visita_data: dataInteraccio[0].visita_data,
+            visita_text: dataInteraccio[0].visita_text
           });
         }
         
@@ -200,7 +203,6 @@ const ArbreDetall = () => {
           </span>
         </div>
 
-
         {/* --- BOTONS INTERACCIÓ DINÀMICS --- */}
         <div className="icones-interaccio">
             {/* PREFERIT */}
@@ -224,6 +226,33 @@ const ArbreDetall = () => {
         </div>
 
         <Divider />
+
+        {/* --- BLOC: VISITAT (només si ho es) --- */}
+        {(interaccio.es_visitat) && (
+             <>
+                <div className="info-bloc">
+                    {/* Títol*/}
+                    <span className="info-titol" style={{ color: 'var(--blau)', fontWeight: '700', fontSize:'20px' }}>
+                        ARBRE VISITAT
+                    </span>
+                    
+                    {/* Data */}
+                    {interaccio.visita_data && (
+                        <span className="info-valor" style={{ color: 'var(--negre)', fontWeight: '700', fontSize:'18px' }}>
+                            {interaccio.visita_data}
+                        </span>
+                    )}
+
+                    {/* Descripció (si n'hi ha) */}
+                    {interaccio.visita_text && (
+                        <span className="info-valor">
+                            {interaccio.visita_text}
+                        </span>
+                    )}
+                </div>
+                <Divider />
+             </>
+        )}
 
         {/* --- BLOC: REPTE / RECOMANAT (només si ho son) --- */}
         {(etiquetes.textRepte || etiquetes.textRecomanat) && (

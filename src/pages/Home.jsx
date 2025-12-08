@@ -17,6 +17,7 @@ import Castanyer from '../assets/FotosArbres/Castanyer_de_can_Cuc.png';
 import Cedre from '../assets/FotosArbres/Cedre de Masjoan.png';
 import Platan from '../assets/FotosArbres/Plàtan de la Plaça de Colera.png';
 import Sequioia from '../assets/FotosArbres/Sequoia-de-Tortades.png';
+
 //ARRAY ORDENAT (Arbres recomanats)
 const IMATGES_LOCAL_PROVISIONALS = [
   Sequioia,
@@ -31,16 +32,35 @@ const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 
 const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
 const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)';
-
 const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?es_visitat=eq.true&select=arbre_id,visita_data,visita_text,arbres(id,nom,municipi,alcada,gruix,capcal,comarca_id,comarques(comarca))&order=visita_data.desc&limit=1';
+
+
+// --- BORRAR ---
+// Demanem només els camps necessaris per fer els càlculs
+const URL_COUNT_INTERACCIONS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?select=es_preferit,es_visitat,es_pendent';
+const URL_COUNT_TOTAL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id'; // Només IDs per saber el total
+// --- BORRAR ---
+
+
 const Home = () => {
   const navigate = useNavigate();
   
   //ESTATS
   const [recomanats, setRecomenats] = useState([]);
   const [repte, setRepte] = useState([]);
-
   const [ultimVisitat, setUltimVisitat] = useState([]);
+
+
+  // --- BORRAR ---
+  // NOU ESTAT PEL DIARI
+  const [diari, setDiari] = useState({
+    total: 0,
+    preferits: 0,
+    visitats: 0,
+    pendents: 0
+  });
+  // --- BORRAR ---
+
 
   const [loading, setLoading] = useState(true);
 
@@ -76,6 +96,43 @@ const Home = () => {
 
     //Fetch DIARI
 
+
+    // --- BORRAR ---
+    // --- Fetch DIARI (NOU) ---
+    const fetchDiari = async () => {
+        try {
+            // Fem dues crides en paral·lel: Total d'arbres i Totes les interaccions
+            const [resTotal, resInteraccions] = await Promise.all([
+                fetch(URL_COUNT_TOTAL, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
+                fetch(URL_COUNT_INTERACCIONS, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
+            ]);
+
+            const dataTotal = await resTotal.json();
+            const dataInteraccions = await resInteraccions.json();
+
+            // Calculem
+            const totalArbres = dataTotal.length; // Denominador (ex: 234)
+            
+            // Sumem quants true hi ha a cada categoria
+            const countPreferits = dataInteraccions.filter(i => i.es_preferit).length;
+            const countVisitats = dataInteraccions.filter(i => i.es_visitat).length;
+            const countPendents = dataInteraccions.filter(i => i.es_pendent).length;
+
+            setDiari({
+                total: totalArbres,
+                preferits: countPreferits,
+                visitats: countVisitats,
+                pendents: countPendents
+            });
+
+        } catch (error) {
+            console.error("Error carregant diari:", error);
+        }
+    };
+  // --- BORRAR ---
+
+
+
     //Fetch ULTIM ARBRE VISITAT
     const fetchUltimVisitat = async () => {
       try {
@@ -101,6 +158,13 @@ const Home = () => {
       await fetchRecomanats();
       await fetchRepte();
       //DIARI
+
+
+      // --- BORRAR ---
+      await fetchDiari();
+      // --- BORRAR ---
+
+
       await fetchUltimVisitat();     
       setLoading(false);
     };
@@ -188,10 +252,25 @@ const Home = () => {
       <Divider />
 
       {/* --- SECCIÓ 3: DIARI --- */}
-      {/* Per crear encara */}
       <section className="home-section">
         <h2 className="section-title">DIARI</h2>
         
+        {/* --- BORRAR --- */}
+        {/* Llista simple com has demanat */}
+        <div style={{ marginTop: '5px', fontSize: '16px', color: 'var(--negre)' }}>
+            <p style={{ margin: '5px 0' }}>
+                Preferits: <strong>{diari.preferits}/{diari.total}</strong>
+            </p>
+            <p style={{ margin: '5px 0' }}>
+                Visitats: <strong>{diari.visitats}/{diari.total}</strong>
+            </p>
+            <p style={{ margin: '5px 0' }}>
+                Pendents: <strong>{diari.pendents}/{diari.total}</strong>
+            </p>
+        </div>
+        {/* --- BORRAR --- */}
+
+
       </section>
 
       <Divider />
