@@ -1,28 +1,42 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Footer from './components/Footer';
+
+import Home from './pages/Home'
 import Search from './pages/Search'
-import Footer from './components/Footer'
-import ArbreDetail from './pages/ArbreDetail'
-import './App.css'
+import New from './pages/New'
+import Biblioteca from './pages/Biblioteca';
+import Perfil from './pages/Perfil'
+
+// Com a prova pàgina de TEST
+import Test from './pages/Test';
 
 
 function App() {
-  
-
   return (
-    <> 
-     <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/search" element={<Search />} />
-              <Route path="/arbre/:id" element={<ArbreDetail />} />
-      </Routes>
-   
-    <Footer />
-     
-    </>
-  )
+    <BrowserRouter>
+      {/* El contingut principal canvia segons la ruta */}
+      <div className="app-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/cercar" element={<Search />} />
+          <Route path="/nou" element={<New />} />
+          <Route path="/biblioteca" element={<Biblioteca />} />
+          <Route path="/perfil" element={<Perfil />} />
+
+          {/* Per acabar de fer */}
+          {/* <Route path="/biblioteca/:id" ... /> */}
+
+          {/* Ruta de prova per a la pàgina Test */}
+          <Route path="/test" element={<Test />} />
+        </Routes>
+      </div>
+
+      {/* El Footer està fora de Routes, per tant SEMPRE es veu */}
+      <Footer />
+    </BrowserRouter>
+  );
 }
 
 export default App
