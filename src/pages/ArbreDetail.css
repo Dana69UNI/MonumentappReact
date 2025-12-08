@@ -123,6 +123,12 @@
   color: var(--blanc);
 }
 
+/* Per fer la icone blanc */
+/* XAPUSEEEEROOOO!!! ARA NO ÉS var(--blanc) és un blanc pur */
+.btn-interaccio.actiu img {
+  filter: brightness(0) invert(1);
+}
+
 /* DIMENSIONS */
 .dimensions-container {
   width: 100%;

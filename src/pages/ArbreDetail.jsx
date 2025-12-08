@@ -25,7 +25,7 @@ import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
 
 
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
-
+const URL_INTERACCIONS_UPDATE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?on_conflict=arbre_id';
 
 const ArbreDetall = () => {
   const { id } = useParams(); 
@@ -33,23 +33,25 @@ const ArbreDetall = () => {
   
   const [interaccio, setInteraccio] = useState({
     es_preferit: false,
-    estat_llista: null // 'pendent', 'visitat' o null
+    es_pendent: false,
+    es_visitat: false
   });
 
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     
     //IMPORTANT TENIR-HO AQUÍ PQ SI HO TINC FORA DEL useEffect, ENCARA NO SAP L'ID
     const URL_ARBRE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?id=eq.${id}&select=nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)`;
-    const URL_INTERACCIO = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=estat_preferit,estat_llista`;
+    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat`;
 
-const fetchData = async () => {
+    const fetchData = async () => {
       try {
         // Fem les dues crides en paral·lel per anar més ràpid
         const [resArbre, resInteraccio] = await Promise.all([
           fetch(URL_ARBRE, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-          fetch(URL_INTERACCIO, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
+          fetch(URL_INTERACCIO_READ, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
         ]);
 
         const dataArbre = await resArbre.json();
@@ -62,14 +64,11 @@ const fetchData = async () => {
 
         // GESTIÓ INTERACCIÓ
         if (dataInteraccio.length > 0) {
-          // Si trobem dades, actualitzem l'estat
           setInteraccio({
-            es_preferit: dataInteraccio[0].estat_preferit,
-            estat_llista: dataInteraccio[0].estat_llista
+            es_preferit: dataInteraccio[0].es_preferit,
+            es_pendent: dataInteraccio[0].es_pendent,
+            es_visitat: dataInteraccio[0].es_visitat
           });
-        } else {
-          // Si no hi ha dades, vol dir que està tot a 0 (per defecte)
-          setInteraccio({ es_preferit: false, estat_llista: null });
         }
 
       } catch (error) {
@@ -81,6 +80,45 @@ const fetchData = async () => {
 
     fetchData();
   }, [id]);
+
+  
+  // --- FUNCIONS UPDATE ---
+  const updateDatabase = async (campsActualitzats) => {
+    try {
+      const response = await fetch(URL_INTERACCIONS_UPDATE, {
+        method: "POST",
+        headers: { 
+          "apikey": API_KEY, 
+          "Authorization": `Bearer ${API_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "resolution=merge-duplicates"
+        },
+        body: JSON.stringify({
+          arbre_id: id,
+          ...campsActualitzats
+        })
+      });
+      if (!response.ok) throw new Error("Error guardant");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const togglePreferit = async () => {
+    const nouEstat = !interaccio.es_preferit;
+    setInteraccio(prev => ({ ...prev, es_preferit: nouEstat }));
+    await updateDatabase({ es_preferit: nouEstat });
+  };
+
+  // --- NOVA LÒGICA PENDENT ---
+  const togglePendent = async () => {
+    // Simplement invertim el valor de 'es_pendent'.
+    // NO toquem 'es_visitat'. Són independents.
+    const nouEstat = !interaccio.es_pendent;
+    
+    setInteraccio(prev => ({ ...prev, es_pendent: nouEstat }));
+    await updateDatabase({ es_pendent: nouEstat });
+  };
 
   if (loading) return <div>Carregant detall...</div>;
   if (!arbre) return <div>Arbre no trobat!</div>;
@@ -105,17 +143,17 @@ const fetchData = async () => {
   //DETERMINEM QUINES ICONES I CLASSES TOQUEN
 
   // 1. PREFERIT
-  const isPreferit = interaccio.es_preferit === true;
+  const isPreferit = interaccio.es_preferit;
   const iconaPreferit = isPreferit ? CorPle : CorBuit;
   const classPreferit = isPreferit ? "btn-interaccio actiu" : "btn-interaccio";
 
-  // 2. VISITAT
-  const isVisitat = interaccio.estat_llista === 'visitat';
+  // 2. VISITAT (Només lectura, no canvia en clicar)
+  const isVisitat = interaccio.es_visitat;
   const iconaVisitat = isVisitat ? UllPle : UllBuit;
   const classVisitat = isVisitat ? "btn-interaccio actiu" : "btn-interaccio";
 
-  // 3. PENDENT
-  const isPendent = interaccio.estat_llista === 'pendent';
+  // 3. PENDENT (Independent)
+  const isPendent = interaccio.es_pendent;
   const iconaPendent = isPendent ? PendentPle : PendentBuit;
   const classPendent = isPendent ? "btn-interaccio actiu" : "btn-interaccio";
 
@@ -144,21 +182,20 @@ const fetchData = async () => {
 
 {/* --- BOTONS INTERACCIÓ DINÀMICS --- */}
         <div className="icones-interaccio">
-            
-            {/* Preferit */}
-            <div className={classPreferit}>
+            {/* PREFERIT */}
+            <div className={classPreferit} onClick={togglePreferit}>
               <img src={iconaPreferit} alt="Preferit" style={{width:'24px'}}/>
               <span className="text-interaccio">Preferit</span>
             </div>
 
-            {/* Visitat */}
+            {/* VISITAT (no és clicable, només mostra info) */}
             <div className={classVisitat}>
                 <img src={iconaVisitat} alt="Visitat" style={{width:'24px'}}/>
                 <span className="text-interaccio">Visitat</span>
             </div>
 
-            {/* Pendent */}
-            <div className={classPendent}>
+            {/* PENDENT */}
+            <div className={classPendent} onClick={togglePendent}>
                 <img src={iconaPendent} alt="Pendent" style={{width:'24px'}}/>
                 <span className="text-interaccio">Pendent</span>
             </div>
