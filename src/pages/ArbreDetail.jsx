@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ArbreDetail.css';
 import Divider from '../components/Divider';
-import Footer from '../components/Footer';
 import Space from '../components/Space';
 
 //ICONES (pendent de modificar estètica)
@@ -23,18 +22,27 @@ import iconCrown from '../assets/icons/Capcal.svg';
 import DefaultImage from '../assets/icons/Imatge.svg';
 import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
 
-
+//Aquestes estan aquí pq no patiran canvis (de la base aquesta)
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 const URL_INTERACCIONS_UPDATE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?on_conflict=arbre_id';
 
 const ArbreDetall = () => {
   const { id } = useParams(); 
+  
+  //PER DADES ARBRES
   const [arbre, setArbre] = useState(null);
   
+  //PER GESTIÓ INTERACCIONS
   const [interaccio, setInteraccio] = useState({
     es_preferit: false,
     es_pendent: false,
     es_visitat: false
+  });
+
+  //PER GESTIÓ RECOMANATS I REPTE
+  const [etiquetes, setEtiquetes] = useState({
+    textRepte: null,
+    textRecomanat: null
   });
 
   const [loading, setLoading] = useState(true);
@@ -45,17 +53,23 @@ const ArbreDetall = () => {
     //IMPORTANT TENIR-HO AQUÍ PQ SI HO TINC FORA DEL useEffect, ENCARA NO SAP L'ID
     const URL_ARBRE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?id=eq.${id}&select=nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)`;
     const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat`;
+    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
+    const URL_CHECK_RECOMANAT = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?arbre_id=eq.${id}&recomenacio_estat=eq.true&select=descripcio`;
 
     const fetchData = async () => {
       try {
-        // Fem les dues crides en paral·lel per anar més ràpid
-        const [resArbre, resInteraccio] = await Promise.all([
+        // Fem les crides en paral·lel per anar més ràpid
+        const [resArbre, resInteraccio, resRepte, resRecomanat] = await Promise.all([
           fetch(URL_ARBRE, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-          fetch(URL_INTERACCIO_READ, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
+          fetch(URL_INTERACCIO_READ, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
+          fetch(URL_CHECK_REPTE, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
+          fetch(URL_CHECK_RECOMANAT, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
         ]);
 
         const dataArbre = await resArbre.json();
         const dataInteraccio = await resInteraccio.json();
+        const dataRepte = await resRepte.json();
+        const dataRecomanat = await resRecomanat.json();
         
         // GESTIÓ ARBRE
         if (dataArbre.length > 0) {
@@ -70,6 +84,13 @@ const ArbreDetall = () => {
             es_visitat: dataInteraccio[0].es_visitat
           });
         }
+        
+        //GESTIÓ RECOMAMATS I REPTE
+        setEtiquetes({
+            // Si hi ha dades, agafem la descripció. Si no, null.
+            textRepte: dataRepte.length > 0 ? dataRepte[0].descripcio : null,
+            textRecomanat: dataRecomanat.length > 0 ? dataRecomanat[0].descripcio : null
+        });
 
       } catch (error) {
         console.error("Error carregant dades:", error);
@@ -115,7 +136,6 @@ const ArbreDetall = () => {
     // Simplement invertim el valor de 'es_pendent'.
     // NO toquem 'es_visitat'. Són independents.
     const nouEstat = !interaccio.es_pendent;
-    
     setInteraccio(prev => ({ ...prev, es_pendent: nouEstat }));
     await updateDatabase({ es_pendent: nouEstat });
   };
@@ -142,17 +162,17 @@ const ArbreDetall = () => {
 
   //DETERMINEM QUINES ICONES I CLASSES TOQUEN
 
-  // 1. PREFERIT
+  //PREFERIT
   const isPreferit = interaccio.es_preferit;
   const iconaPreferit = isPreferit ? CorPle : CorBuit;
   const classPreferit = isPreferit ? "btn-interaccio actiu" : "btn-interaccio";
 
-  // 2. VISITAT (Només lectura, no canvia en clicar)
+  //VISITAT (Només lectura, no canvia en clicar)
   const isVisitat = interaccio.es_visitat;
   const iconaVisitat = isVisitat ? UllPle : UllBuit;
   const classVisitat = isVisitat ? "btn-interaccio actiu" : "btn-interaccio";
 
-  // 3. PENDENT (Independent)
+  //PENDENT (Independent)
   const isPendent = interaccio.es_pendent;
   const iconaPendent = isPendent ? PendentPle : PendentBuit;
   const classPendent = isPendent ? "btn-interaccio actiu" : "btn-interaccio";
@@ -180,7 +200,8 @@ const ArbreDetall = () => {
           </span>
         </div>
 
-{/* --- BOTONS INTERACCIÓ DINÀMICS --- */}
+
+        {/* --- BOTONS INTERACCIÓ DINÀMICS --- */}
         <div className="icones-interaccio">
             {/* PREFERIT */}
             <div className={classPreferit} onClick={togglePreferit}>
@@ -203,6 +224,30 @@ const ArbreDetall = () => {
         </div>
 
         <Divider />
+
+        {/* --- BLOC: REPTE / RECOMANAT (només si ho son) --- */}
+        {(etiquetes.textRepte || etiquetes.textRecomanat) && (
+            <>
+                {/* Repte del Mes */}
+                {etiquetes.textRepte && (
+                    <div className="info-bloc">
+                        <span className="info-titol">REPTE DEL MES</span>
+                        <span className="info-valor">{etiquetes.textRepte}</span>
+                    </div>
+                )}
+
+                {/* Arbre Recomanat */}
+                {etiquetes.textRecomanat && (
+                    <div className="info-bloc">
+                        <span className="info-titol">ARBRE RECOMANAT</span>
+                        <span className="info-valor">{etiquetes.textRecomanat}</span>
+                    </div>
+                )}
+                
+                <Divider /> 
+            </>
+        )}
+
 
         {/* Dimensions */}
         <div className="dimensions-container">
