@@ -34,7 +34,7 @@ const TreeCard = ({
   // Funció que s'executa quan cliquem la targeta
   const handleCardClick = () => {
     // Això ens portarà a: /biblioteca/15 (per exemple)
-    navigate(`/biblioteca/${id}`);
+    navigate(`/cercar/${id}`);
   };
 
   // Helper per no repetir codi 4 vegades (Component intern petit)

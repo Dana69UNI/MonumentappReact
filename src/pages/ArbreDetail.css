@@ -1,0 +1,196 @@
+/* GRAN CONTENIDOR */
+.detall-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+  background-color: var(--blanc);
+  
+  
+  /* border: 1px solid rgb(255, 0, 0); */
+}
+
+/* IMATGE PRINCIPAL */
+.detall-imatge-quadrada {
+  width: 100%;
+  border-radius: 20px;
+  aspect-ratio: 1 / 0.8; 
+  object-fit: cover;
+  display: block;
+
+  /* border: 1px solid rgb(255, 0, 0); */
+}
+
+/* CONTENIDOR INFO */
+.info-container {
+  width: 100%;
+  padding: 0 5px;
+  box-sizing: border-box;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align Top Center */
+  gap: 10px;
+
+  /* border: 1px solid rgb(255, 0, 0); */
+
+}
+
+/* TÍTOL */
+.detall-titol {
+  font-family: var(--font-titols);
+  color: var(--blau);
+  font-size: 40px; /* Mida 40 */
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.1;
+  margin: 0;
+
+  /* border: 1px solid rgb(255, 0, 0); */
+
+}
+
+/* UBICACIÓ */
+.detall-ubicacio {
+  width: 100%;
+  text-align: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.text-ubicacio {
+  font-family: var(--font-principal);
+  font-size: 20px;
+  color: var(--negre);
+  line-height: 1;
+}
+
+.icona-inline {
+  width: 24px;
+  height: 24px;
+  
+  vertical-align: middle; 
+  margin-bottom: 0px; /* Modificar l'alçada */
+  
+  margin-right: 8px;
+  display: inline-block;
+}
+
+/* BOTONS INTERACCIÓ */
+.icones-interaccio {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* Gap automàtic (reparteix espai) */
+  justify-content: space-between; 
+  align-items: center;
+  margin: 10px 0;
+
+  /* border: 1px solid rgb(255, 0, 0); */
+
+}
+
+.btn-interaccio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  
+  /* Estils del botó */
+  border: 0.8px solid var(--negre); /* Stroke */
+  border-radius: 6px;
+  padding: 3px 6px; /* Vertical, Horizontal */
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.text-interaccio {
+  font-family: var(--font-principal);
+  font-size: 15px; /* Mida 15 */
+  color: var(--negre);
+}
+
+/* ESTAT ACTIU DEL BOTÓ (Clicat / Recuperat de BD) */
+.btn-interaccio.actiu {
+  background-color: var(--blau);
+  border-color: var(--blau);
+}
+
+/* Quan el botó és actiu el text passa a blanc */
+.btn-interaccio.actiu .text-interaccio {
+  color: var(--blanc);
+}
+
+/* DIMENSIONS */
+.dimensions-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* Gap automàtic (reparteix espai entre els 3) */
+  justify-content: space-between; 
+  align-items: flex-start;
+
+  /* border: 1px solid rgb(255, 0, 0); */
+
+}
+
+.dim-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  
+}
+
+.dim-titol {
+  font-family: var(--font-principal);
+  font-size: 18px;
+  color: var(--negre);
+  text-align: center;
+
+}
+
+.dim-valor-box {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.dim-valor {
+  font-family: var(--font-principal);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--negre);
+}
+
+/* ALTRES DADES (Entorn, Coordenades...) */
+.info-bloc {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  margin-bottom: 5px;
+  
+  /* border: 1px solid rgb(255, 0, 0); */
+
+}
+
+.info-titol {
+  font-family: var(--font-principal);
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--negre);
+}
+
+.info-valor {
+  font-family: var(--font-principal);
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--negre-fluix);
+  line-height: 1.3;
+}

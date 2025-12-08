@@ -68,7 +68,7 @@ const Search = () => {
           <React.Fragment key={arbre.id}> {/* El .Fragment ens permet posar el divider */}
     
             <TreeCard 
-              // id={arbre.id} //No cal ja aquí pq la te React.Fragment (ho deixo per sidecas)
+              id={arbre.id} //No cal ja aquí pq la te React.Fragment (ho deixo per sidecas)
               name={arbre.nom}
               titleColor="blau"
               municipality={arbre.municipi}

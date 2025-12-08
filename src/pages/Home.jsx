@@ -136,7 +136,7 @@ const Home = () => {
               <div 
                 key={item.id} 
                 className="recommended-item"
-                onClick={() => navigate(`/biblioteca/${item.arbre_id}`)} 
+                onClick={() => navigate(`/cercar/${item.arbre_id}`)} 
               >
                 <img 
                   src={imatgeFinal} 
@@ -161,8 +161,6 @@ const Home = () => {
         {repte.map((item) => (
           <div key={item.id} style={{ width: '100%' }}>
             
-            {/* AQUI HA D'ANAR LA DATA AMB BOLD */}
-
             {/* Descripció sota el títol */}
             <p style={{ margin: '0px 0 5px 0', fontSize: '15px' }}>
               {item.descripcio}
@@ -191,6 +189,7 @@ const Home = () => {
       <Divider />
 
       {/* --- SECCIÓ 3: DIARI --- */}
+      {/* Per crear encara */}
       <section className="home-section">
         <h2 className="section-title">DIARI</h2>
         
