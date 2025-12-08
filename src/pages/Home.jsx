@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Divider from '../components/Divider';
 import TreeCard from '../components/TreeCard';
 import Space from '../components/Space';
+import { useVisited } from '../context/contextVisitats'; 
 
 import './Home.css';
 
@@ -35,6 +36,7 @@ const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_
 const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?estat_llista=eq.visitat&select=arbre_id,visita_data,visita_text,arbres(id,nom,municipi,alcada,gruix,capcal,comarca_id,comarques(comarca))&order=visita_data.desc&limit=1';
 
 const Home = () => {
+  const { visited } = useVisited();
   const navigate = useNavigate();
   
   //ESTATS
@@ -193,7 +195,8 @@ const Home = () => {
       {/* --- SECCIÓ 3: DIARI --- */}
       <section className="home-section">
         <h2 className="section-title">DIARI</h2>
-        
+        <h3>Visitats: {visited.length}</h3>
+    
       </section>
 
       <Divider />

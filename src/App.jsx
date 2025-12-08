@@ -13,11 +13,13 @@ import Perfil from './pages/Perfil'
 import Test from './pages/Test';
 import ArbreDetail from './pages/ArbreDetail';
 import { VisitedProvider } from "./context/contextVisitats";
+import { PendentsProvider } from './context/contextPendents';
 
 function App() {
   return (
     <BrowserRouter>
         <VisitedProvider>
+          <PendentsProvider>
       {/* El contingut principal canvia segons la ruta */}
       <div className="app-content">
         <Routes>
@@ -37,6 +39,7 @@ function App() {
 
       {/* El Footer està fora de Routes, per tant SEMPRE es veu */}
       <Footer />
+        </PendentsProvider>
       </VisitedProvider>
     </BrowserRouter>
   );
