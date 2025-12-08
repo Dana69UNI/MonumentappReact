@@ -136,7 +136,7 @@ const Home = () => {
               <div 
                 key={item.id} 
                 className="recommended-item"
-                onClick={() => navigate(`/biblioteca/${item.arbre_id}`)} 
+                onClick={() => navigate(`/arbre/${item.arbre_id}`)} 
               >
                 <img 
                   src={imatgeFinal} 

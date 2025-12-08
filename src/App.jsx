@@ -11,11 +11,13 @@ import Perfil from './pages/Perfil'
 
 // Com a prova pàgina de TEST
 import Test from './pages/Test';
-
+import ArbreDetail from './pages/ArbreDetail';
+import { VisitedProvider } from "./context/contextVisitats";
 
 function App() {
   return (
     <BrowserRouter>
+        <VisitedProvider>
       {/* El contingut principal canvia segons la ruta */}
       <div className="app-content">
         <Routes>
@@ -24,7 +26,7 @@ function App() {
           <Route path="/nou" element={<New />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
-
+          <Route path="/arbre/:id" element={<ArbreDetail />} />
           {/* Per acabar de fer */}
           {/* <Route path="/biblioteca/:id" ... /> */}
 
@@ -35,6 +37,7 @@ function App() {
 
       {/* El Footer està fora de Routes, per tant SEMPRE es veu */}
       <Footer />
+      </VisitedProvider>
     </BrowserRouter>
   );
 }
