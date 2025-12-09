@@ -13,6 +13,7 @@ import ArbreDetall from './pages/ArbreDetail';
 // Com a prova pàgina de TEST
 import Test from './pages/Test';
 
+//comentari per borrar
 
 function App() {
   return (
