@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import TreeCard from '../components/TreeCard.jsx';
 import Divider from '../components/Divider.jsx';
 import Space from '../components/Space.jsx';
-import imatge_mostra from '../assets/Avet de Canejan_2.png';
+import imatge_mostra from '../assets/FotosArbres/Avet de Canejan_2.png';
 
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id%2Cnom%2Cmunicipi%2Calcada%2Cgruix%2Ccapcal%2Ccomarques%28comarca%29&order=id.asc';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
