@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Divider from '../components/Divider';
 import TreeCard from '../components/TreeCard';
 import Space from '../components/Space';
+import GraellaProgres from '../components/GraellaProgres';
 
 import './Home.css';
 
@@ -267,6 +268,11 @@ const Home = () => {
             <p style={{ margin: '5px 0' }}>
                 Pendents: <strong>{diari.pendents}/{diari.total}</strong>
             </p>
+
+            <div style={{ width: '100%', marginTop: '10px' }}>
+              <GraellaProgres />
+            </div>
+            
         </div>
         {/* --- BORRAR --- */}
 
