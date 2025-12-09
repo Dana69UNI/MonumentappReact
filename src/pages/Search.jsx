@@ -66,7 +66,7 @@ const Search = () => {
         placeholder="Busca un arbre per nom..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ padding: '8px', margin: '10px 0', width: '100%', boxSizing: 'border-box' }}
+        style={{ padding: '8px', margin: '10px 0', width: '100%', boxSizing: 'border-box' }} //Por lo que veo el chat me hace unos css en el codigo, pero bueno eso se puede cambiar
       />
 
       <p>Resultats de la base de dades:</p>
