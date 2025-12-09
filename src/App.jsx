@@ -8,11 +8,12 @@ import Search from './pages/Search'
 import New from './pages/New'
 import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
-import ArbreDetail from './pages/ArbreDetail'
+import ArbreDetall from './pages/ArbreDetail';
 
 // Com a prova pàgina de TEST
 import Test from './pages/Test';
 
+//comentari per borrar
 
 function App() {
   return (
@@ -25,9 +26,8 @@ function App() {
           <Route path="/nou" element={<New />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
-          <Route path="/arbre/:id" element={<ArbreDetail />} />
-
-
+          <Route path="/cercar/:id" element={<ArbreDetall />} />
+          
           {/* Per acabar de fer */}
           {/* <Route path="/biblioteca/:id" ... /> */}
 
