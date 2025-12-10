@@ -182,7 +182,7 @@ const Home = () => {
       <Header />
       <Divider />
 
-      {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
+    {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
       <section className="home-section">
         <h2 className="section-title">ARBRES RECOMANATS</h2>
         

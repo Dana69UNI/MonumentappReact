@@ -27,7 +27,7 @@ const Search = () => {
         });
         
         if (!response.ok) {
-          throw new Error('Error connectant amb Supabase');
+          throw new Error('Error connectant amb la Base de Dades');
         }
 
         const data = await response.json();

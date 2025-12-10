@@ -2,28 +2,25 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; //Per navegar
 import './TreeCard.css';
 
-// Importem la imatge de seguretat (Fallback)
+// Imatge de seguretat
 import DefaultImage from '../assets/icons/Imatge.svg'; 
 
-import iconLocation from '../assets/icons/Ubication.svg';
-import iconHeight from '../assets/icons/Alcada.svg';
-import iconTrunk from '../assets/icons/Amplada.svg';
-import iconCrown from '../assets/icons/Capcal.svg';
+import IconLocation from '../assets/icons/Ubication.svg?react';
+import IconHeight from '../assets/icons/Alcada.svg?react';
+import IconTrunk from '../assets/icons/Amplada.svg?react';
+import IconCrown from '../assets/icons/Capcal.svg?react';
 
 const TreeCard = ({ 
-  id,
-  name,          // Nom de l'arbre
-  titleColor,   // Color del títol ('blau' o 'negre')
-  imageSrc,      // La foto de l'arbre (pot venir buida)
-  municipality,      // Text: Ubicació
-  comarca,         // Text: Comarca
-  height,        // Text: Alçada
-  trunkWidth,    // Text: Amplada tronc
-  crownWidth,    // Text: Amplada capçal
-
-  
-  
-}) => {
+    id,
+    name,
+    titleColor,
+    imageSrc,
+    municipality,
+    comarca,
+    height,
+    trunkWidth,
+    crownWidth,
+  }) => {
 
   const navigate = useNavigate(); // Hook per moure'ns de pàgina
 
@@ -37,11 +34,11 @@ const TreeCard = ({
     navigate(`/cercar/${id}`);
   };
 
-  // Helper per no repetir codi 4 vegades (Component intern petit)
-  const InfoRow = ({ icon, text }) => (
-    <div className="data-row">
-      {/* Si no passem icona, posem un quadrat buit per no trencar l'alineació */}
-      {icon ? <img src={icon} alt="" className="data-icon" /> : <div className="data-icon" />}
+  //Helper per no repetir codi 4 vegades (Component intern petit)
+  //Accepta 'Icon' (component) i 'color' (opcional)
+  const InfoRow = ({ Icon, text, color }) => (
+    <div className="data-row" style={{ color: color || 'var(--negre)' }}>
+      {Icon ? <Icon className="data-icon" /> : <div className="data-icon" />}
       <span className="data-text">{text || "-"}</span>
     </div>
   );
@@ -70,16 +67,13 @@ const TreeCard = ({
         
         
         {/* Fila 1: Ubicació */}
-        <InfoRow icon={iconLocation} text={locationText}/>
-        
-        {/* Fila 2: Alçada Arbre */}
-        <InfoRow icon={iconHeight} text={height ? `${height}m` : "-"} />
-        
-        {/* Fila 3: Amplada Tronc */}
-        <InfoRow icon={iconTrunk} text={trunkWidth ? `${trunkWidth}m` : "-"} />
-        
-        {/* Fila 4: Amplada Capçal */}
-        <InfoRow icon={iconCrown} text={crownWidth ? `${crownWidth}m` : "-"} />
+        <InfoRow Icon={IconLocation} text={locationText} color="var(--negre)" /> 
+        {/* Fila 2: Alçada */}
+        <InfoRow Icon={IconHeight} text={height ? `${height}m` : "-"} color="var(--negre)" />
+        {/* Fila 3: Amplada tronc */}
+        <InfoRow Icon={IconTrunk} text={trunkWidth ? `${trunkWidth}m` : "-"} color="var(--negre)" />
+        {/* Fila 4: Amplada capçalera */}
+        <InfoRow Icon={IconCrown} text={crownWidth ? `${crownWidth}m` : "-"} color="var(--negre)" />
 
       </div>
 

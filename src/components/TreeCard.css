@@ -87,36 +87,30 @@
 /* 3. ITEM INDIVIDUAL (FILA PETITA) */
 .data-row {
   display: flex;
-  flex-direction: row; /* Icona al costat del text */
-  align-items: center; /* Centrats verticalment entre ells */
+  flex-direction: row;
+  align-items: center;
   justify-content: flex-start;
-  gap: 5px; /* Separació icona-text */
-  
+  gap: 5px;
   width: 100%;
-
-  /* border: 1px solid rgb(0, 255, 195); */
+  
+  /* El color s'hereta del style inline del component React */
 }
 
-/* La icona petita (SVG) */
 .data-icon {
   width: 24px;
   height: 24px;
-  object-fit: contain;
-  flex-shrink: 0; /* Prohibim que la icona s'axafi si falta espai */
-
-  /* border: 1px solid rgb(255, 242, 0); */
+  flex-shrink: 0;
+  
+  /* Això permet que l'SVG ompli el seu espai correctament */
+  display: block; 
 }
 
 /* El text */
 .data-text {
-  font-family: var(--font-principal); /* La teva font global */
+  font-family: var(--font-principal);
   font-size: 15px;
-  font-weight: 400; /* Regular */
-  color: var(--negre); /* El teu color */
-  
-  /* Gestió de text llarg */
+  font-weight: 400;
+  color: var(--negre);
   line-height: 1.2;
-  word-break: break-word; /* Si és molt llarg, baixa de línia */
-
-  /* border: 1px solid rgb(255, 140, 0); */
+  word-break: break-word;
 }

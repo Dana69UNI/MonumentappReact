@@ -1,23 +1,16 @@
-/* src/components/GraellaProgres.css */
-
 .graella-container {
   width: 100%;
   display: grid;
-  /* 18 columnes d'igual amplada */
   grid-template-columns: repeat(18, 1fr); 
-  /* Gap de 4px com demanaves */
   gap: 4px; 
+  justify-items: center;
+  align-items: center;
   
-  /* Alineació */
-  justify-items: center; /* Centra horitzontalment dins la cel·la */
-  align-items: center;   /* Centra verticalment dins la cel·la */
-  
-  /* Paddings 0 com demanaves */
   padding: 0;
-  margin: 10px 0; /* Un petit marge vertical extern per separar del text */
+  margin: 0px 0; /* Marge vertical per si em cal */
 }
 
-/* LA CASELLA (Contenidor de la icona o cercle) */
+/* LA CASELLA */
 .graella-item {
   width: 100%;
   display: flex;
@@ -34,17 +27,21 @@
 
 /* L'ARBRE (Visitat) */
 .icona-arbre-graella {
-  width: 18px;  /* Mida exacta Figma */
+  width: 18px; 
   height: 18px;
-  object-fit: contain;
-  display: block;
+  display: block; 
+
+  color: var(--negre); 
+  
+  /* Color verd */
+  /* color: #2E7D32;  */
 }
 
 /* EL CERCLE (No Visitat) */
 .cercle-graella {
-  width: 5px;   /* Mida petita pel contrast */
+  width: 5px;
   height: 5px;
-  background-color: var(--negre-fluix); /* Color demanat */
+  background-color: var(--negre-fluix);
   border-radius: 50%; /* Això el fa rodó */
-  opacity: 0.5; /* Opcional: per fer-lo encara més subtil */
+  opacity: 0.5;
 }

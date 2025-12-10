@@ -6,12 +6,12 @@ import Space from '../components/Space';
 import TreeCard from '../components/TreeCard';
 
 //ICONES (pendent de modificar estètica)
-import CorBuit from '../assets/icons/PROV_Cor_BUIT.svg';
-import CorPle from '../assets/icons/PROV_Cor_PLE.svg';
-import PendentBuit from '../assets/icons/PROV_Pendent_BUIT.svg';
-import PendentPle from '../assets/icons/PROV_Pendent_PLE.svg';
-import UllBuit from '../assets/icons/PROV_Ull_BUIT.svg';
-import UllPle from '../assets/icons/PROV_Ull_PLE.svg';
+import CorBuit from '../assets/icons/Like.svg';
+import CorPle from '../assets/icons/Like_filled.svg';
+import PendentBuit from '../assets/icons/Guardar.svg';
+import PendentPle from '../assets/icons/Guardar_filled.svg';
+import UllBuit from '../assets/icons/Ull.svg';
+import UllPle from '../assets/icons/Ull_filled.svg';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
