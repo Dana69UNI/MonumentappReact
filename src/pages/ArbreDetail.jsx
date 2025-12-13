@@ -21,11 +21,13 @@ import IconBack from '../assets/icons/Enrere.svg?react';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
-import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
+import VisitatPlaceholder from '../assets/Visitat.jpg';
 
 //Aquestes estan aquí pq no patiran canvis (de la base aquesta)
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 const URL_INTERACCIONS_UPDATE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?on_conflict=arbre_id';
+//URL imatges
+const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
 
 const ArbreDetall = () => {
   const { id } = useParams(); 
@@ -49,6 +51,9 @@ const ArbreDetall = () => {
     textRepte: null,
     textRecomanat: null
   });
+
+  //Carrusel d'imatges
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const [loading, setLoading] = useState(true);
 
@@ -161,15 +166,32 @@ const ArbreDetall = () => {
     navigate(-1);
   };
 
+  //Control de la posició del carrusel 
+  const handleScroll = (e) => {
+    const width = e.target.offsetWidth; // Amplada del contenidor
+    const scrollPos = e.target.scrollLeft; // Posició de l'scroll
+    // Calculem l'índex arrodonint la divisió
+    const index = Math.round(scrollPos / width);
+    setCurrentSlide(index);
+  };
+
 
   if (loading) return <div>Carregant detall...</div>;
   if (!arbre) return <div>Arbre no trobat!</div>;
 
   
-  //--- PREPARACIÓ DE DADES ---
-  //Imatge (Fem servir la provisional com has demanat, preparat pel futur)
-  //const imatgeFinal = arbre.imatge || ImatgeProvisional;
-  const imatgeFinal = ImatgeProvisional; 
+  //PREPARACIÓ DE DADES (imatges i text)
+  let imatgesGaleria = [];
+
+  //Si està visitat, la primera és la de l'usuari (Placeholder pel test)
+  if (interaccio.es_visitat) {
+      imatgesGaleria.push(VisitatPlaceholder);
+  }
+
+  //Després sempre van Original i Sketch
+  imatgesGaleria.push(`${STORAGE_URL}/${id}_Original.jpg`);
+  imatgesGaleria.push(`${STORAGE_URL}/${id}_Sketch.png`);
+
 
   //Donem estil: "Monumental, Parc Nacional - 1995"
   let textProteccio = "-";
@@ -186,16 +208,45 @@ const ArbreDetall = () => {
   const classPreferit = interaccio.es_preferit ? "btn-interaccio actiu" : "btn-interaccio";
   const classVisitat = interaccio.es_visitat ? "btn-interaccio actiu" : "btn-interaccio";
   const classPendent = interaccio.es_pendent ? "btn-interaccio actiu" : "btn-interaccio";
+  
   return (
     <div className="detall-container">
       
-      {/* Botó enrere */}
+      {/* BOTÓ ENRERE */}
       <div className="btn-enrere" onClick={handleGoBack}>
         <IconBack style={{ color: 'var(--blanc)', width: '25px', height: '25px' }} />
       </div>
       
-      {/* IMATGE */}
-      <img src={imatgeFinal} alt={arbre.nom} className="detall-imatge-quadrada" />
+      {/* CARRUSEL D'IMATGES */}
+      <div className="carousel-container">
+        
+        {/* Pista lliscant amb event de scroll */}
+        <div className="carousel-slider" onScroll={handleScroll}>
+            {imatgesGaleria.map((imgSrc, index) => (
+                <img 
+                    key={index}
+                    src={imgSrc} 
+                    alt={`Arbre ${index}`} 
+                    className="carousel-image" 
+                    onError={(e) => { 
+                        e.target.onerror = null; 
+                        e.target.src = DefaultImage; 
+                    }}
+                />
+            ))}
+        </div>
+
+        {/* Puntets */}
+        <div className="carousel-dots">
+            {imatgesGaleria.map((_, index) => (
+                <div 
+                    key={index} 
+                    className={`dot ${currentSlide === index ? 'active' : ''}`}
+                ></div>
+            ))}
+        </div>
+
+      </div>
 
       {/* CONTENIDOR INFO */}
       <div className="info-container">
@@ -214,7 +265,7 @@ const ArbreDetall = () => {
           </span>
         </div>
 
-        {/* --- BOTONS INTERACCIÓ (SVG Components) --- */}
+        {/* BOTONS INTERACCIÓ  */}
         <div className="icones-interaccio">
             
             {/* PREFERIT */}
@@ -253,7 +304,7 @@ const ArbreDetall = () => {
 
         <Divider />
 
-        {/* --- BLOC: VISITAT (només si ho es) --- */}
+        {/* VISITAT (només si ho es) */}
         {(interaccio.es_visitat) && (
              <>
                 <div className="info-bloc">
@@ -280,7 +331,7 @@ const ArbreDetall = () => {
              </>
         )}
 
-        {/* --- BLOC: REPTE / RECOMANAT (només si ho son) --- */}
+        {/* BLOC: REPTE / RECOMANAT (només si ho son) */}
         {(etiquetes.textRepte || etiquetes.textRecomanat) && (
             <>
                 {/* Repte del Mes */}
@@ -305,7 +356,6 @@ const ArbreDetall = () => {
 
 
         {/* Dimensions */}
-{/* --- DIMENSIONS (Icones Estàtiques: Negre) --- */}
         <div className="dimensions-container">
             <div className="dim-item">
                 <span className="dim-titol">Alçària</span>

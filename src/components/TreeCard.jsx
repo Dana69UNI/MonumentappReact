@@ -10,11 +10,13 @@ import IconHeight from '../assets/icons/Alcada.svg?react';
 import IconTrunk from '../assets/icons/Amplada.svg?react';
 import IconCrown from '../assets/icons/Capcal.svg?react';
 
+//URL Supabase imatges
+const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
+
 const TreeCard = ({ 
     id,
     name,
     titleColor,
-    imageSrc,
     municipality,
     comarca,
     height,
@@ -23,8 +25,9 @@ const TreeCard = ({
   }) => {
 
   const navigate = useNavigate(); // Hook per moure'ns de pàgina
-
-  const displayImage = imageSrc ? imageSrc : DefaultImage;// Lògica de la imatge: Si 'imageSrc' existeix, la posem. Si no, posem 'DefaultImage'.
+  
+  // Construïm la URL de la imatge - "id_Sketch.png"
+  const supabaseImage = `${STORAGE_URL}/${id}_Sketch.png`;
 
   const locationText = `${municipality || "?"}, ${comarca || "?"}`;// Resultat: "Girona, Gironès"
 
@@ -46,14 +49,18 @@ const TreeCard = ({
   return (
     <article className="tree-card" onClick={handleCardClick}>
       
-      {/* 1. Imatge (Esquerra) */}
+      {/* Imatge (Esquerra) */}
       <div className="card-image-container">
         <img 
-          src={displayImage} 
-          alt="Arbre" 
+          //URL de la imatge
+          src={supabaseImage} 
+          alt={name} 
           className="card-image" 
-          // Afegeix això per si la URL existeix però dona error 404
-          onError={(e) => { e.target.src = DefaultImage; }} 
+          //GESTIÓ D'ERRORS: Si la imatge no existeix a Supabase, posem la Default
+          onError={(e) => { 
+            e.target.onerror = null; // Evita bucle infinit
+            e.target.src = DefaultImage; 
+          }} 
         />
       </div>
 

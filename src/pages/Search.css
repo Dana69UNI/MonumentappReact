@@ -1,0 +1,40 @@
+.search-page-container {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* CONTENIDOR DE LA BARRA DE CERCA */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--negre-fluix);
+  border-radius: 16px;
+  padding: 2px 5px;
+  margin: 15px 0px 15px 0px;
+}
+
+/* L'INPUT (ON S'ESCRIU) */
+.search-input {
+  border: none;
+  outline: none; /* Treiem la línia blava per defecte del navegador */
+  width: 100%;
+  background: transparent;
+  font-family: var(--font-principal);
+  font-size: 18px;
+  color: var(--negre);
+}
+
+/* Estil del text placeholder */
+.search-input::placeholder {
+  color: var(--negre-fluix);
+  font-size: 15px;
+}
+
+/* Resultats buits */
+.no-results {
+  text-align: center;
+  color: var(--negre-fluix);
+  margin-top: 40px;
+  font-family: var(--font-principal);
+}

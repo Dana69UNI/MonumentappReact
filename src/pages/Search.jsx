@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import './Search.css';
 import TreeCard from '../components/TreeCard.jsx';
 import Divider from '../components/Divider.jsx';
 import Space from '../components/Space.jsx';
 
-// BORRAR quan tinguem fotos a la BdD
-import imatge_mostra from '../assets/FotosArbres/Avet de Canejan_2.png';
+import IconSearch from '../assets/icons/Search.svg?react';
+
 
 // URL i KEY correctes
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id%2Cnom%2Cmunicipi%2Calcada%2Cgruix%2Ccapcal%2Ccomarques%28comarca%29&order=id.asc';
@@ -14,6 +15,7 @@ const Search = () => {
   const [posts, setPosts] = useState([]); // Inicialitzem com array buit []
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   
   useEffect(() => {
     const fetchPosts = async () => {
@@ -44,46 +46,73 @@ const Search = () => {
     fetchPosts(); 
   }, []); 
 
+  //FILTRATGE
+  //variable que només tindrà els arbres que coincideixin amb la cerca.
+  //es recalcula cada cop que cliquem una lletra (canvi de searchTerm) o quan es carreguen els posts
+  const filteredPosts = posts.filter((arbre) => {
+    // Si no hi ha text, ho retornem tot
+    if (searchTerm === '') return true;
+
+    // Convertim a minúscules per ignorar majúscules/minúscules
+    const term = searchTerm.toLowerCase();
+    
+    // Comprovem si coincideix amb NOM, MUNICIPI o COMARCA
+    // Fem servir ?. per si algun camp és null
+    const matchNom = arbre.nom?.toLowerCase().includes(term);
+    const matchMunicipi = arbre.municipi?.toLowerCase().includes(term);
+    const matchComarca = arbre.comarques?.comarca?.toLowerCase().includes(term);
+
+    return matchNom || matchMunicipi || matchComarca;
+  });
 
   // A PARTIR D'AQUÍ JA ES MOSTREN DAAAADEEEEES!!! ole oleee. Visca els arbres monumentals!!! Visca Catalunyaaaa!!!
 
   if (loading) {
     return <div>Carregant Arbres...</div>;
   }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    // CONTENIDOR PRINCIPAL (Amb padding per separar de les vores)
-    <div> 
-      
-      <h1>Cercar</h1>
-      <p>Resultats de la base de dades:</p>
-      
+    // CONTENIDOR PRINCIPAL
+    <div className="search-page-container"> 
+          
+      {/* BARRA DE CERCA */}
+      <div className="search-bar">
+        {/* Icona de color negre fluix */}
+        <IconSearch style={{ width: '50px', color: 'var(--negre-fluix)' }} />
+        
+        <input type="text" className="search-input" placeholder="Cercar arbre, comarca o municipi" value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)} // Actualitzem estat al escriure
+        />
+      </div>
 
-      {/* LLISTA D'ARBRES */}     
-        {posts.map((arbre) => (
-          <React.Fragment key={arbre.id}> {/* El .Fragment ens permet posar el divider */}
-    
-            <TreeCard 
-              id={arbre.id} //No cal ja aquí pq la te React.Fragment (ho deixo per sidecas)
-              name={arbre.nom}
-              titleColor="blau"
-              municipality={arbre.municipi}
-              comarca={arbre.comarques?.comarca} 
-              height={arbre.alcada}
-              trunkWidth={arbre.gruix}
-              crownWidth={arbre.capcal}
-              
-              imageSrc={imatge_mostra} // BORRAR: treure imatge_mostra i posar arbre.foto quan ho tinguem a la BdD
-            />
-
-            <Divider />
-            
-          </React.Fragment>
-        ))}
+      {/* RESULTATS */}
+      {/* Fem servir filteredPosts en lloc de posts */}
+      {filteredPosts.length > 0 ? (
+          filteredPosts.map((arbre) => (
+            <React.Fragment key={arbre.id}>
+              <TreeCard 
+                id={arbre.id}
+                name={arbre.nom}
+                titleColor="blau"
+                municipality={arbre.municipi}
+                comarca={arbre.comarques?.comarca} 
+                height={arbre.alcada}
+                trunkWidth={arbre.gruix}
+                crownWidth={arbre.capcal}
+              />
+              <Divider />
+            </React.Fragment>
+          ))
+      ) : (
+          /* Missatge si no trobem res */
+          <div className="no-results">
+              <p>No s'ha trobat resultats</p>
+          </div>
+      )}
+      
       <Space />
     </div>
 

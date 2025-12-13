@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import './Biblioteca.css';
 import Divider from '../components/Divider';
 import Space from '../components/Space';
@@ -21,11 +21,9 @@ import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 
 const Biblioteca = () => {
-  // const navigate = useNavigate();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   //ESTAT PESTANYES: 'preferits' | 'visitats' | 'pendents'
-  const [activeTab, setActiveTab] = useState('preferits');
-  
+const activeTab = searchParams.get('tab') || 'preferits';  
   //ESTAT DADES
   const [arbres, setArbres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +67,7 @@ const Biblioteca = () => {
   const handleTabChange = (tab) => {
     if (activeTab !== tab) {
       setArbres([]); // Netejem llista visualment abans de carregar la nova
-      setActiveTab(tab);
+      setSearchParams({ tab: tab });    
     }
   };
 

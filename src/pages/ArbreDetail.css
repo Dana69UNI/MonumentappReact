@@ -12,16 +12,65 @@
   /* border: 1px solid rgb(255, 0, 0); */
 }
 
-/* IMATGE PRINCIPAL */
-.detall-imatge-quadrada {
+/* CARRUSEL D'IMATGES */
+/* Contenidor principal de la imatge que defineix la mida i la posició relativa pels punts */
+.carousel-container {
   width: 100%;
+  aspect-ratio: 1 / 0.9; 
+  position: relative;
   border-radius: 20px;
-  aspect-ratio: 1 / 0.8; 
-  object-fit: cover;
-  display: block;
-
-  /* border: 1px solid rgb(255, 0, 0); */
+  overflow: hidden; /* Perquè les vores rodones retallin les imatges */
 }
+
+/* Scroll (sense això no el puc fer) */
+.carousel-slider {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow-x: scroll; /* Permet moure's horitzontalment. MOLT IMPORTANT */
+  scroll-snap-type: x mandatory; /* Per obligar a parar-se exactament a cada foto */
+  
+  /* Amagar la barra de scroll (IA) */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.carousel-slider::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Cada imatge individual dins del carrusel */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+
+/* PUNTETS */
+.carousel-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 5; /* Per sobre de la imatge */
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5); /* Blanc semitransparent */
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background-color: var(--blanc);
+  transform: scale(1.5); /* Una mica més gran */
+}
+
 
 /* CONTENIDOR INFO */
 .info-container {
