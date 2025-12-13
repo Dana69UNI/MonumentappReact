@@ -5,6 +5,8 @@ import Divider from '../components/Divider.jsx';
 import Space from '../components/Space.jsx';
 
 import IconSearch from '../assets/icons/Search.svg?react';
+import IconFilter from '../assets/icons/Filtre.svg?react';
+import IconOrder from '../assets/icons/Ordenar.svg?react';
 
 
 // URL i KEY correctes
@@ -87,6 +89,28 @@ const Search = () => {
             onChange={(e) => setSearchTerm(e.target.value)} // Actualitzem estat al escriure
         />
       </div>
+
+      {/* FILTRAR I ORDENAR */}
+      <div className="actions-container">
+        
+        {/* Botó Filtrar */}
+        <div className="action-item">
+            <IconFilter style={{ width: '30px', color: 'var(--negre)' }} />
+            <span className="action-text">Filtrar</span>
+        </div>
+
+        {/* Separador Vertical */}
+        <div className="vertical-sep"></div>
+
+        {/* Botó Ordenar */}
+        <div className="action-item">
+            <IconOrder style={{ width: '30px', color: 'var(--negre)' }} />
+            <span className="action-text">Ordenar</span>
+        </div>
+
+      </div>
+
+      <Divider />
 
       {/* RESULTATS */}
       {/* Fem servir filteredPosts en lloc de posts */}

@@ -15,8 +15,6 @@ import UllPle from '../assets/icons/Ull_filled.svg?react';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
-import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
-
 
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 
@@ -150,11 +148,8 @@ const activeTab = searchParams.get('tab') || 'preferits';
                 comarca={item.arbres?.comarques?.comarca}            
                 height={item.arbres?.alcada}
                 trunkWidth={item.arbres?.gruix}
-                crownWidth={item.arbres?.capcal}
-                
-                // Imatge provisional
-                imageSrc={ImatgeProvisional} 
-              />
+                crownWidth={item.arbres?.capcal}              
+                />
 
               <Divider />
             </React.Fragment>
