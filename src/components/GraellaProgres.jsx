@@ -43,7 +43,7 @@ const GraellaProgres = () => {
             onClick={() => navigate(`/cercar/${id}`)} 
           >
             {isVisited ? (
-              <TreeIcon className="icona-arbre-graella" />            
+              <TreeIcon className="icona-arbre-graella"/>            
             ) : (
               <div className="cercle-graella"></div>
             )}

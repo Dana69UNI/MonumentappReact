@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './ArbreDetail.css';
 import Divider from '../components/Divider';
 import Space from '../components/Space';
 
-import CorBuit from '../assets/icons/Like.svg';
-import CorPle from '../assets/icons/Like_filled.svg';
-import PendentBuit from '../assets/icons/Guardar.svg';
-import PendentPle from '../assets/icons/Guardar_filled.svg';
-import UllBuit from '../assets/icons/Ull.svg';
-import UllPle from '../assets/icons/Ull_filled.svg';
+// ICONES
+import CorBuit from '../assets/icons/Like.svg?react';
+import CorPle from '../assets/icons/Like_filled.svg?react';
+import PendentBuit from '../assets/icons/Guardar.svg?react';
+import PendentPle from '../assets/icons/Guardar_filled.svg?react';
+import UllBuit from '../assets/icons/Ull.svg?react';
+import UllPle from '../assets/icons/Ull_filled.svg?react';
 
-import iconLocation from '../assets/icons/Ubication.svg';
-import iconHeight from '../assets/icons/Alcada.svg';
-import iconTrunk from '../assets/icons/Amplada.svg';
-import iconCrown from '../assets/icons/Capcal.svg';
+import IconLocation from '../assets/icons/Ubication.svg?react';
+import IconHeight from '../assets/icons/Alcada.svg?react';
+import IconTrunk from '../assets/icons/Amplada.svg?react';
+import IconCrown from '../assets/icons/Capcal.svg?react';
+
+import IconBack from '../assets/icons/Enrere.svg?react';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
@@ -26,6 +29,8 @@ const URL_INTERACCIONS_UPDATE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v
 
 const ArbreDetall = () => {
   const { id } = useParams(); 
+
+  const navigate = useNavigate();
   
   //PER DADES ARBRES
   const [arbre, setArbre] = useState(null);
@@ -52,7 +57,8 @@ const ArbreDetall = () => {
     
     //IMPORTANT TENIR-HO AQUÍ PQ SI HO TINC FORA DEL useEffect, ENCARA NO SAP L'ID
     const URL_ARBRE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?id=eq.${id}&select=nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)`;
-    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat,visita_data,visita_text`;    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
+    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat,visita_data,visita_text`;    
+    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
     const URL_CHECK_RECOMANAT = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?arbre_id=eq.${id}&recomenacio_estat=eq.true&select=descripcio`;
 
     const fetchData = async () => {
@@ -132,7 +138,6 @@ const ArbreDetall = () => {
     await updateDatabase({ es_preferit: nouEstat });
   };
 
-  // --- NOVA LÒGICA PENDENT ---
   const togglePendent = async () => {
     // Simplement invertim el valor de 'es_pendent'.
     // NO toquem 'es_visitat'. Són independents.
@@ -140,6 +145,22 @@ const ArbreDetall = () => {
     setInteraccio(prev => ({ ...prev, es_pendent: nouEstat }));
     await updateDatabase({ es_pendent: nouEstat });
   };
+
+  const anarAFormulariVisita = () => {
+    // Naveguem a /nou
+    // Passem l'ID per si volem pre-omplir el formulari
+    navigate('/nou', { 
+      state: { 
+        arbreIdPerVisitar: id, 
+      } 
+    });
+  };
+
+  //Botó enrere
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
 
   if (loading) return <div>Carregant detall...</div>;
   if (!arbre) return <div>Arbre no trobat!</div>;
@@ -162,29 +183,21 @@ const ArbreDetall = () => {
   }
 
   //DETERMINEM QUINES ICONES I CLASSES TOQUEN
-
-  //PREFERIT
-  const isPreferit = interaccio.es_preferit;
-  const iconaPreferit = isPreferit ? CorPle : CorBuit;
-  const classPreferit = isPreferit ? "btn-interaccio actiu" : "btn-interaccio";
-
-  //VISITAT (Només lectura, no canvia en clicar)
-  const isVisitat = interaccio.es_visitat;
-  const iconaVisitat = isVisitat ? UllPle : UllBuit;
-  const classVisitat = isVisitat ? "btn-interaccio actiu" : "btn-interaccio";
-
-  //PENDENT (Independent)
-  const isPendent = interaccio.es_pendent;
-  const iconaPendent = isPendent ? PendentPle : PendentBuit;
-  const classPendent = isPendent ? "btn-interaccio actiu" : "btn-interaccio";
-
+  const classPreferit = interaccio.es_preferit ? "btn-interaccio actiu" : "btn-interaccio";
+  const classVisitat = interaccio.es_visitat ? "btn-interaccio actiu" : "btn-interaccio";
+  const classPendent = interaccio.es_pendent ? "btn-interaccio actiu" : "btn-interaccio";
   return (
     <div className="detall-container">
       
-      {/*IMATGE */}
+      {/* Botó enrere */}
+      <div className="btn-enrere" onClick={handleGoBack}>
+        <IconBack style={{ color: 'var(--blanc)', width: '25px', height: '25px' }} />
+      </div>
+      
+      {/* IMATGE */}
       <img src={imatgeFinal} alt={arbre.nom} className="detall-imatge-quadrada" />
 
-      {/*CONTENIDOR INFO */}
+      {/* CONTENIDOR INFO */}
       <div className="info-container">
         
         {/* Títol */}
@@ -193,31 +206,46 @@ const ArbreDetall = () => {
         {/* Ubicació */}
         <div className="detall-ubicacio">
           <span className="text-ubicacio">
-            {/* SVG */}
-            <img src={iconLocation} alt="Ubicació" className="icona-inline"
+            <IconLocation 
+                className="icona-inline" 
+                style={{ color: 'var(--negre)' }} 
             />
-            {/* Text: municipi + comarca */}
             {arbre.municipi}, {arbre.comarques?.comarca}
           </span>
         </div>
 
-        {/* --- BOTONS INTERACCIÓ DINÀMICS --- */}
+        {/* --- BOTONS INTERACCIÓ (SVG Components) --- */}
         <div className="icones-interaccio">
+            
             {/* PREFERIT */}
             <div className={classPreferit} onClick={togglePreferit}>
-              <img src={iconaPreferit} alt="Preferit" style={{width:'24px'}}/>
+              {interaccio.es_preferit ? (
+                // Si està ple, hereta el color del pare (que serà blanc gràcies a .actiu)
+                <CorPle style={{ width: '24px', color: 'currentColor' }} />
+              ) : (
+                // Si està buit, hereta el color del pare (que serà negre)
+                <CorBuit style={{ width: '24px', color: 'currentColor' }} />
+              )}
               <span className="text-interaccio">Preferit</span>
             </div>
 
-            {/* VISITAT (no és clicable, només mostra info) */}
-            <div className={classVisitat}>
-                <img src={iconaVisitat} alt="Visitat" style={{width:'24px'}}/>
+            {/* VISITAT */}
+            <div className={classVisitat} onClick={anarAFormulariVisita}>
+                {interaccio.es_visitat ? (
+                    <UllPle style={{ width: '24px', color: 'currentColor' }} />
+                ) : (
+                    <UllBuit style={{ width: '24px', color: 'currentColor' }} />
+                )}
                 <span className="text-interaccio">Visitat</span>
             </div>
 
             {/* PENDENT */}
             <div className={classPendent} onClick={togglePendent}>
-                <img src={iconaPendent} alt="Pendent" style={{width:'24px'}}/>
+                {interaccio.es_pendent ? (
+                    <PendentPle style={{ width: '24px', color: 'currentColor' }} />
+                ) : (
+                    <PendentBuit style={{ width: '24px', color: 'currentColor' }} />
+                )}
                 <span className="text-interaccio">Pendent</span>
             </div>
 
@@ -277,30 +305,26 @@ const ArbreDetall = () => {
 
 
         {/* Dimensions */}
+{/* --- DIMENSIONS (Icones Estàtiques: Negre) --- */}
         <div className="dimensions-container">
-            {/* Alçària */}
             <div className="dim-item">
                 <span className="dim-titol">Alçària</span>
                 <div className="dim-valor-box">
-                    <img src={iconHeight} alt="" style={{width:'24px'}}/>
+                    <IconHeight style={{ width: '24px', color: 'var(--negre)' }} />
                     <span className="dim-valor">{arbre.alcada}m</span>
                 </div>
             </div>
-            
-            {/* Volta de canó (Gruix) */}
             <div className="dim-item">
                 <span className="dim-titol">Volta de canó</span>
                 <div className="dim-valor-box">
-                    <img src={iconTrunk} alt="" style={{width:'24px'}}/>
+                    <IconTrunk style={{ width: '24px', color: 'var(--negre)' }} />
                     <span className="dim-valor">{arbre.gruix}m</span>
                 </div>
             </div>
-
-            {/* Capçal */}
             <div className="dim-item">
                 <span className="dim-titol">Capçal</span>
                 <div className="dim-valor-box">
-                    <img src={iconCrown} alt="" style={{width:'24px'}}/>
+                    <IconCrown style={{ width: '24px', color: 'var(--negre)' }} />
                     <span className="dim-valor">{arbre.capcal}m</span>
                 </div>
             </div>

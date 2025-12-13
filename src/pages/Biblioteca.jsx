@@ -5,13 +5,13 @@ import Divider from '../components/Divider';
 import Space from '../components/Space';
 import TreeCard from '../components/TreeCard';
 
-//ICONES (pendent de modificar estètica)
-import CorBuit from '../assets/icons/Like.svg';
-import CorPle from '../assets/icons/Like_filled.svg';
-import PendentBuit from '../assets/icons/Guardar.svg';
-import PendentPle from '../assets/icons/Guardar_filled.svg';
-import UllBuit from '../assets/icons/Ull.svg';
-import UllPle from '../assets/icons/Ull_filled.svg';
+//ICONES
+import CorBuit from '../assets/icons/Like.svg?react';
+import CorPle from '../assets/icons/Like_filled.svg?react';
+import PendentBuit from '../assets/icons/Guardar.svg?react';
+import PendentPle from '../assets/icons/Guardar_filled.svg?react';
+import UllBuit from '../assets/icons/Ull.svg?react';
+import UllPle from '../assets/icons/Ull_filled.svg?react';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
@@ -84,11 +84,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'preferits' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('preferits')}
         >
-          <img 
-            src={activeTab === 'preferits' ? CorPle : CorBuit} 
-            alt="Preferits" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'preferits' ? (
+             <CorPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <CorBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Preferits</span>
         </button>
 
@@ -100,11 +100,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'visitats' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('visitats')}
         >
-          <img 
-            src={activeTab === 'visitats' ? UllPle : UllBuit} 
-            alt="Visitats" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'visitats' ? (
+             <UllPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <UllBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Visitats</span>
         </button>
 
@@ -116,11 +116,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'pendents' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('pendents')}
         >
-          <img 
-            src={activeTab === 'pendents' ? PendentPle : PendentBuit} 
-            alt="Pendents" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'pendents' ? (
+             <PendentPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <PendentBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Pendents</span>
         </button>
 
