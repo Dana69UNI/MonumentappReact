@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       {/* El contingut principal canvia segons la ruta */}
-      <div className="app-content">
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cercar" element={<Search />} />
