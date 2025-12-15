@@ -1,89 +1,57 @@
 .footer-nav {
-  /* Posició fixa a baix */
   position: fixed;
   bottom: 0;
   left: 0;
-  
-  /* Dimensions Figma: 402px ample (o 100% per adaptar-se) i 78px alt */
   width: 100%; 
   height: 78px;
-  
-  /* Colors globals */
   background-color: var(--blanc);
-  
-  /* Padding Figma: Vertical 8px (només dalt), Horizontal 20px */
-  /* Nota: box-sizing evita que el padding sumi amplada extra i trenqui el layout */
   padding: 8px 20px 0 20px; 
   box-sizing: border-box; 
-  
-  /* Z-index perquè floti sobre el contingut */
   z-index: 1000;
-  
   border-top: 0.3px solid var(--negre-fluix);
-
-  /* --- NOU: Això centra la llista dins de la barra blanca --- */
   display: flex; 
   justify-content: center;
 }
 
 .footer-list {
-  /* Treure els punts de la llista (<ul>) */
   list-style: none;
   margin: 0;
   padding: 0;
-  
-  /* Auto Layout Horizontal */
   display: flex;
-  
-  /* Col·locat a dalt (Top) */
   align-items: flex-start;
-  
-  /* Horizontal gap auto (Space Between reparteix l'espai automàticament) */
   justify-content: space-between;
-  
   height: 100%;
-
-  /* --- NOU: Això controla l'amplada màxima --- */
-  width: 100%; /* Per defecte intenta omplir-ho tot... */
-  
-  /* Aquí posem el límit. 
-     Pots posar 402px (mida exacta iPhone) o donar-li una mica més d'aire (ex: 500px).
-     Jo et recomano 450px o 500px perquè en Tablet no es vegi massa estret. */
+  width: 100%; 
   max-width: 450px;
 }
 
 .footer-item {
-  /* Assegurem que l'ítem no tingui marges estranys */
   display: flex;
   justify-content: center;
 }
 
+.footer-link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/* --- ESTIL DE LES ICONES --- */
 
-.footer-icon-mask {
-  /* Mida exacta Figma */
+.footer-icon {
   width: 45px;
   height: 45px;
-  
-  /* Lògica de la Màscara: Retalla la caixa amb la forma de l'SVG */
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  mask-position: center;
-  
 
-  /* COLOR PER DEFECTE (Inactiu) */
-  /* Aquí posem la variable del teu Figma */
-  background-color: var(--negre-fluix); 
-  
-  transition: background-color 0.2s ease;
+  /* TRANSICIÓ */
+  transition: color 0.2s ease;
+
+  /* ESTAT INACTIU (Per defecte) */
+  color: var(--negre-fluix); 
 }
 
 /* ESTAT ACTIU */
-/* Quan estem a la pàgina, canviem el color de fons */
-.footer-item.active .footer-icon-mask {
-  background-color: var(--negre); /* El teu negre fosc */
+.footer-item.active .footer-icon {
+  /* Quan el pare té la classe 'active', l'icona canvia a negre fosc */
+  color: var(--negre); 
+
 }

@@ -5,6 +5,7 @@ const Perfil = () => {
     <div>
       <h1>Perfil</h1>
       <p>Contingut del perfil</p>
+      <p>PROPERAMENT DISPONIBLE!</p>
     </div>
   )
 }

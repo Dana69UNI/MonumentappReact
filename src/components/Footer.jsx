@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import './Footer.css';
 
-import './Footer.css'
-
-//IMPORTAR IMATGES
-import IconHome from '../assets/icons/Home.svg';
-import IconSearch from '../assets/icons/Search.svg';
-import IconNew from '../assets/icons/New.svg';
-import IconBiblioteca from '../assets/icons/Tree.svg';
-import IconProfile from '../assets/icons/User.svg';
+//svg amb ?react i biblioteca a vite.config.js
+import IconHome from '../assets/icons/Home.svg?react';
+import IconSearch from '../assets/icons/Search.svg?react';
+import IconNew from '../assets/icons/New.svg?react';
+import IconBiblioteca from '../assets/icons/Tree.svg?react';
+import IconProfile from '../assets/icons/User.svg?react';
 
 const Footer = () => {
   const location = useLocation();
@@ -17,7 +16,7 @@ const Footer = () => {
     {
       name: 'Inici',
       path: '/',
-      icon: IconHome //cada icona amb la variable
+      icon: IconHome // Ara això és un Component, no un string
     },
     {
       name: 'Cercar',
@@ -49,31 +48,20 @@ const Footer = () => {
           let isActive = false;
 
           if (item.path === '/') {
-            //CAS HOME: Ha de ser idèntic (===), si no s'activaria amb tot
             isActive = location.pathname === '/';
-          } 
-          
-          else {
-            //RESTA DE CASOS: Si estem a /biblioteca/roure, volem que /biblioteca s'activi
+          } else {
+            // Això gestiona /biblioteca/detall, etc.
             isActive = location.pathname.startsWith(item.path);
           }
+
+          const IconComponent = item.icon;
 
           return (
             <li key={item.name} className={`footer-item ${isActive ? 'active' : ''}`}>
               <Link to={item.path} className="footer-link">
                 
-                {/*Imatges footer en format svg*/}
-               <div 
-                className="footer-icon-mask"
-                style={{
-                  // Passem la ruta de l'SVG a la propietat mask-image
-                  WebkitMaskImage: `url(${item.icon})`,
-                  maskImage: `url(${item.icon})`
-                }}
-              />
+                <IconComponent className="footer-icon" />
 
-                {/*Això serveix per si hi volguessim textos*/}
-                {/* <span className="label">{item.name}</span> */}
               </Link>
             </li>
           );

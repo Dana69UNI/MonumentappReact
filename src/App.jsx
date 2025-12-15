@@ -10,9 +10,6 @@ import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
 import ArbreDetall from './pages/ArbreDetail';
 
-// Com a prova pàgina de TEST
-import Test from './pages/Test';
-
 //comentari per borrar
 
 function App() {
@@ -27,12 +24,6 @@ function App() {
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/cercar/:id" element={<ArbreDetall />} />
-          
-          {/* Per acabar de fer */}
-          {/* <Route path="/biblioteca/:id" ... /> */}
-
-          {/* Ruta de prova per a la pàgina Test */}
-          <Route path="/test" element={<Test />} />
         </Routes>
       </div>
 

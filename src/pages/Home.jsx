@@ -4,36 +4,21 @@ import Header from '../components/Header';
 import Divider from '../components/Divider';
 import TreeCard from '../components/TreeCard';
 import Space from '../components/Space';
+import GraellaProgres from '../components/GraellaProgres';
 
 import './Home.css';
 
 // Importem la imatge per defecte (ja que l'API no ens en dona cap de moment)
 import DefaultImage from '../assets/icons/Imatge.svg';
 
-//Imatges que haurem de borrar quan tinguem les reals
-import Aulina from '../assets/FotosArbres/Aulina Reclamadora de Puigsaguàrdia.png';
-import Avet from '../assets/FotosArbres/Avet de Canejan_2.png';
-import Castanyer from '../assets/FotosArbres/Castanyer_de_can_Cuc.png';
-import Cedre from '../assets/FotosArbres/Cedre de Masjoan.png';
-import Platan from '../assets/FotosArbres/Plàtan de la Plaça de Colera.png';
-import Sequioia from '../assets/FotosArbres/Sequoia-de-Tortades.png';
-
-//ARRAY ORDENAT (Arbres recomanats)
-const IMATGES_LOCAL_PROVISIONALS = [
-  Sequioia,
-  Castanyer,
-  Cedre,
-  Aulina,
-  Platan
-];
 
 //API
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
-
 const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
 const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)';
 const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?es_visitat=eq.true&select=arbre_id,visita_data,visita_text,arbres(id,nom,municipi,alcada,gruix,capcal,comarca_id,comarques(comarca))&order=visita_data.desc&limit=1';
-
+//Imatges Supabase
+const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
 
 // --- BORRAR ---
 // Demanem només els camps necessaris per fer els càlculs
@@ -181,19 +166,16 @@ const Home = () => {
       <Header />
       <Divider />
 
-      {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
+    {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
       <section className="home-section">
         <h2 className="section-title">ARBRES RECOMANATS</h2>
         
         <div className="horizontal-scroll-container">
           {/* Afegim 'index' al map per saber si és el 0, el 1, el 2... */}
-          {recomanats.map((item, index) => {
+          {recomanats.map((item) => {
             
-            // TRUC PROVISIONAL:
-            // Si tenim una foto a l'array local per a aquesta posició (index), la fem servir.
-            // Si no, mirem si l'API en porta (item.arbres.imatge).
-            // Si tampoc, posem la DefaultImage.
-            const imatgeFinal = IMATGES_LOCAL_PROVISIONALS[index] || item.arbres?.imatge || DefaultImage;
+            //Construïm la URL de la imatge
+            const imatgeSupabase = `${STORAGE_URL}/${item.arbre_id}_Sketch.png`;
 
             return (
               <div 
@@ -201,11 +183,11 @@ const Home = () => {
                 className="recommended-item"
                 onClick={() => navigate(`/cercar/${item.arbre_id}`)} 
               >
-                <img 
-                  src={imatgeFinal} 
-                  //per després src={item.arbres?.imatge || DefaultImage}
-                  alt={item.arbres?.nom} 
-                  className="rec-image" 
+                <img src={imatgeSupabase} alt={item.arbres?.nom} className="rec-image" onError={(e) => {
+                  // GESTIÓ D'ERRORS: Si falla Supabase, posem la DefaultImage
+                      e.target.onerror = null; 
+                      e.target.src = DefaultImage; 
+                  }}
                 />
                 <span className="rec-name">{item.arbres?.nom}</span>
               </div>
@@ -241,9 +223,7 @@ const Home = () => {
               
               height={item.arbres?.alcada}
               trunkWidth={item.arbres?.gruix}
-              crownWidth={item.arbres?.capcal}
-              
-              imageSrc={Avet} //borrar després  ----  imageSrc={item.arbres?.imatge || DefaultImage}
+              crownWidth={item.arbres?.capcal}              
             />
           </div>
         ))}
@@ -267,6 +247,11 @@ const Home = () => {
             <p style={{ margin: '5px 0' }}>
                 Pendents: <strong>{diari.pendents}/{diari.total}</strong>
             </p>
+
+            <div style={{ width: '100%', marginTop: '10px' }}>
+              <GraellaProgres />
+            </div>
+            
         </div>
         {/* --- BORRAR --- */}
 
@@ -308,8 +293,6 @@ const Home = () => {
                 height={item.arbres?.alcada}
                 trunkWidth={item.arbres?.gruix}
                 crownWidth={item.arbres?.capcal}
-                
-                imageSrc={Avet} //borrar després  ----  imageSrc={item.arbres?.imatge || DefaultImage}
               />
             </div>
           ))

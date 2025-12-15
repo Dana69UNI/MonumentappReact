@@ -1,31 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import './Biblioteca.css';
 import Divider from '../components/Divider';
 import Space from '../components/Space';
 import TreeCard from '../components/TreeCard';
 
-//ICONES (pendent de modificar estètica)
-import CorBuit from '../assets/icons/PROV_Cor_BUIT.svg';
-import CorPle from '../assets/icons/PROV_Cor_PLE.svg';
-import PendentBuit from '../assets/icons/PROV_Pendent_BUIT.svg';
-import PendentPle from '../assets/icons/PROV_Pendent_PLE.svg';
-import UllBuit from '../assets/icons/PROV_Ull_BUIT.svg';
-import UllPle from '../assets/icons/PROV_Ull_PLE.svg';
+//ICONES
+import CorBuit from '../assets/icons/Like.svg?react';
+import CorPle from '../assets/icons/Like_filled.svg?react';
+import PendentBuit from '../assets/icons/Guardar.svg?react';
+import PendentPle from '../assets/icons/Guardar_filled.svg?react';
+import UllBuit from '../assets/icons/Ull.svg?react';
+import UllPle from '../assets/icons/Ull_filled.svg?react';
 
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
-import ImatgeProvisional from '../assets/FotosArbres/Avet de Canejan_2.png';
-
 
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 
 const Biblioteca = () => {
-  // const navigate = useNavigate();
-
+  const [searchParams, setSearchParams] = useSearchParams();
   //ESTAT PESTANYES: 'preferits' | 'visitats' | 'pendents'
-  const [activeTab, setActiveTab] = useState('preferits');
-  
+const activeTab = searchParams.get('tab') || 'preferits';  
   //ESTAT DADES
   const [arbres, setArbres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +65,7 @@ const Biblioteca = () => {
   const handleTabChange = (tab) => {
     if (activeTab !== tab) {
       setArbres([]); // Netejem llista visualment abans de carregar la nova
-      setActiveTab(tab);
+      setSearchParams({ tab: tab });    
     }
   };
 
@@ -84,11 +80,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'preferits' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('preferits')}
         >
-          <img 
-            src={activeTab === 'preferits' ? CorPle : CorBuit} 
-            alt="Preferits" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'preferits' ? (
+             <CorPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <CorBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Preferits</span>
         </button>
 
@@ -100,11 +96,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'visitats' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('visitats')}
         >
-          <img 
-            src={activeTab === 'visitats' ? UllPle : UllBuit} 
-            alt="Visitats" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'visitats' ? (
+             <UllPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <UllBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Visitats</span>
         </button>
 
@@ -116,11 +112,11 @@ const Biblioteca = () => {
           className={`tab-item ${activeTab === 'pendents' ? 'actiu' : ''}`}
           onClick={() => handleTabChange('pendents')}
         >
-          <img 
-            src={activeTab === 'pendents' ? PendentPle : PendentBuit} 
-            alt="Pendents" 
-            style={{width:'24px'}} 
-          />
+          {activeTab === 'pendents' ? (
+             <PendentPle style={{ width:'24px', color: 'var(--blau)' }} />
+          ) : (
+             <PendentBuit style={{ width:'24px', color: 'var(--negre)' }} />
+          )}
           <span className="tab-text">Pendents</span>
         </button>
 
@@ -152,11 +148,8 @@ const Biblioteca = () => {
                 comarca={item.arbres?.comarques?.comarca}            
                 height={item.arbres?.alcada}
                 trunkWidth={item.arbres?.gruix}
-                crownWidth={item.arbres?.capcal}
-                
-                // Imatge provisional
-                imageSrc={ImatgeProvisional} 
-              />
+                crownWidth={item.arbres?.capcal}              
+                />
 
               <Divider />
             </React.Fragment>
