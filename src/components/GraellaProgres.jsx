@@ -4,7 +4,7 @@ import './GraellaProgres.css';
 
 import TreeIcon from '../assets/icons/Tree.svg?react';
 
-const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
+const API_KEY = import.meta.env.VITE_API_KEY;
 const URL_VISITATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?es_visitat=eq.true&select=arbre_id';
 const TOTAL_ARBRES = 234;
 
