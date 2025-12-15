@@ -1,5 +1,46 @@
-.Titulo{
-    text-align: center;
-    font-size: 20px;    
-    color: var(--negre);
+.header-container {
+  width: 100%;
+  background-color: var(--blau-clar);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0px 0px 0px;
+  
+  /* border: 1px solid rgb(0, 4, 255); */
+}
+
+.Titol {
+  font-family: var(--font-cos);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--negre);
+  margin: 0;
+}
+
+/* A PARTIR D'AQUÍ FET COMPLETAMENT AMB IA */
+.tree-icon {
+  transition: transform 0.6s ease-in-out;
+  transform: rotate(0deg);
+  /* Assegurem que per defecte faci servir el color normal (currentColor) */
+  fill: currentColor; 
+}
+
+/* Quan activem l'animació */
+.tree-icon.activa {
+  animation: girar-random 2.5s cubic-bezier(0.7, 0, 1, 1) forwards;}
+
+/* --- AQUESTA ÉS LA PART DEL COLOR --- */
+/* Quan està activa, busquem qualsevol "path" o forma dins l'SVG i li apliquem el gradient */
+.tree-icon.activa path,
+.tree-icon.activa polygon,
+.tree-icon.activa rect {
+  /* Utilitzem l'ID que hem definit al JSX */
+  fill: url(#gradient-bruixola) !important;
+}
+
+
+@keyframes girar-random {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(var(--desti-final)); }
 }

@@ -2,46 +2,46 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; //Per navegar
 import './TreeCard.css';
 
-// Importem la imatge de seguretat (Fallback)
+// Imatge de seguretat
 import DefaultImage from '../assets/icons/Imatge.svg'; 
 
-import iconLocation from '../assets/icons/Ubication.svg';
-import iconHeight from '../assets/icons/Alcada.svg';
-import iconTrunk from '../assets/icons/Amplada.svg';
-import iconCrown from '../assets/icons/Capcal.svg';
+import IconLocation from '../assets/icons/Ubication.svg?react';
+import IconHeight from '../assets/icons/Alcada.svg?react';
+import IconTrunk from '../assets/icons/Amplada.svg?react';
+import IconCrown from '../assets/icons/Capcal.svg?react';
+
+//URL Supabase imatges
+const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
 
 const TreeCard = ({ 
-  id,
-  name,          // Nom de l'arbre
-  titleColor,   // Color del títol ('blau' o 'negre')
-  imageSrc,      // La foto de l'arbre (pot venir buida)
-  municipality,      // Text: Ubicació
-  comarca,         // Text: Comarca
-  height,        // Text: Alçada
-  trunkWidth,    // Text: Amplada tronc
-  crownWidth,    // Text: Amplada capçal
-
-  
-  
-}) => {
+    id,
+    name,
+    titleColor,
+    municipality,
+    comarca,
+    height,
+    trunkWidth,
+    crownWidth,
+  }) => {
 
   const navigate = useNavigate(); // Hook per moure'ns de pàgina
-
-  const displayImage = imageSrc ? imageSrc : DefaultImage;// Lògica de la imatge: Si 'imageSrc' existeix, la posem. Si no, posem 'DefaultImage'.
+  
+  // Construïm la URL de la imatge - "id_Sketch.png"
+  const supabaseImage = `${STORAGE_URL}/${id}_Sketch.png`;
 
   const locationText = `${municipality || "?"}, ${comarca || "?"}`;// Resultat: "Girona, Gironès"
 
   // Funció que s'executa quan cliquem la targeta
   const handleCardClick = () => {
     // Això ens portarà a: /biblioteca/15 (per exemple)
-    navigate(`/biblioteca/${id}`);
+    navigate(`/cercar/${id}`);
   };
 
-  // Helper per no repetir codi 4 vegades (Component intern petit)
-  const InfoRow = ({ icon, text }) => (
-    <div className="data-row">
-      {/* Si no passem icona, posem un quadrat buit per no trencar l'alineació */}
-      {icon ? <img src={icon} alt="" className="data-icon" /> : <div className="data-icon" />}
+  //Helper per no repetir codi 4 vegades (Component intern petit)
+  //Accepta 'Icon' (component) i 'color' (opcional)
+  const InfoRow = ({ Icon, text, color }) => (
+    <div className="data-row" style={{ color: color || 'var(--negre)' }}>
+      {Icon ? <Icon className="data-icon" /> : <div className="data-icon" />}
       <span className="data-text">{text || "-"}</span>
     </div>
   );
@@ -49,14 +49,18 @@ const TreeCard = ({
   return (
     <article className="tree-card" onClick={handleCardClick}>
       
-      {/* 1. Imatge (Esquerra) */}
+      {/* Imatge (Esquerra) */}
       <div className="card-image-container">
         <img 
-          src={displayImage} 
-          alt="Arbre" 
+          //URL de la imatge
+          src={supabaseImage} 
+          alt={name} 
           className="card-image" 
-          // Afegeix això per si la URL existeix però dona error 404
-          onError={(e) => { e.target.src = DefaultImage; }} 
+          //GESTIÓ D'ERRORS: Si la imatge no existeix a Supabase, posem la Default
+          onError={(e) => { 
+            e.target.onerror = null; // Evita bucle infinit
+            e.target.src = DefaultImage; 
+          }} 
         />
       </div>
 
@@ -70,16 +74,13 @@ const TreeCard = ({
         
         
         {/* Fila 1: Ubicació */}
-        <InfoRow icon={iconLocation} text={locationText}/>
-        
-        {/* Fila 2: Alçada Arbre */}
-        <InfoRow icon={iconHeight} text={height ? `${height}m` : "-"} />
-        
-        {/* Fila 3: Amplada Tronc */}
-        <InfoRow icon={iconTrunk} text={trunkWidth ? `${trunkWidth}m` : "-"} />
-        
-        {/* Fila 4: Amplada Capçal */}
-        <InfoRow icon={iconCrown} text={crownWidth ? `${crownWidth}m` : "-"} />
+        <InfoRow Icon={IconLocation} text={locationText} color="var(--negre)" /> 
+        {/* Fila 2: Alçada */}
+        <InfoRow Icon={IconHeight} text={height ? `${height}m` : "-"} color="var(--negre)" />
+        {/* Fila 3: Amplada tronc */}
+        <InfoRow Icon={IconTrunk} text={trunkWidth ? `${trunkWidth}m` : "-"} color="var(--negre)" />
+        {/* Fila 4: Amplada capçalera */}
+        <InfoRow Icon={IconCrown} text={crownWidth ? `${crownWidth}m` : "-"} color="var(--negre)" />
 
       </div>
 

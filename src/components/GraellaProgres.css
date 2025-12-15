@@ -1,0 +1,47 @@
+.graella-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr); 
+  gap: 4px; 
+  justify-items: center;
+  align-items: center;
+  
+  padding: 0;
+  margin: 0px 0; /* Marge vertical per si em cal */
+}
+
+/* LA CASELLA */
+.graella-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Per assegurar que no es deformi */
+  aspect-ratio: 1 / 1; 
+  cursor: pointer;
+}
+
+.graella-item:active {
+  transform: scale(0.9); /* Petit efecte de prémer botó */
+}
+
+/* L'ARBRE (Visitat) */
+.icona-arbre-graella {
+  width: 18px; 
+  height: 18px;
+  display: block; 
+
+  color: var(--blau); 
+  
+  /* Color verd */
+  /* color: #2E7D32;  */
+}
+
+/* EL CERCLE (No Visitat) */
+.cercle-graella {
+  width: 5px;
+  height: 5px;
+  background-color: var(--negre-fluix);
+  border-radius: 50%; /* Això el fa rodó */
+  opacity: 0.5;
+}
