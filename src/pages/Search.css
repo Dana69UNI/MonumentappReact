@@ -1,162 +1,280 @@
 .search-page-container {
-
   width: 100%;
-
   box-sizing: border-box;
-
+  position: relative; /* Necessari per posicionar els filtres absoluts */
 }
-
-
 
 /* CONTENIDOR DE LA BARRA DE CERCA */
-
 .search-bar {
-
   display: flex;
-
   align-items: center;
-
   gap: 5px;
-
   border: 1px solid var(--negre-fluix);
-
   border-radius: 16px;
-
   padding: 2px 5px;
-
   margin: 15px 0px 10px 0px;
-
 }
-
-
 
 /* L'INPUT (ON S'ESCRIU) */
-
 .search-input {
-
   border: none;
-
-  outline: none; /* Treiem la línia blava per defecte del navegador */
-
+  outline: none; 
   width: 100%;
-
   background: transparent;
-
   font-family: var(--font-principal);
-
   font-size: 18px;
-
   color: var(--negre);
-
 }
-
-
 
 /* Estil del text placeholder */
-
 .search-input::placeholder {
-
   color: var(--negre-fluix);
-
   font-size: 15px;
-
 }
-
-
 
 .no-results {
-
   text-align: center;
-
   color: var(--negre-fluix);
-
   margin-top: 40px;
-
   font-family: var(--font-principal);
-
 }
-
-
 
 /* FILTRAR I ORDENAR */
-
 .actions-container {
-
   width: 100%;
-
   display: flex;
-
   flex-direction: row;
-
   justify-content: space-evenly;
-
   align-items: center;
-
- 
-
-  /* Padding top i bottom de 4 */
-
-  padding: 0px 0;
-
- 
-
-  /* border: 1px solid red; */
-
+  padding: 4px 0; 
 }
-
-
 
 /* Cada element (Filtrar / Ordenar) */
-
 .action-item {
-
   display: flex;
-
   flex-direction: row;
-
   align-items: center;
-
   justify-content: center;
-
-  gap: 5px; /* Gap de 5 */
-
- 
-
-  /* Amplada fill (ocupa la meitat cadascun) */
-
-  flex: 1;
-
-  height: fit-content; /* Alçada hug */
-
+  gap: 5px;
+  flex: 1; 
+  height: fit-content;
 }
-
-
 
 .action-text {
-
   font-family: var(--font-titols);
-
-  font-size: 26px; /* Ajusta la mida si ho veus petit */
-
+  font-size: 26px;
   font-weight: 700;
-
   color: var(--negre);
-
 }
-
-
 
 /* Separador Vertical */
-
 .vertical-sep {
-
   width: 1px;
-
   height: 24px;
-
   background-color: var(--negre-fluix);
-
   opacity: 0.6;
-
 }
 
+
+/* SECCIÓ FILTRES DESPLEGABLE  */
+
+/* PANELL PRINCIPAL FILTRES (Alineat Esquerra) */
+.filters-panel {
+    position: fixed; /* Per sobre de tot (inclús del body) */
+    top: 130px; /* Ajustar segons alçada searchbar + actions */
+    left: 0;
+    width: 100%;
+    background-color: var(--blanc);
+    padding: 15px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    z-index: 2001; /* Per sobre de resultats i overlay (2000) */
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box; /* Sinó es desborda */
+}
+
+/* PANELL PRINCIPAL ORDENAR (Alineat Dreta) */
+.sort-panel {
+    position: fixed; /* Per sobre de tot (inclús del body) */
+    top: 130px; /* Ajustar segons alçada searchbar + actions */
+    left: 0;
+    width: 100%;
+    background-color: var(--blanc);
+    padding: 15px 0 20px 0; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px; /* Modificat respecte Filtres */
+    z-index: 2001; 
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+}
+
+/* OVERLAY (FONS NEGRE) */
+.filters-overlay {
+    position: fixed; /* Ocupa tota la pantalla */
+    top: 180px; /* Comença per sota dels filtres */
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000; /* Prioritat 2000 perquè estigui sota dels desplegables */
+    pointer-events: auto; /* Clics bloquejats */
+    touch-action: none; /* Scroll bloquejat */
+}
+
+
+/* DESPLEGABLES PERSONALITZATS */
+/* Estil per defecte, no actiu */
+.custom-select-container {
+    position: relative;
+    width: 75%;
+    height: fit-content;
+    background-color: var(--blanc);
+    border: 0.8px solid var(--negre-fluix);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+/* Estil ACTIU (Fons Blau) */
+.custom-select-container.actiu {
+    background-color: var(--blau);
+    border-color: var(--blau);
+}
+
+/* Botó select */
+.custom-select-container select {
+    appearance: none; /* Treiem estil per defecte navegador */
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-cos);
+    font-size: 18px;
+    color: var(--negre-fluix);
+    z-index: 2;
+    cursor: pointer;
+}
+
+/* Text quan està actiu */
+.custom-select-container.actiu select {
+    color: var(--blanc);
+}
+
+/* Icona Fletxa */
+.select-arrow {
+    position: absolute;
+    right: 10px;
+    width: 25px;
+    height: 25px;
+    pointer-events: none; /* Pq el click passi al select */
+    transform: rotate(-90deg);
+    color: var(--negre-fluix); 
+    z-index: 1;
+}
+
+/* Icona quan actiu */
+.custom-select-container.actiu .select-arrow {
+    color: var(--blanc);
+}
+
+
+/* BOTONS ESTAT (Tots, Vius, Morts) */
+.estat-buttons-container {
+    width: 75%;
+    display: flex;
+    justify-content: space-between; /* Repartir espai igual */
+    gap: 10px;
+}
+
+/* BOTÓ estil NO ACTIU */
+.estat-btn {
+    flex: 1; /* Ocupen el mateix */
+    padding: 6px 0;
+    background-color: var(--blanc);
+    border: 0.8px solid var(--negre-fluix);
+    border-radius: 8px;
+    font-family: var(--font-cos);
+    font-size: 16px;
+    color: var(--negre-fluix);
+    cursor: pointer;
+}
+
+/* Estil ACTIU */
+.estat-btn.actiu {
+    background-color: var(--blau);
+    border-color: var(--blau);
+    color: var(--blanc);
+}
+
+
+/* BOTONS ACCIÓ (Borrar / Aplicar) */
+.filter-actions-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* Repartir espai igual (un a cada costat) */
+    margin-top: 10px;
+}
+
+.btn-borrar {
+    background-color: var(--blanc);
+    border: 1px solid var(--negre-fluix);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: var(--font-titols);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--negre-fluix);
+    cursor: pointer;
+}
+
+.btn-aplicar {
+    background-color: var(--blau);
+    border: 1px solid var(--blau);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: var(--font-titols);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--blanc);
+    cursor: pointer;
+}
+
+
+/* NOUS BOTONS D'ORDRE  */
+/* Estil NO ACTIU */
+.sort-option-btn {
+    width: 80%;
+    height: fit-content;
+    padding: 4px 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start; /* Alineat esquerra */
+    gap: 8px;
+    background-color: var(--blanc);
+    border: 0.8px solid var(--negre-fluix);
+    border-radius: 8px;
+    font-family: var(--font-cos);
+    font-size: 18px;
+    color: var(--negre-fluix);
+    cursor: pointer;
+}
+
+/* Quan està actiu */
+.sort-option-btn.actiu {
+    background-color: var(--blau);
+    border-color: var(--blau);
+    color: var(--blanc);
+}
+
+.sort-option-btn svg {
+    flex-shrink: 0;
+}

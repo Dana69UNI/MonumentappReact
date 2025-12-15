@@ -1,27 +1,22 @@
-/* src/pages/Home.css */
-
 /* CONTENIDOR PRINCIPAL DE LA PÀGINA */
 .home-container {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Figma: Align Top Center */
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
 
   /* border: 1px solid rgb(17, 255, 0); */
-
 }
 
-/* ESTIL REUTILITZABLE PER A SECCIONS (Arbres recomanats, etc.) */
+/* ESTIL REUTILITZABLE PER A SECCIONS */
 .home-section {
   width: 100%;
-  padding: 0 0px; /* Marges laterals estàndard mòbil */
-  box-sizing: border-box; /* Pq el padding no sumi ample */
-  
+  padding: 0 0px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Figma: Align Top Left */
-  gap: 5px; /* Figma: Gap 5 */
+  align-items: flex-start;
+  gap: 5px;
 
   /* border: 1px solid rgb(242, 0, 255); */
 }
@@ -29,10 +24,9 @@
 /* TÍTOLS DE SECCIÓ (Reutilitzable) */
 .section-title {
   font-family: var(--font-titols);
-  font-size: 32px; /* Mida estàndard per títols de secció (ajusta-la si cal) */
+  font-size: 32px;
   font-weight: 700;
   color: var(--blau);
-  text-transform: uppercase; /* Opcional: Si a Figma està en majúscules */
   margin: 0;
 }
 
@@ -40,39 +34,32 @@
 .horizontal-scroll-container {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* Figma: Align Top Left */
-  gap: 10px; /* Figma: Gap 10 */
-  
+  align-items: flex-start;
+  gap: 10px;
   width: 100%;
   overflow-x: auto; /* PERMET SCROLL */
   overflow-y: hidden;
-  
-  /* Truc per amagar la barra de scroll i que sembli app nativa */
+
+  /* Truc per amagar la barra de scroll i que sembli app nativa (IA) */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
 }
-/* Amagar barra scroll Chrome/Safari/Opera */
+/* Amagar barra scroll Chrome/Safari/Opera (IA) */
 .horizontal-scroll-container::-webkit-scrollbar {
   display: none;
 }
 
 /* ÍTEM INDIVIDUAL (L'ARBRE) */
 .recommended-item {
-  /* Figma: Amplada 100 */
   width: auto;
-  
-  /* Important: Això evita que s'axafin quan n'hi ha molts */
-  flex-shrink: 0; 
-  
+  flex-shrink: 0;   /* Important: Això evita que s'axafin quan n'hi ha molts */
   display: flex;
   flex-direction: column;
-  align-items: center; /* Figma: Align Top Center */
-  gap: 5px; /* Figma: Gap 5 */
-  
-  cursor: pointer; /* Feedback visual */
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
 
   /* border: 1px solid rgb(255, 0, 0); */
-
 }
 
 /* IMATGE DE L'ÍTEM */
@@ -81,18 +68,17 @@
   height: 120px;
   object-fit: cover; /* Retalla la imatge quadrada perfecta */
   display: block;
-  border-radius: 10px; /* Opcional: sol quedar millor que quadrat pur */
+  border-radius: 10px;
 }
 
-/* NOM DE L'ÍTEM */
+/* NOM DE L'ÍTEM d'Arbres Recomenats */
 .rec-name {
   font-family: var(--font-titols);
-  font-size: 16px; /* Figma: Text 20 */
-  font-weight: 700; /* Assumint negreta per ser "font titol" */
+  font-size: 16px;
+  font-weight: 700;
   color: var(--negre);
-  text-align: center; /* Figma: Aligned Center */
+  text-align: center;
   line-height: 1.1;
-  
   width: 120px;
 
   /* border: 1px solid rgb(17, 255, 0); */

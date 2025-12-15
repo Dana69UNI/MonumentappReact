@@ -8,31 +8,23 @@ import Search from './pages/Search'
 import New from './pages/New'
 import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
-import ArbreDetail from './pages/ArbreDetail'
+import ArbreDetall from './pages/ArbreDetail';
 
-// Com a prova pàgina de TEST
-import Test from './pages/Test';
-
+//comentari per borrar
+//jaja ara he vist que el tenia i m'ha fet gràcia jjaja t'hi quedes xatoo
 
 function App() {
   return (
     <BrowserRouter>
       {/* El contingut principal canvia segons la ruta */}
-      <div className="app-content">
+      <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cercar" element={<Search />} />
           <Route path="/nou" element={<New />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
           <Route path="/perfil" element={<Perfil />} />
-          <Route path="/arbre/:id" element={<ArbreDetail />} />
-
-
-          {/* Per acabar de fer */}
-          {/* <Route path="/biblioteca/:id" ... /> */}
-
-          {/* Ruta de prova per a la pàgina Test */}
-          <Route path="/test" element={<Test />} />
+          <Route path="/cercar/:id" element={<ArbreDetall />} />
         </Routes>
       </div>
 

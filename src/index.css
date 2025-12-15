@@ -15,7 +15,6 @@
 
 body {
   /* Apliquem la font base a tota l'aplicació per defecte */
-  
   font-family: var(--font-cos);
   color: var(--negre);
 
@@ -25,7 +24,7 @@ body {
   padding-right: 0px;
 }
 
-/* Opcional: Si vols que tots els H1, H2, H3 tinguin l'altra font */
+/* Apliquem la font de títols a tots ja per defecte */
 h1, h2, h3 h4, h5, h6 {
   font-family: var(--font-titols);
 }
