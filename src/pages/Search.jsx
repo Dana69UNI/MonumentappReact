@@ -4,19 +4,17 @@ import TreeCard from '../components/TreeCard.jsx';
 import Divider from '../components/Divider.jsx';
 import Space from '../components/Space.jsx';
 
+// Icones
 import IconSearch from '../assets/icons/Search.svg?react';
 import IconFilter from '../assets/icons/Filtre.svg?react';
 import IconOrder from '../assets/icons/Ordenar.svg?react';
-// Icones necessàries per ordre (encara que ara ens centrem en filtre)
 import IconHeight from '../assets/icons/Alcada.svg?react';
 import IconTrunk from '../assets/icons/Amplada.svg?react';
 import IconCrown from '../assets/icons/Capcal.svg?react';
 import Tree from '../assets/icons/Tree.svg?react';
-// Fletxa per als desplegables
 import Fletxa from '../assets/icons/Enrere.svg?react';
 
-// URL i KEY correctes
-// Nota: Utilitzem 'estat' perquè així està a la select, tot i que a la descripció deies arbres_estat.
+// URL i KEY
 const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id,nom,municipi,alcada,gruix,capcal,estat,comarques(comarca),proteccio(tipus)&order=id.asc';
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kaGFvbGZ0cmd5d3V6YWR1c3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI0NDg4ODQsImV4cCI6MjA3ODAyNDg4NH0.OVnvm5i10aYbnBdYph9EO2x6-k9Ah_Bro8UF4QfAH7Q';
 
@@ -26,7 +24,7 @@ const Search = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // --- ESTATS NOUS PER FILTRES ---
+  //Estat pels FILTRES
   const [showFilters, setShowFilters] = useState(false); // Per obrir/tancar el panell
   const [showSort, setShowSort] = useState(false); // Per obrir/tancar el panell ORDENAR
   
@@ -48,11 +46,9 @@ const Search = () => {
     estat: 'tots'
   });
 
-  // --- ESTAT PER ORDENAR ---
-  // null = Recomanat (ordre per defecte)
+  // Estats per Ordenar (null = recomanat)
   // { field: 'alcada', direction: 'desc' } ...
   const [sortOrder, setSortOrder] = useState(null);
-
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -91,10 +87,10 @@ const Search = () => {
     fetchPosts(); 
   }, []); 
 
-  // --- HANDLERS FILTRES ---
 
+  // FILTRES
   const toggleFilterPanel = () => {
-    if (showSort) setShowSort(false); // Si ordre està obert, el tanquem
+    if (showSort) setShowSort(false); // Si Ordenar està obert, el tanquem
 
     if (!showFilters) {
         // Al obrir, sincronitzem els temporals amb els aplicats
@@ -112,12 +108,12 @@ const Search = () => {
     const resetState = { comarca: '', proteccio: '', estat: 'tots' };
     setTempFilters(resetState);
     setAppliedFilters(resetState);
-    // No tanquem el panell automàticament al borrar
+    // Per usabilitat no tanquem el panell automàticament al borrar 
   };
 
-  // --- HANDLERS ORDENAR ---
+  // Ordenar
   const toggleSortPanel = () => {
-    if (showFilters) setShowFilters(false); // Si filtres està obert, el tanquem
+    if (showFilters) setShowFilters(false); // Si Filtrar està obert, el tanquem
     setShowSort(!showSort);
   }
 
@@ -138,12 +134,12 @@ const Search = () => {
   const hasActiveSort = sortOrder !== null;
 
 
-  //FILTRATGE I ORDENACIÓ
-  //variable que només tindrà els arbres que coincideixin amb la cerca, filtres i ordre.
+  // FILTRATGE I ORDENACIÓ
+  // Variable que només tindrà els arbres que coincideixin amb la cerca, filtres i ordre.
   
-  // 1. FILTREM
+  // BÚSQUEDA
   let processedPosts = posts.filter((arbre) => {
-    // 1. Text Search
+    // Busqueda de TEXT (proteccions de majúscules/minúscules)
     let matchesSearch = true;
     if (searchTerm !== '') {
         const term = searchTerm.toLowerCase();
@@ -153,7 +149,7 @@ const Search = () => {
         matchesSearch = matchNom || matchMunicipi || matchComarca;
     }
 
-    // 2. Filtres
+    // FILTRATGE
     // Comarca
     let matchesComarca = true;
     if (appliedFilters.comarca !== '') {
@@ -176,7 +172,7 @@ const Search = () => {
     return matchesSearch && matchesComarca && matchesProteccio && matchesEstat;
   });
 
-  // 2. ORDENEM (Si cal)
+  // ORDENAR
   if (sortOrder) {
       const { field, direction } = sortOrder;
       processedPosts.sort((a, b) => {
@@ -189,17 +185,7 @@ const Search = () => {
   }
 
 
-  // NOU BLOQUEIG DE SCROLL (Si qualsevol dels dos modals està obert)
-  useEffect(() => {
-    if (showFilters || showSort) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    return () => { document.body.style.overflow = 'auto'; };
-  }, [showFilters, showSort]);
-
-
+  
   if (loading) {
     return <div>Carregant Arbres...</div>;
   }
@@ -207,77 +193,52 @@ const Search = () => {
     return <div>Error: {error}</div>;
   }
 
+
   return (
     // CONTENIDOR PRINCIPAL
     <div className="search-page-container"> 
           
       {/* BARRA DE CERCA */}
       <div className="search-bar">
-        {/* Icona de color negre fluix */}
-        <IconSearch style={{ width: '50px', color: 'var(--negre-fluix)' }} />
-        
+        <IconSearch style={{ width: '50px', color: 'var(--negre-fluix)' }} />        
         <input type="text" className="search-input" placeholder="Cercar arbre, comarca o municipi" value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)} // Actualitzem estat al escriure
+          onChange={(e) => setSearchTerm(e.target.value)} // Actualitzem estat al escriure en cada canvi
         />
       </div>
 
-      {/* FILTRAR I ORDENAR */}
-      {/* FILTRAR I ORDENAR */}
+      {/* BOTONS FILTRAR I ORDENAR */}
       <div className="actions-container">
         
         {/* Botó Filtrar */}
-        <div 
-            className="action-item" 
-            onClick={toggleFilterPanel} 
-            style={{ cursor: 'pointer' }}
-        >
-            <IconFilter 
-                style={{ 
-                    width: '30px', 
-                    // 1. Si Ordenar obert -> fluix. 2. Si Filtres obert o actius -> blau. 3. Sino -> negre
-                    color: showSort ? 'var(--negre-fluix)' : (showFilters || hasActiveFilters ? 'var(--blau)' : 'var(--negre)') 
-                }} 
-            />
-            <span 
-                className="action-text" 
-                style={{ 
-                    color: showSort ? 'var(--negre-fluix)' : (showFilters || hasActiveFilters ? 'var(--blau)' : 'var(--negre)') 
-                }}
-            >
-                Filtrar
-            </span>
+        <div className="action-item" onClick={toggleFilterPanel} style={{ cursor: 'pointer' }}>
+            <IconFilter style={{width: '30px', 
+              // Si Ordenar obert -> negre-fluix.  //  Si Filtres obert o actius -> blau.  //  Sino -> negre
+              color: showSort ? 'var(--negre-fluix)' : (showFilters || hasActiveFilters ? 'var(--blau)' : 'var(--negre)') 
+            }}/>
+            <span className="action-text" style={{ 
+              //Mateix color i lògica que la icona
+              color: showSort ? 'var(--negre-fluix)' : (showFilters || hasActiveFilters ? 'var(--blau)' : 'var(--negre)') 
+            }}>Filtrar</span>
         </div>
 
         {/* Separador Vertical */}
-        {/* Opcional: També el pots posar fluix si vols, però negre està bé */}
         <div className="vertical-sep"></div>
 
         {/* Botó Ordenar */}
-        <div 
-            className="action-item" 
-            onClick={toggleSortPanel} 
-            style={{ cursor: 'pointer' }}
-        >
-            <IconOrder 
-                style={{ 
-                    width: '30px', 
-                    // 1. Si Filtres obert -> fluix. 2. Si Ordenar obert o actiu -> blau. 3. Sino -> negre
-                    color: showFilters ? 'var(--negre-fluix)' : (showSort || hasActiveSort ? 'var(--blau)' : 'var(--negre)') 
-                }} 
-            />
-            <span 
-                className="action-text" 
-                style={{ 
-                    color: showFilters ? 'var(--negre-fluix)' : (showSort || hasActiveSort ? 'var(--blau)' : 'var(--negre)') 
-                }}
-            >
-                Ordenar
-            </span>
+        <div className="action-item" onClick={toggleSortPanel} style={{ cursor: 'pointer' }}>
+            <IconOrder style={{width: '30px', 
+              // Si Ordenar obert -> negre-fluix.  //  Si Filtres obert o actius -> blau.  //  Sino -> negre
+              color: showFilters ? 'var(--negre-fluix)' : (showSort || hasActiveSort ? 'var(--blau)' : 'var(--negre)') 
+            }} />
+            <span className="action-text" style={{ 
+              //Mateix color i lògica que la icona
+              color: showFilters ? 'var(--negre-fluix)' : (showSort || hasActiveSort ? 'var(--blau)' : 'var(--negre)') 
+            }}>Ordenar</span>
         </div>
 
       </div>
 
-      {/* --- PANELL DE FILTRES (DESPLEGABLE) --- */}
+      {/* DESPLEGABLE FILTRES */}
       {showFilters && (
         <>
             {/* OVERLAY NEGRE */}
@@ -285,7 +246,7 @@ const Search = () => {
 
             <div className="filters-panel">
                 
-                {/* 1. Desplegable Comarca */}
+                {/* Desplegable Comarca */}
                 <div className={`custom-select-container ${tempFilters.comarca ? 'actiu' : ''}`}>
                     <select 
                         value={tempFilters.comarca} 
@@ -294,11 +255,11 @@ const Search = () => {
                         <option value="">Comarca</option> {/* Placeholder */}
                         {llistaComarques.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
-                    {/* Icona fletxa customitzada a la dreta */}
+                    {/* Icona fletxa girada a la dreta */}
                     <Fletxa className="select-arrow" />
                 </div>
 
-                {/* 2. Desplegable Protecció */}
+                {/* Desplegable Protecció */}
                 <div className={`custom-select-container ${tempFilters.proteccio ? 'actiu' : ''}`}>
                     <select 
                         value={tempFilters.proteccio} 
@@ -310,7 +271,7 @@ const Search = () => {
                     <Fletxa className="select-arrow" />
                 </div>
 
-                {/* 3. Botons Estat (Tots, Vius, Morts) */}
+                {/* Botons Estat (Tots, Vius, Morts) */}
                 <div className="estat-buttons-container">
                     <button 
                         className={`estat-btn ${tempFilters.estat === 'tots' ? 'actiu' : ''}`}
@@ -326,14 +287,10 @@ const Search = () => {
                     >Morts</button>
                 </div>
 
-                {/* 4. Botons Acció (Borrar / Aplicar) */}
+                {/* Botons Acció (Borrar / Aplicar) */}
                 <div className="filter-actions-row">
-                    <button className="btn-borrar" onClick={handleClearFilters}>
-                        Borrar filtres
-                    </button>
-                    <button className="btn-aplicar" onClick={handleApplyFilters}>
-                        Aplicar
-                    </button>
+                    <button className="btn-borrar" onClick={handleClearFilters}>Borrar filtres</button>
+                    <button className="btn-aplicar" onClick={handleApplyFilters}>Aplicar</button>
                 </div>
 
             </div>
@@ -341,7 +298,7 @@ const Search = () => {
       )}
 
 
-      {/* --- PANELL D'ORDENAR (DESPLEGABLE DRETA) --- */}
+      {/* DESPLEGABLE ORDENAR */}
       {showSort && (
           <>
              {/* OVERLAY NEGRE (Comparteix estil amb filtres) */}
@@ -349,7 +306,7 @@ const Search = () => {
 
              <div className="sort-panel">
                 
-                {/* 1. RECOMANAT (Default) */}
+                {/* RECOMANAT (Default) */}
                 <button 
                     className={`sort-option-btn ${sortOrder === null ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('recomanat', '')}
@@ -358,7 +315,7 @@ const Search = () => {
                     <span>Recomanat</span>
                 </button>
 
-                {/* 2. ALÇADA (Alt -> Baix) */}
+                {/* ALÇADA (Alt -> Baix) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'alcada' && sortOrder?.direction === 'desc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('alcada', 'desc')}
@@ -367,7 +324,7 @@ const Search = () => {
                     <span>D'alt a baix</span>
                 </button>
 
-                {/* 3. ALÇADA (Baix -> Alt) */}
+                {/* ALÇADA (Baix -> Alt) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'alcada' && sortOrder?.direction === 'asc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('alcada', 'asc')}
@@ -376,7 +333,7 @@ const Search = () => {
                     <span>De baix a alt</span>
                 </button>
 
-                {/* 4. GRUIX (Gruixut -> Prim) */}
+                {/* GRUIX (Gruixut -> Prim) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'gruix' && sortOrder?.direction === 'desc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('gruix', 'desc')}
@@ -385,7 +342,7 @@ const Search = () => {
                     <span>De gruixut a prim</span>
                 </button>
 
-                {/* 5. GRUIX (Prim -> Gruixut) */}
+                {/* GRUIX (Prim -> Gruixut) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'gruix' && sortOrder?.direction === 'asc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('gruix', 'asc')}
@@ -394,7 +351,7 @@ const Search = () => {
                     <span>De prim a gruixut</span>
                 </button>
 
-                {/* 6. CAPÇAL (Gran -> Petit) */}
+                {/* CAPÇAL (Gran -> Petit) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'capcal' && sortOrder?.direction === 'desc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('capcal', 'desc')}
@@ -403,7 +360,7 @@ const Search = () => {
                     <span>Capçal gran a petit</span>
                 </button>
 
-                {/* 7. CAPÇAL (Petit -> Gran) */}
+                {/* CAPÇAL (Petit -> Gran) */}
                 <button 
                     className={`sort-option-btn ${sortOrder?.field === 'capcal' && sortOrder?.direction === 'asc' ? 'actiu' : ''}`}
                     onClick={() => handleSelectSort('capcal', 'asc')}
@@ -418,9 +375,9 @@ const Search = () => {
 
 
 
-      {/* AQUEST DIVIDER - Amb estil dinàmic pel padding */}
-      {/* Si Filters obert -> Padding Left 50% */}
-      {/* Si Sort obert -> Padding Right 50% */}
+      {/* DIVIDER SORA DE FILTRES I ORDENAR (estil dinàmic per ajustarse a qui estigui tancat) */}
+      {/* Si Filtres obert -> Padding Left 50% */}
+      {/* Si Ordenar obert -> Padding Right 50% */}
       <div style={{ 
           paddingLeft: showFilters ? '50%' : '0', 
           paddingRight: showSort ? '50%' : '0',
@@ -428,22 +385,13 @@ const Search = () => {
       }}>
         <Divider />
       </div>
-      {/* AQUEST DIVIDER */}
 
 
-{/* AQUI VAN ELS FILTRES (Estan posats a dalt condicionalment) */}
-
-
-      {/* RESULTATS */}
-
+      {/* MOSTREM ELS ARBRES (per fi) */}
       {/* Fem servir processedPosts (filtrats i ordenats) */}
-
       {processedPosts.length > 0 ? (
-
           processedPosts.map((arbre) => (
-
             <React.Fragment key={arbre.id}>
-
               <TreeCard
                 id={arbre.id}
                 name={arbre.nom}
@@ -454,32 +402,17 @@ const Search = () => {
                 trunkWidth={arbre.gruix}
                 crownWidth={arbre.capcal}
               />
-
               <Divider />
-
             </React.Fragment>
-
           ))
-
       ) : (
-
           /* Missatge si no trobem res */
-
           <div className="no-results">
-
               <p>No s'ha trobat resultats</p>
-
           </div>
-
       )}
-
-      
       <Space />
-
     </div>
-
   );
-  
 }
-
 export default Search;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; //Per navegar
+import { useNavigate } from 'react-router-dom';
 import './TreeCard.css';
 
 // Imatge de seguretat
@@ -64,7 +64,7 @@ const TreeCard = ({
         />
       </div>
 
-      {/* 2. Dades (Dreta) */}
+      {/* Dades (Dreta) */}
       <div className="card-data-container">
         
         {/* Triem la classe segons el que rebem a 'titleColor' */}

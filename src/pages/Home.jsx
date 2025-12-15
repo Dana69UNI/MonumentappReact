@@ -7,8 +7,7 @@ import Space from '../components/Space';
 import GraellaProgres from '../components/GraellaProgres';
 
 import './Home.css';
-
-// Importem la imatge per defecte (ja que l'API no ens en dona cap de moment)
+//IMATGE PER DEFECTE errors de càrrega
 import DefaultImage from '../assets/icons/Imatge.svg';
 
 
@@ -20,12 +19,9 @@ const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/inte
 //Imatges Supabase
 const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
 
-// --- BORRAR ---
 // Demanem només els camps necessaris per fer els càlculs
 const URL_COUNT_INTERACCIONS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?select=es_preferit,es_visitat,es_pendent';
 const URL_COUNT_TOTAL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id'; // Només IDs per saber el total
-// --- BORRAR ---
-
 
 const Home = () => {
   const navigate = useNavigate();
@@ -35,17 +31,13 @@ const Home = () => {
   const [repte, setRepte] = useState([]);
   const [ultimVisitat, setUltimVisitat] = useState([]);
 
-
-  // --- BORRAR ---
-  // NOU ESTAT PEL DIARI
+  // DIARI
   const [diari, setDiari] = useState({
     total: 0,
     preferits: 0,
     visitats: 0,
     pendents: 0
   });
-  // --- BORRAR ---
-
 
   const [loading, setLoading] = useState(true);
 
@@ -80,10 +72,6 @@ const Home = () => {
     };
 
     //Fetch DIARI
-
-
-    // --- BORRAR ---
-    // --- Fetch DIARI (NOU) ---
     const fetchDiari = async () => {
         try {
             // Fem dues crides en paral·lel: Total d'arbres i Totes les interaccions
@@ -114,9 +102,6 @@ const Home = () => {
             console.error("Error carregant diari:", error);
         }
     };
-  // --- BORRAR ---
-
-
 
     //Fetch ULTIM ARBRE VISITAT
     const fetchUltimVisitat = async () => {
@@ -133,6 +118,7 @@ const Home = () => {
     };
 
 
+
     //---------------
     //EXECUCIÓ GLOBAL
     //---------------
@@ -142,20 +128,11 @@ const Home = () => {
       // Aquí cridem a totes les funcions
       await fetchRecomanats();
       await fetchRepte();
-      //DIARI
-
-
-      // --- BORRAR ---
       await fetchDiari();
-      // --- BORRAR ---
-
-
       await fetchUltimVisitat();     
       setLoading(false);
     };
-
     carregarTot();
-
   }, []);
 
 
@@ -166,7 +143,7 @@ const Home = () => {
       <Header />
       <Divider />
 
-    {/* --- SECCIÓ 1: ARBRES RECOMANATS --- */}
+    {/* SECCIÓ 1: ARBRES RECOMANATS */}
       <section className="home-section">
         <h2 className="section-title">ARBRES RECOMANATS</h2>
         
@@ -198,7 +175,7 @@ const Home = () => {
 
       <Divider />
       
-      {/* --- SECCIÓ 2: REPTE DEL MES --- */}
+      {/* SECCIÓ 2: REPTE DEL MES */}
 
       <section className="home-section">
         <h2 className="section-title">REPTE DEL MES</h2>
@@ -211,16 +188,13 @@ const Home = () => {
               {item.descripcio}
             </p>
 
-            {/* Cridem al TreeCard reutilitzable */}
+            {/* Cridem al TreeCard compoent */}
             <TreeCard 
               id={item.arbre_id}
-              
               name={item.arbres?.nom}
               titleColor="negre"
-              
               municipality={item.arbres?.municipi}
               comarca={item.arbres?.comarques?.comarca}
-              
               height={item.arbres?.alcada}
               trunkWidth={item.arbres?.gruix}
               crownWidth={item.arbres?.capcal}              
@@ -231,37 +205,35 @@ const Home = () => {
       
       <Divider />
 
-      {/* --- SECCIÓ 3: DIARI --- */}
+      {/* SECCIÓ 3: DIARI (arreglar en un futur) */}
       <section className="home-section">
         <h2 className="section-title">DIARI</h2>
-        
-        {/* --- BORRAR --- */}
-        {/* Llista simple com has demanat */}
+
+        {/* Text simple (sense icona. S'haurà de canviar en un futur) */}
         <div style={{ marginTop: '5px', fontSize: '16px', color: 'var(--negre)' }}>
             <p style={{ margin: '5px 0' }}>
                 Preferits: <strong>{diari.preferits}/{diari.total}</strong>
             </p>
+
             <p style={{ margin: '5px 0' }}>
                 Visitats: <strong>{diari.visitats}/{diari.total}</strong>
             </p>
+
             <p style={{ margin: '5px 0' }}>
                 Pendents: <strong>{diari.pendents}/{diari.total}</strong>
             </p>
 
+            {/* Graella de progrés */}
             <div style={{ width: '100%', marginTop: '10px' }}>
               <GraellaProgres />
             </div>
             
         </div>
-        {/* --- BORRAR --- */}
-
-
       </section>
 
       <Divider />
 
-      {/* --- SECCIÓ 4: ÚLTIM ARBRE VISITAT --- */}
-
+      {/*  SECCIÓ 4: ÚLTIM ARBRE VISITAT  */}
       <section className="home-section">
         <h2 className="section-title">ÚLTIM ARBRE VISITAT</h2>
         
@@ -283,13 +255,10 @@ const Home = () => {
 
               <TreeCard 
                 id={item.arbre_id} 
-                
                 name={item.arbres?.nom}
                 titleColor="negre" 
-                
                 municipality={item.arbres?.municipi}
                 comarca={item.arbres?.comarques?.comarca} 
-                
                 height={item.arbres?.alcada}
                 trunkWidth={item.arbres?.gruix}
                 crownWidth={item.arbres?.capcal}

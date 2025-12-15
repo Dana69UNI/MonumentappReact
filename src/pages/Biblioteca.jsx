@@ -29,7 +29,7 @@ const activeTab = searchParams.get('tab') || 'preferits';
   //CÀRREGA DE DADES
   useEffect(() => {
     
-    //Determinem la crida a l'APIsegons la pestanya activa
+    //Determinem la crida a l'API segons la pestanya activa
     let filtreInteraccio = '';
     if (activeTab === 'preferits') filtreInteraccio = 'es_preferit=eq.true';
     else if (activeTab === 'visitats') filtreInteraccio = 'es_visitat=eq.true';
@@ -72,7 +72,7 @@ const activeTab = searchParams.get('tab') || 'preferits';
   return (
     <div className="biblioteca-container">
       
-      {/* --- BARRA DE NAVEGACIÓ SUPERIOR --- */}
+      {/* BARRA DE NAVEGACIÓ SUPERIOR */}
       <div className="tabs-container">
         
         {/* PREFERITS */}
@@ -125,7 +125,7 @@ const activeTab = searchParams.get('tab') || 'preferits';
       <Divider />
 
 
-      {/* --- LLISTA D'ARBRES --- */}
+      {/* LLISTA D'ARBRES */}
       <div className="llista-arbres">
         
         {loading ? (
@@ -135,15 +135,11 @@ const activeTab = searchParams.get('tab') || 'preferits';
             //IMPORTAAAANT!!! item.arbres conté tota la info de l'arbre gràcies al JOIN (*).
             //Ojuuu amb com arriben les dades.
             <React.Fragment key={item.arbre_id}>
-              <TreeCard 
-                //key={item.arbre_id} // Clau única
-    
+              <TreeCard     
                 id={item.arbre_id}  // Per navegar al detall
                 basePath="/biblioteca"
-
                 name={item.arbres?.nom}
                 titleColor="blau"
-                
                 municipality={item.arbres?.municipi}
                 comarca={item.arbres?.comarques?.comarca}            
                 height={item.arbres?.alcada}

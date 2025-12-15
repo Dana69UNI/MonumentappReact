@@ -188,10 +188,9 @@ const ArbreDetall = () => {
       imatgesGaleria.push(VisitatPlaceholder);
   }
 
-  //Després sempre van Sketch i Original
-  imatgesGaleria.push(`${STORAGE_URL}/${id}_Sketch.png`);
+  //Després sempre van Original i Sketch
   imatgesGaleria.push(`${STORAGE_URL}/${id}_Original.jpg`);
-
+  imatgesGaleria.push(`${STORAGE_URL}/${id}_Sketch.png`);
 
   //Donem estil: "Monumental, Parc Nacional - 1995"
   let textProteccio = "-";

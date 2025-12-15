@@ -46,9 +46,7 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  
-  /* Padding top i bottom de 4 */
-  padding: 4px 0; /* (He posat 4px tal com demanaves) */
+  padding: 4px 0; 
 }
 
 /* Cada element (Filtrar / Ordenar) */
@@ -57,16 +55,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 5px; /* Gap de 5 */
-  
-  /* Amplada fill (ocupa la meitat cadascun) */
+  gap: 5px;
   flex: 1; 
-  height: fit-content; /* Alçada hug */
+  height: fit-content;
 }
 
 .action-text {
   font-family: var(--font-titols);
-  font-size: 26px; /* Ajusta la mida si ho veus petit */
+  font-size: 26px;
   font-weight: 700;
   color: var(--negre);
 }
@@ -80,42 +76,39 @@
 }
 
 
-/* --- SECCIÓ FILTRES DESPLEGABLE --- */
+/* SECCIÓ FILTRES DESPLEGABLE  */
 
 /* PANELL PRINCIPAL FILTRES (Alineat Esquerra) */
 .filters-panel {
-    position: fixed; /* Per sobre de tot */
-    top: 130px; /* Ajustar segons alçada searchbar+actions aproximada */
+    position: fixed; /* Per sobre de tot (inclús del body) */
+    top: 130px; /* Ajustar segons alçada searchbar + actions */
     left: 0;
     width: 100%;
     background-color: var(--blanc);
-    padding: 15px 0 20px 0; /* Una mica d'aire */
+    padding: 15px 0 20px 0;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align top left */
-    gap: 15px; /* Gap de 5 o 15 segons convingui, poso 15 pq respiri */
-    z-index: 2001; /* Per sobre de resultats i overlay */
-    
-    /* Afegim un padding lateral perque no toqui vores */
+    align-items: flex-start;
+    gap: 15px;
+    z-index: 2001; /* Per sobre de resultats i overlay (2000) */
     padding-left: 20px;
     padding-right: 20px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Sinó es desborda */
 }
 
 /* PANELL PRINCIPAL ORDENAR (Alineat Dreta) */
 .sort-panel {
-    position: fixed; /* Per sobre de tot */
-    top: 130px; 
+    position: fixed; /* Per sobre de tot (inclús del body) */
+    top: 130px; /* Ajustar segons alçada searchbar + actions */
     left: 0;
     width: 100%;
     background-color: var(--blanc);
     padding: 15px 0 20px 0; 
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* ALIGN RIGHT */
-    gap: 8px; 
+    align-items: flex-end;
+    gap: 8px; /* Modificat respecte Filtres */
     z-index: 2001; 
-    
     padding-left: 20px;
     padding-right: 20px;
     box-sizing: border-box;
@@ -124,29 +117,26 @@
 /* OVERLAY (FONS NEGRE) */
 .filters-overlay {
     position: fixed; /* Ocupa tota la pantalla */
-    top: 180px; /* Comença per sota dels filtres més o menys */
+    top: 180px; /* Comença per sota dels filtres */
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Negre 0.5 opacitat */
-    z-index: 2000; /* Per sota del panel però per sobre del contingut */
-    pointer-events: auto; /* Captura clics per no tocar el fons */
-    /* Assegurem que no hi ha scroll dins l'overlay */
-    touch-action: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000; /* Prioritat 2000 perquè estigui sota dels desplegables */
+    pointer-events: auto; /* Clics bloquejats */
+    touch-action: none; /* Scroll bloquejat */
 }
 
 
-/* --- DESPLEGABLES PERSONALITZATS --- */
+/* DESPLEGABLES PERSONALITZATS */
+/* Estil per defecte, no actiu */
 .custom-select-container {
     position: relative;
-    width: 75%; /* Amplada 75% */
-    height: fit-content; /* Hug */
-    
-    /* Estil per defecte (NO ACTIU) */
+    width: 75%;
+    height: fit-content;
     background-color: var(--blanc);
     border: 0.8px solid var(--negre-fluix);
-    border-radius: 8px; /* Arrodonit estandard */
-    
+    border-radius: 8px;
     display: flex;
     align-items: center;
 }
@@ -157,7 +147,7 @@
     border-color: var(--blau);
 }
 
-/* El select real (transparent per sobre) */
+/* Botó select */
 .custom-select-container select {
     appearance: none; /* Treiem estil per defecte navegador */
     -webkit-appearance: none;
@@ -166,11 +156,9 @@
     background: transparent;
     border: none;
     outline: none;
-    
-    /* Text */
     font-family: var(--font-cos);
     font-size: 18px;
-    color: var(--negre-fluix); /* Per defecte */
+    color: var(--negre-fluix);
     z-index: 2;
     cursor: pointer;
 }
@@ -180,16 +168,14 @@
     color: var(--blanc);
 }
 
-/* Icona Fletxa (Custom Arrow) */
+/* Icona Fletxa */
 .select-arrow {
     position: absolute;
     right: 10px;
     width: 25px;
     height: 25px;
     pointer-events: none; /* Pq el click passi al select */
-    transform: rotate(-90deg); /* Girada 90 graus (Enrere -> Baix) */
-    
-    /* Color per defecte */
+    transform: rotate(-90deg);
     color: var(--negre-fluix); 
     z-index: 1;
 }
@@ -200,23 +186,21 @@
 }
 
 
-/* --- BOTONS ESTAT (Tots, Vius, Morts) --- */
+/* BOTONS ESTAT (Tots, Vius, Morts) */
 .estat-buttons-container {
     width: 75%;
     display: flex;
-    justify-content: space-between; /* Repartir espai */
+    justify-content: space-between; /* Repartir espai igual */
     gap: 10px;
 }
 
+/* BOTÓ estil NO ACTIU */
 .estat-btn {
     flex: 1; /* Ocupen el mateix */
     padding: 6px 0;
-    
-    /* Estil NO ACTIU */
     background-color: var(--blanc);
     border: 0.8px solid var(--negre-fluix);
     border-radius: 8px;
-    
     font-family: var(--font-cos);
     font-size: 16px;
     color: var(--negre-fluix);
@@ -231,11 +215,11 @@
 }
 
 
-/* --- BOTONS ACCIÓ (Borrar / Aplicar) --- */
+/* BOTONS ACCIÓ (Borrar / Aplicar) */
 .filter-actions-row {
     width: 100%;
     display: flex;
-    justify-content: space-between; /* Un a cada costat */
+    justify-content: space-between; /* Repartir espai igual (un a cada costat) */
     margin-top: 10px;
 }
 
@@ -244,7 +228,6 @@
     border: 1px solid var(--negre-fluix);
     border-radius: 8px;
     padding: 8px 16px;
-    
     font-family: var(--font-titols);
     font-size: 20px;
     font-weight: 700;
@@ -257,7 +240,6 @@
     border: 1px solid var(--blau);
     border-radius: 8px;
     padding: 8px 16px;
-    
     font-family: var(--font-titols);
     font-size: 20px;
     font-weight: 700;
@@ -266,27 +248,23 @@
 }
 
 
-/* --- NOUS BOTONS D'ORDRE --- */
+/* NOUS BOTONS D'ORDRE  */
+/* Estil NO ACTIU */
 .sort-option-btn {
     width: 80%;
     height: fit-content;
     padding: 4px 12px;
-    
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start; /* Alineat esquerra */
     gap: 8px;
-    
-    /* Estil NO ACTIU */
     background-color: var(--blanc);
     border: 0.8px solid var(--negre-fluix);
     border-radius: 8px;
-    
     font-family: var(--font-cos);
     font-size: 18px;
     color: var(--negre-fluix);
-    
     cursor: pointer;
 }
 

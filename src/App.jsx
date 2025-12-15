@@ -11,6 +11,7 @@ import Perfil from './pages/Perfil'
 import ArbreDetall from './pages/ArbreDetail';
 
 //comentari per borrar
+//jaja ara he vist que el tenia i m'ha fet gràcia jjaja t'hi quedes xatoo
 
 function App() {
   return (
