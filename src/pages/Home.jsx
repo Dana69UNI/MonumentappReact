@@ -136,10 +136,10 @@ const Home = () => {
   }, []);
 
   // ... dins del component Home
-  console.log("--------------------------------");
-  console.log("VITE_API_KEY:", import.meta.env.VITE_API_KEY);
-  console.log("TOTES LES ENV:", import.meta.env);
-  console.log("--------------------------------");
+  // console.log("--------------------------------");
+  // console.log("VITE_API_KEY:", import.meta.env.VITE_API_KEY);
+  // console.log("TOTES LES ENV:", import.meta.env);
+  // console.log("--------------------------------");
 
   if (loading) return <div>Carregant Home...</div>;
 

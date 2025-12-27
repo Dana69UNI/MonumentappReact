@@ -1,0 +1,225 @@
+/* Contenidor global de la pàgina */
+.login-page-container {
+    width: 100%;
+    /* min-height: 100vh; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+    background-color: var(--blanc);
+    font-family: var(--font-principal);
+    box-sizing: border-box;
+    padding: 0px;
+    gap: 20px; /* Espai entre grans blocs (AFEGIR-NE MES AMB MARGINS) */
+    
+    
+    /* border: 0.5px solid red; */
+
+}
+
+/* --- DALT --- */
+.login-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0px;
+    
+    /* border: 0.5px solid rgb(0, 255, 55); */
+}
+
+.app-name {
+    font-family: var(--font-cos);
+    font-size: 15px;
+    color: var(--negre);
+    margin: 0;
+}
+
+/* --- MIG --- */
+.login-form-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+
+    /* border: 0.5px solid rgb(34, 0, 255); */
+}
+
+.login-title {
+    font-family: var(--font-titols);
+    font-size: 45px;
+    color: var(--negre);
+    margin: 0 0 8px 0;
+    text-align: center;
+}
+
+/* INPUTS */
+.login-input {
+    width: 85%;
+    padding: 12px 12px;
+    box-sizing: border-box; /* pq no creixi el box amb el padding */
+    border: 0.8px solid var(--negre-fluix);
+    border-radius: 10px;
+    background-color: transparent;
+    outline: none;
+    
+    font-family: var(--font-cos);
+    font-size: 18px;
+    color: var(--negre);
+    transition: all 0.3s ease;
+
+    margin: 0 0 5px 0;
+
+}
+
+.login-input::placeholder {
+    color: var(--negre-fluix);
+    font-size: 17px;
+    font-family: var(--font-cos);
+}
+
+/* ESTATS INPUT (QUAN S'ESCRIU) */
+.login-input:focus,
+.login-input.omplert {
+    border-color: var(--blau);
+    color: var(--blau);
+}
+
+/* FORGOT PASSWORD */
+.forgot-pass-container {
+    width: 80%;
+    text-align: center;
+    margin-top: -8px;
+}
+
+.text-normal {
+    font-family: var(--font-cos);
+    font-size: 12px;
+    color: var(--negre);
+}
+
+.text-link {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--blau);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 2px;
+}
+
+/* ERROR MESSAGE */
+.error-msg {
+    color: red;
+    font-size: 14px;
+    width: 80%;
+    text-align: center;
+    margin: 0;
+}
+
+/* BOTÓ INICIAR (SOLID) */
+.btn-principal {
+    width: 85%;
+    padding: 10px 0px;
+    margin-top: 10px;
+    background-color: var(--blau);
+    border: none;
+    border-radius: 10px;
+    
+    font-family: var(--font-titols);
+    font-weight: 700;
+    font-size: 30px;
+    color: var(--blanc);
+    
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* BOTÓ INVITAT */
+.btn-invitat {
+    width: 85%;
+    padding: 6px 0;
+    background-color: transparent;
+    border: 0.8px solid var(--blau);
+    border-radius: 10px;
+    
+    font-family: var(--font-titols);
+    font-size: 25px;
+    color: var(--blau);
+    
+    cursor: pointer;
+}
+
+/* SOCIALS */
+.text-continue {
+    font-family: var(--font-cos);
+    font-size: 14px;
+    color: var(--negre);
+    margin: 10px 0 2px 0;
+}
+
+.socials-container {
+    width: 85%;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Per si de cas */
+}
+
+.btn-social {
+    /* flex: 0.3; Ocupen la meitat cadascun */
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    
+    padding: 5px 15px;
+    background-color: transparent;
+    border: 0.7px solid var(--negre);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn-social span {
+    font-family: var(--font-titols);
+    font-size: 20px;
+    color: var(--negre);
+    
+}
+
+
+/* --- BAIX (REGISTRE) --- */
+.login-bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top:10px;
+
+    /* border: 0.5px solid rgb(238, 0, 255); */
+}
+
+.text-no-sessio {
+    font-family: var(--font-titols);
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--negre-fluix);
+    margin: 0;
+}
+
+.btn-registrat {
+    width: 60%;
+    padding: 8px 0px;
+    background: transparent;
+    border: 0.8px solid var(--negre-fluix);
+    border-radius: 10px;
+    
+    font-family: var(--font-titols);
+    
+    font-size: 20px;
+    color: var(--negre-fluix);
+    cursor: pointer;
+}
