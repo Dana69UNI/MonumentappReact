@@ -70,7 +70,7 @@ const Login = ({ onEntrarComaInvitat }) => {
         <input 
             type="email" 
             className={`login-input ${email.length > 0 ? 'omplert' : ''}`}
-            placeholder="E-mail o nom d'usuari"
+            placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
         />
