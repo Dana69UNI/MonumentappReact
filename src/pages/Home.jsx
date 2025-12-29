@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient'; // IMPORT IMPORTANT: Fem servir el client, no fetch directe
+
 import Header from '../components/Header'; 
 import Divider from '../components/Divider';
 import TreeCard from '../components/TreeCard';
@@ -10,18 +12,8 @@ import './Home.css';
 //IMATGE PER DEFECTE errors de càrrega
 import DefaultImage from '../assets/icons/Imatge.svg';
 
-
-//API
-const API_KEY = import.meta.env.VITE_API_KEY;
-const URL_RECOMANATS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?recomenacio_estat=eq.true&select=id,arbre_id,arbres(nom, imatge)&order=id.asc';
-const URL_REPTE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?mes=eq.2025-12-01&select=id,descripcio,arbre_id,arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)';
-const URL_ULTIM_VISITAT = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?es_visitat=eq.true&select=arbre_id,visita_data,visita_text,arbres(id,nom,municipi,alcada,gruix,capcal,comarca_id,comarques(comarca))&order=visita_data.desc&limit=1';
-//Imatges Supabase
+// CONSTANT PER LES IMATGES (Aquesta sí que la mantenim igual)
 const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
-
-// Demanem només els camps necessaris per fer els càlculs
-const URL_COUNT_INTERACCIONS = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?select=es_preferit,es_visitat,es_pendent';
-const URL_COUNT_TOTAL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id'; // Només IDs per saber el total
 
 const Home = () => {
   const navigate = useNavigate();
@@ -46,11 +38,14 @@ const Home = () => {
     // Fetch RECOMANATS
     const fetchRecomanats = async () => {
       try {
-        const response = await fetch(URL_RECOMANATS, {
-          method: "GET",
-          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
-        });
-        const data = await response.json();
+        // Fem servir supabase client
+        const { data, error } = await supabase
+            .from('arbres_recomenats')
+            .select('id, arbre_id, arbres(nom, imatge)')
+            .eq('recomenacio_estat', true)
+            .order('id', { ascending: true });
+
+        if (error) throw error;
         setRecomenats(data);
       } catch (error) {
         console.error("Error carregant recomanats:", error);
@@ -60,39 +55,44 @@ const Home = () => {
     //Fetch REPTE DEL MES
     const fetchRepte = async () => {
       try {
-        const response = await fetch(URL_REPTE, {
-          method: "GET",
-          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
-        });
-        const data = await response.json();
-        setRepte(data); // Guardem l'array (que segurament tindrà 1 sol element)
+        const { data, error } = await supabase
+            .from('arbre_repte_mensual')
+            .select('id, descripcio, arbre_id, arbres(nom,municipi,alcada,gruix,capcal,comarques(comarca), imatge)')
+            .eq('mes', '2025-12-01'); // Això potser ho hauràs de fer dinàmic en el futur
+
+        if (error) throw error;
+        setRepte(data); 
       } catch (error) {
         console.error("Error repte:", error);
       }
     };
 
     //Fetch DIARI
+    // AQUI HI HA EL CANVI GRAN: Ara filtrem per usuari automàticament gràcies a RLS
     const fetchDiari = async () => {
         try {
-            // Fem dues crides en paral·lel: Total d'arbres i Totes les interaccions
-            const [resTotal, resInteraccions] = await Promise.all([
-                fetch(URL_COUNT_TOTAL, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-                fetch(URL_COUNT_INTERACCIONS, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
-            ]);
+            // 1. Total d'arbres (això és públic)
+            const { count: totalArbres, error: errorTotal } = await supabase
+                .from('arbres')
+                .select('*', { count: 'exact', head: true });
 
-            const dataTotal = await resTotal.json();
-            const dataInteraccions = await resInteraccions.json();
+            if (errorTotal) throw errorTotal;
 
-            // Calculem
-            const totalArbres = dataTotal.length; // Denominador (ex: 234)
-            
-            // Sumem quants true hi ha a cada categoria
+            // 2. Interaccions de l'usuari (Supabase ja sap qui és l'usuari)
+            const { data: dataInteraccions, error: errorInter } = await supabase
+                .from('interaccions')
+                .select('es_preferit, es_pendent, te_visites');
+
+            if (errorInter) throw errorInter;
+
+            // Calculem (ara dataInteraccions només té les dades del teu usuari)
             const countPreferits = dataInteraccions.filter(i => i.es_preferit).length;
-            const countVisitats = dataInteraccions.filter(i => i.es_visitat).length;
+            // Fem servir 'te_visites' que hem creat a la taula interaccions
+            const countVisitats = dataInteraccions.filter(i => i.te_visites).length; 
             const countPendents = dataInteraccions.filter(i => i.es_pendent).length;
 
             setDiari({
-                total: totalArbres,
+                total: totalArbres || 0,
                 preferits: countPreferits,
                 visitats: countVisitats,
                 pendents: countPendents
@@ -104,20 +104,30 @@ const Home = () => {
     };
 
     //Fetch ULTIM ARBRE VISITAT
+    // CANVI: Ara busquem a la taula 'visites', no a 'interaccions'
     const fetchUltimVisitat = async () => {
       try {
-        const response = await fetch(URL_ULTIM_VISITAT, {
-          method: "GET",
-          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
-        });
-        const data = await response.json();
-        setUltimVisitat(data); 
+        const { data, error } = await supabase
+            .from('visites') // Taula nova
+            .select('arbre_id, data_visita, text_visita, arbres(id,nom,municipi,alcada,gruix,capcal,comarques(comarca))')
+            .order('data_visita', { ascending: false }) // Del més recent al més antic
+            .limit(1);
+
+        if (error) throw error;
+        
+        // Mapejem les dades perquè el format coincideixi amb el que espera el render
+        // A la taula 'visites' tenim 'text_visita', al teu codi antic esperaves 'visita_text'.
+        // Ho ajustem aquí o al render. Ho ajusto aquí:
+        const dataMapejada = data.map(v => ({
+            ...v,
+            visita_text: v.text_visita // Adaptem el nom de la columna nova
+        }));
+
+        setUltimVisitat(dataMapejada); 
       } catch (error) {
         console.error("Error ultim visitat:", error);
       }
     };
-
-
 
     //---------------
     //EXECUCIÓ GLOBAL
@@ -132,6 +142,7 @@ const Home = () => {
       await fetchUltimVisitat();     
       setLoading(false);
     };
+    
     carregarTot();
   }, []);
 
@@ -215,7 +226,7 @@ const Home = () => {
         <h2 className="section-title">DIARI</h2>
 
         {/* Text simple (sense icona. S'haurà de canviar en un futur) */}
-        <div style={{ marginTop: '5px', fontSize: '16px', color: 'var(--negre)' }}>
+        <div style={{ width: '100%', marginTop: '5px', fontSize: '16px', color: 'var(--negre)' }}>
             <p style={{ margin: '5px 0' }}>
                 Preferits: <strong>{diari.preferits}/{diari.total}</strong>
             </p>
@@ -229,6 +240,7 @@ const Home = () => {
             </p>
 
             {/* Graella de progrés */}
+            
             <div style={{ width: '100%', marginTop: '10px' }}>
               <GraellaProgres />
             </div>
@@ -238,7 +250,7 @@ const Home = () => {
 
       <Divider />
 
-      {/*  SECCIÓ 4: ÚLTIM ARBRE VISITAT  */}
+      {/* SECCIÓ 4: ÚLTIM ARBRE VISITAT  */}
       <section className="home-section">
         <h2 className="section-title">ÚLTIM ARBRE VISITAT</h2>
         
@@ -248,7 +260,7 @@ const Home = () => {
               
               {/* Data en BOLD */}
               <p style={{ margin: '0px 0 0px 0', fontSize: '15px', fontWeight: 'bold' }}>
-                {item.visita_data}
+                {item.data_visita} {/* Canviat de visita_data a data_visita segons la nova taula */}
               </p>
 
               {/* Text de la visita (si n'hi ha) */}

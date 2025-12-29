@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { supabase } from '../supabaseClient'; // IMPORT CLIENT
 import './Biblioteca.css';
 import Divider from '../components/Divider';
 import Space from '../components/Space';
@@ -16,12 +17,10 @@ import UllPle from '../assets/icons/Ull_filled.svg?react';
 //IMATGES
 import DefaultImage from '../assets/icons/Imatge.svg';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-
 const Biblioteca = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   //ESTAT PESTANYES: 'preferits' | 'visitats' | 'pendents'
-const activeTab = searchParams.get('tab') || 'preferits';  
+  const activeTab = searchParams.get('tab') || 'preferits';  
   //ESTAT DADES
   const [arbres, setArbres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,24 +28,28 @@ const activeTab = searchParams.get('tab') || 'preferits';
   //CÀRREGA DE DADES
   useEffect(() => {
     
-    //Determinem la crida a l'API segons la pestanya activa
-    let filtreInteraccio = '';
-    if (activeTab === 'preferits') filtreInteraccio = 'es_preferit=eq.true';
-    else if (activeTab === 'visitats') filtreInteraccio = 'es_visitat=eq.true';
-    else if (activeTab === 'pendents') filtreInteraccio = 'es_pendent=eq.true';
-
-    //Construïm la URL (Join amb taula arbres)
-    const URL = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?${filtreInteraccio}&select=arbre_id,arbres(*,comarques(comarca))`;
-
     const fetchLlista = async () => {
       setLoading(true);
       try {
-        const response = await fetch(URL, {
-          method: "GET",
-          headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` }
-        });
-        const data = await response.json();
+        let query = supabase
+            .from('interaccions')
+            // Fem JOIN amb taula arbres i també amb comarques
+            .select('arbre_id,arbres(*,comarques(comarca))');
 
+        // Determinem el filtre segons la pestanya
+        if (activeTab === 'preferits') {
+            query = query.eq('es_preferit', true);
+        } else if (activeTab === 'visitats') {
+            // ULL: Ara fem servir 'te_visites', no 'es_visitat'
+            query = query.eq('te_visites', true); 
+        } else if (activeTab === 'pendents') {
+            query = query.eq('es_pendent', true);
+        }
+
+        // Executem la consulta
+        const { data, error } = await query;
+
+        if (error) throw error;
         setArbres(data);
 
       } catch (error) {

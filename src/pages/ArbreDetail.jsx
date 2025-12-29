@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient'; // IMPORT SUPABASE
+
 import './ArbreDetail.css';
 import Divider from '../components/Divider';
 import Space from '../components/Space';
@@ -23,15 +25,11 @@ import IconBack from '../assets/icons/Enrere.svg?react';
 import DefaultImage from '../assets/icons/Imatge.svg';
 import VisitatPlaceholder from '../assets/Visitat.jpg';
 
-//Aquestes estan aquí pq no patiran canvis (de la base aquesta)
-const API_KEY = import.meta.env.VITE_API_KEY;
-const URL_INTERACCIONS_UPDATE = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?on_conflict=arbre_id';
-//URL imatges
+//URL imatges (Aquesta es manté)
 const STORAGE_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/storage/v1/object/public/fotos-arbres';
 
 const ArbreDetall = () => {
   const { id } = useParams(); 
-
   const navigate = useNavigate();
   
   //PER DADES ARBRES
@@ -41,9 +39,9 @@ const ArbreDetall = () => {
   const [interaccio, setInteraccio] = useState({
     es_preferit: false,
     es_pendent: false,
-    es_visitat: false,
-    visita_data: null,
-    visita_text: null
+    te_visites: false, // Canviat de 'es_visitat' a 'te_visites' per la nova estructura
+    ultima_visita_data: null, // Per mostrar la data
+    ultima_visita_text: null
   });
 
   //PER GESTIÓ RECOMANATS I REPTE
@@ -60,48 +58,73 @@ const ArbreDetall = () => {
 
   useEffect(() => {
     
-    //IMPORTANT TENIR-HO AQUÍ PQ SI HO TINC FORA DEL useEffect, ENCARA NO SAP L'ID
-    const URL_ARBRE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?id=eq.${id}&select=nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)`;
-    const URL_INTERACCIO_READ = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/interaccions?arbre_id=eq.${id}&select=es_preferit,es_pendent,es_visitat,visita_data,visita_text`;    
-    const URL_CHECK_REPTE = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbre_repte_mensual?arbre_id=eq.${id}&mes=eq.2025-12-01&select=descripcio`;
-    const URL_CHECK_RECOMANAT = `https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres_recomenats?arbre_id=eq.${id}&recomenacio_estat=eq.true&select=descripcio`;
-
     const fetchData = async () => {
       try {
-        // Fem les crides en paral·lel per anar més ràpid
-        const [resArbre, resInteraccio, resRepte, resRecomanat] = await Promise.all([
-          fetch(URL_ARBRE, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-          fetch(URL_INTERACCIO_READ, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-          fetch(URL_CHECK_REPTE, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } }),
-          fetch(URL_CHECK_RECOMANAT, { headers: { "apikey": API_KEY, "Authorization": `Bearer ${API_KEY}` } })
-        ]);
+        // 1. DADES DE L'ARBRE (Públic)
+        const { data: dataArbre, error: errorArbre } = await supabase
+            .from('arbres')
+            .select('nom,municipi,entorn,especie,alcada,gruix,capcal,coordenades,codi,imatge,any_proteccio,comarques(comarca),proteccio(tipus,descripcio)')
+            .eq('id', id)
+            .single();
 
-        const dataArbre = await resArbre.json();
-        const dataInteraccio = await resInteraccio.json();
-        const dataRepte = await resRepte.json();
-        const dataRecomanat = await resRecomanat.json();
-        
-        // GESTIÓ ARBRE
-        if (dataArbre.length > 0) {
-          setArbre(dataArbre[0]);
+        if (errorArbre) throw errorArbre;
+        setArbre(dataArbre);
+
+
+        // 2. INTERACCIONS (Privat - RLS filtrarà per l'usuari)
+        const { data: dataInteraccio, error: errorInteraccio } = await supabase
+            .from('interaccions')
+            .select('es_preferit, es_pendent, te_visites')
+            .eq('arbre_id', id)
+            .maybeSingle(); // maybeSingle no dona error si no troba res (retorna null)
+
+        if (errorInteraccio) throw errorInteraccio;
+
+        // 3. SI TÉ VISITES, BUSQUEM L'ÚLTIMA (Per mostrar la info extra)
+        let ultimaVisita = { data: null, text: null };
+        if (dataInteraccio?.te_visites) {
+            const { data: dataVisites } = await supabase
+                .from('visites')
+                .select('data_visita, text_visita')
+                .eq('arbre_id', id)
+                .order('data_visita', { ascending: false })
+                .limit(1)
+                .single();
+            
+            if (dataVisites) {
+                ultimaVisita = { data: dataVisites.data_visita, text: dataVisites.text_visita };
+            }
         }
 
-        // GESTIÓ INTERACCIÓ
-        if (dataInteraccio.length > 0) {
-          setInteraccio({
-            es_preferit: dataInteraccio[0].es_preferit,
-            es_pendent: dataInteraccio[0].es_pendent,
-            es_visitat: dataInteraccio[0].es_visitat,
-            visita_data: dataInteraccio[0].visita_data,
-            visita_text: dataInteraccio[0].visita_text
-          });
+        // Setegem estat Interacció
+        if (dataInteraccio) {
+            setInteraccio({
+                es_preferit: dataInteraccio.es_preferit,
+                es_pendent: dataInteraccio.es_pendent,
+                te_visites: dataInteraccio.te_visites,
+                ultima_visita_data: ultimaVisita.data,
+                ultima_visita_text: ultimaVisita.text
+            });
         }
+
+        // 4. CHECK REPTE (Públic)
+        const { data: dataRepte } = await supabase
+            .from('arbre_repte_mensual')
+            .select('descripcio')
+            .eq('arbre_id', id)
+            .eq('mes', '2025-12-01');
+
+        // 5. CHECK RECOMANAT (Públic)
+        const { data: dataRecomanat } = await supabase
+            .from('arbres_recomenats')
+            .select('descripcio')
+            .eq('arbre_id', id)
+            .eq('recomenacio_estat', true);
         
-        //GESTIÓ RECOMAMATS I REPTE
+        // GESTIÓ ETIQUETES
         setEtiquetes({
-            // Si hi ha dades, agafem la descripció. Si no, null.
-            textRepte: dataRepte.length > 0 ? dataRepte[0].descripcio : null,
-            textRecomanat: dataRecomanat.length > 0 ? dataRecomanat[0].descripcio : null
+            textRepte: dataRepte && dataRepte.length > 0 ? dataRepte[0].descripcio : null,
+            textRecomanat: dataRecomanat && dataRecomanat.length > 0 ? dataRecomanat[0].descripcio : null
         });
 
       } catch (error) {
@@ -115,25 +138,25 @@ const ArbreDetall = () => {
   }, [id]);
 
   
-  // --- FUNCIONS UPDATE ---
+  // --- FUNCIONS UPDATE (Ara amb Supabase) ---
   const updateDatabase = async (campsActualitzats) => {
     try {
-      const response = await fetch(URL_INTERACCIONS_UPDATE, {
-        method: "POST",
-        headers: { 
-          "apikey": API_KEY, 
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "resolution=merge-duplicates"
-        },
-        body: JSON.stringify({
-          arbre_id: id,
-          ...campsActualitzats
-        })
-      });
-      if (!response.ok) throw new Error("Error guardant");
+        // Necessitem saber el user_id per fer l'upsert correctament
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return; // Si no hi ha usuari, no fem res
+
+        // Fem UPSERT: Si existeix actualitza, si no existeix crea
+        const { error } = await supabase
+            .from('interaccions')
+            .upsert({ 
+                user_id: user.id,
+                arbre_id: id,
+                ...campsActualitzats
+            }, { onConflict: 'user_id, arbre_id' }); // Clau per detectar duplicats
+
+        if (error) throw error;
     } catch (error) {
-      console.error(error);
+      console.error("Error guardant:", error);
     }
   };
 
@@ -145,7 +168,6 @@ const ArbreDetall = () => {
 
   const togglePendent = async () => {
     // Simplement invertim el valor de 'es_pendent'.
-    // NO toquem 'es_visitat'. Són independents.
     const nouEstat = !interaccio.es_pendent;
     setInteraccio(prev => ({ ...prev, es_pendent: nouEstat }));
     await updateDatabase({ es_pendent: nouEstat });
@@ -184,7 +206,7 @@ const ArbreDetall = () => {
   let imatgesGaleria = [];
 
   //Si està visitat, la primera és la de l'usuari (Placeholder pel test)
-  if (interaccio.es_visitat) {
+  if (interaccio.te_visites) {
       imatgesGaleria.push(VisitatPlaceholder);
   }
 
@@ -205,7 +227,7 @@ const ArbreDetall = () => {
 
   //DETERMINEM QUINES ICONES I CLASSES TOQUEN
   const classPreferit = interaccio.es_preferit ? "btn-interaccio actiu" : "btn-interaccio";
-  const classVisitat = interaccio.es_visitat ? "btn-interaccio actiu" : "btn-interaccio";
+  const classVisitat = interaccio.te_visites ? "btn-interaccio actiu" : "btn-interaccio";
   const classPendent = interaccio.es_pendent ? "btn-interaccio actiu" : "btn-interaccio";
   
   return (
@@ -270,10 +292,8 @@ const ArbreDetall = () => {
             {/* PREFERIT */}
             <div className={classPreferit} onClick={togglePreferit}>
               {interaccio.es_preferit ? (
-                // Si està ple, hereta el color del pare (que serà blanc gràcies a .actiu)
                 <CorPle style={{ width: '24px', color: 'currentColor' }} />
               ) : (
-                // Si està buit, hereta el color del pare (que serà negre)
                 <CorBuit style={{ width: '24px', color: 'currentColor' }} />
               )}
               <span className="text-interaccio">Preferit</span>
@@ -281,7 +301,7 @@ const ArbreDetall = () => {
 
             {/* VISITAT */}
             <div className={classVisitat} onClick={anarAFormulariVisita}>
-                {interaccio.es_visitat ? (
+                {interaccio.te_visites ? (
                     <UllPle style={{ width: '24px', color: 'currentColor' }} />
                 ) : (
                     <UllBuit style={{ width: '24px', color: 'currentColor' }} />
@@ -304,7 +324,7 @@ const ArbreDetall = () => {
         <Divider />
 
         {/* VISITAT (només si ho es) */}
-        {(interaccio.es_visitat) && (
+        {(interaccio.te_visites) && (
              <>
                 <div className="info-bloc">
                     {/* Títol*/}
@@ -313,16 +333,16 @@ const ArbreDetall = () => {
                     </span>
                     
                     {/* Data */}
-                    {interaccio.visita_data && (
+                    {interaccio.ultima_visita_data && (
                         <span className="info-valor" style={{ color: 'var(--negre)', fontWeight: '700', fontSize:'18px' }}>
-                            {interaccio.visita_data}
+                            {interaccio.ultima_visita_data}
                         </span>
                     )}
 
                     {/* Descripció (si n'hi ha) */}
-                    {interaccio.visita_text && (
+                    {interaccio.ultima_visita_text && (
                         <span className="info-valor">
-                            {interaccio.visita_text}
+                            {interaccio.ultima_visita_text}
                         </span>
                     )}
                 </div>
@@ -352,8 +372,6 @@ const ArbreDetall = () => {
                 <Divider /> 
             </>
         )}
-
-
         {/* Dimensions */}
         <div className="dimensions-container">
             <div className="dim-item">
@@ -378,7 +396,6 @@ const ArbreDetall = () => {
                 </div>
             </div>
         </div>
-
         <Divider />
 
         {/* INFO EXTRA*/}
@@ -416,9 +433,7 @@ const ArbreDetall = () => {
             <span className="info-titol">Codi de protecció</span>
             <span className="info-valor">{arbre.codi}</span>
         </div>
-
       </div>
-      
       <Space/>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient'; // IMPORT IMPORTANT: Fem servir el client
 import './Search.css';
 import TreeCard from '../components/TreeCard.jsx';
 import Divider from '../components/Divider.jsx';
@@ -14,9 +15,7 @@ import IconCrown from '../assets/icons/Capcal.svg?react';
 import Tree from '../assets/icons/Tree.svg?react';
 import Fletxa from '../assets/icons/Enrere.svg?react';
 
-// URL i KEY
-const API_URL = 'https://ndhaolftrgywuzadusxe.supabase.co/rest/v1/arbres?select=id,nom,municipi,alcada,gruix,capcal,estat,comarques(comarca),proteccio(tipus)&order=id.asc';
-const API_KEY = import.meta.env.VITE_API_KEY;
+// JA NO NECESSITEM URL NI KEY (Ho gestiona supabaseClient)
 
 const Search = () => {
   const [posts, setPosts] = useState([]); // Inicialitzem com array buit []
@@ -53,22 +52,20 @@ const Search = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(API_URL, {
-          method: "GET",
-          headers: {
-            "apikey": API_KEY,
-            "Authorization": `Bearer ${API_KEY}`
-          }
-        });
+        // --- CANVI A SUPABASE CLIENT ---
+        const { data, error } = await supabase
+            .from('arbres')
+            .select('id,nom,municipi,alcada,gruix,capcal,estat,comarques(comarca),proteccio(tipus)')
+            .order('id', { ascending: true });
         
-        if (!response.ok) {
-          throw new Error('Error connectant amb la Base de Dades');
+        if (error) {
+          throw error;
         }
 
-        const data = await response.json();
         setPosts(data);
 
         // Extreure llistes úniques per als filtres
+        // (Aquesta lògica es manté igual pq l'estructura de dades que rebem és la mateixa)
         const comarquesUniques = [...new Set(data.map(a => a.comarques?.comarca).filter(Boolean))].sort();
         setLlistaComarques(comarquesUniques);
 
