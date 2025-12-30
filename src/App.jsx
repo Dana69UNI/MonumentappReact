@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { supabase } from './supabaseClient'; // IMPORT IMPORTANT: La connexió amb Supabase
+import { supabase } from './supabaseClient';
 
 // Components
 import Footer from './components/Footer'; 
@@ -12,25 +12,23 @@ import New from './pages/New'
 import Biblioteca from './pages/Biblioteca';
 import Perfil from './pages/Perfil'
 import ArbreDetall from './pages/ArbreDetail';
-import Login from './pages/Login'; // IMPORT IMPORTANT: La nova pàgina de Login
-
-//comentari per borrar
-//jaja ara he vist que el tenia i m'ha fet gràcia jjaja t'hi quedes xatoo (Jo també el deixo, no toco res! 😄)
+import Login from './pages/Login'; 
+import Register from './pages/Register'; // NOU IMPORT
 
 function App() {
-  // --- ESTATS DE SESSIÓ ---
   const [session, setSession] = useState(null);
   const [isGuest, setIsGuest] = useState(false);
   const [loading, setLoading] = useState(true);
+  
+  // NOU ESTAT: Controla quina pantalla d'autenticació veiem ('login' o 'register')
+  const [authView, setAuthView] = useState('login'); 
 
   useEffect(() => {
-    // 1. Comprovem si hi ha sessió guardada al carregar l'app
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setLoading(false);
     });
 
-    // 2. Escoltem canvis en temps real (per si l'usuari fa login o logout)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -41,36 +39,42 @@ function App() {
   }, []);
 
 
-  // --- LÒGICA DE PANTALLES ---
-
-  // 1. Mentre carrega, no mostrem res (o podries posar un spinner)
   if (loading) return null; 
 
-  // 2. SI NO ESTÀ LOGUEJAT I NO HA DIT QUE ÉS INVITAT -> Mostrem LOGIN
-  // (Això "segresta" l'app i no deixa veure res més fins que decideixi)
+  // --- BLOC NO AUTENTICAT ---
   if (!session && !isGuest) {
-    return <Login onEntrarComaInvitat={() => setIsGuest(true)} />;
+      // Si la vista és 'register', mostrem el component de Registre
+      if (authView === 'register') {
+          return (
+            <Register 
+                onGoToLogin={() => setAuthView('login')} 
+                onRegisterSuccess={() => setAuthView('login')} // En acabar, tornem al login (o podríem forçar home si l'auth fos auto)
+            />
+          );
+      }
+      
+      // Si no, mostrem Login
+      return (
+        <Login 
+            onEntrarComaInvitat={() => setIsGuest(true)} 
+            onGoToRegister={() => setAuthView('register')}
+        />
+      );
   }
 
-  // 3. SI JA TENIM SESSIÓ O ÉS INVITAT -> Mostrem la teva App normal
+  // --- BLOC APP PRINCIPAL ---
   return (
     <BrowserRouter>
-      {/* El contingut principal canvia segons la ruta */}
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cercar" element={<Search />} />
           <Route path="/nou" element={<New />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
-          
-          {/* IMPORTANT: Passem la 'session' al Perfil perquè sàpiga qui és l'usuari */}
           <Route path="/perfil" element={<Perfil session={session} />} />
-          
           <Route path="/cercar/:id" element={<ArbreDetall />} />
         </Routes>
       </div>
-
-      {/* El Footer està fora de Routes, per tant SEMPRE es veu */}
       <Footer />
     </BrowserRouter>
   );
